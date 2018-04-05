@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h1 style="font-style:italic;font-family:Century">#{bundle.TakePhotos}</h1>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>#{connexionBean.currentExerciceFonction.service.libelle}</li>
+                            <li> #{bundle.PhotosManagement}</li>
+                            <!--<li>#{bundle.menuAdministrationFonction}</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+        </div>
+        <center>
+        <div class="block full" style="border-top-left-radius:10px;border-top-right-radius: 10px; width: 74em; margin-left:1.75em;" id="creatPhoto">
+            <!-- Horizontal Form Title -->
+            <div class="block-title">
+
+
+                <div class="block-options pull-right">
+                    <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="Toggles .form-bordered class">#{bundle.Style}</a>-->
+                    <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="#{bundle.Style}">#{bundle.Style}</a>-->
+                </div>
+                <h2 style="font-family:Arial; text-transform: none">Information de pièce</h2>
+            </div>
+
+            <form jsf:prependId="false"  jsf:id="photosForm" jsf:class="form-horizontal form-bordered">
+                <h:inputText id="inputPhotoF" style="display: none" value="#{photoBean.photoURLF}"/>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2" style="padding-left: 5em;"> #{bundle.dossier}</label>
+                        <div class="col-md-4" jsf:id="dossierSelecteds" >
+                            <h:selectOneMenu class="select-chosen" id="liste-dossier" value="#{photoBean.dossierCondamne}" ph:data-placeholder="Dossier Concernée" >
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems  value="#{photoBean.findAllDossierCondam()}" var="dos" itemValue="#{dos}" itemLabel="#{dos.numeroRP}"/>
+                                <f:converter converterId="dossierConverter"/>
+                                <f:ajax  listener="#{photoBean.findAllPartieCondam()}" render="partieSelecteds naturePiece refPiece " onevent="actualiserPartieAndEtat"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <label class="col-md-2" style="padding-left: 5em;"> #{bundle.Auteur}</label>
+                        <div class="col-md-4" jsf:id="partieSelecteds" >
+                            <h:selectOneMenu class="select-chosen" id="liste-partie" value="#{photoBean.partieCondamne}" ph:data-placeholder="Partie Concernée"  onchange="actualiserPartieAndEtat">
+                                <f:selectItem itemValue="" itemLabel="---Partie Condamner---"/>
+                                <f:selectItems value="#{photoBean.listePartieCondamnees}" var="a" itemValue="#{a}" itemLabel="#{a.personnePhysique.name}"/>
+                                <f:converter converterId="partieConverter"/>
+                                <f:ajax listener="#{photoBean.receiveListEtatCiv()}" render="photosForm "  onevent="actualiserPartieAndEtat"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2"> #{bundle.NaturePiece}</label>
+                        <div class="col-md-4" jsf:id="naturePiece" >
+                            <h:selectOneMenu class="select-chosen" id="liste-NaturePiece" value="#{photoBean.newEtatCivil.naturePiece}" ph:data-placeholder="Nature de pièce">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{photoBean.listeNaturePiece}" var="nature" itemValue="#{nature.libelle}" itemLabel="#{nature.libelle}"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <label class="col-md-2"> #{bundle.referencePiece}</label>
+                        <div class="col-md-4" jsf:id="refPiece" >
+                            <input type="text" jsf:id="code" name="code" class="form-control" jsf:value="#{photoBean.newEtatCivil.referencePiece}"  placeholder="Reférence de pièce" required="true" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+                  <div class="row">
+                    <div class="form-group ">
+                        <div class="col-sm-2" >
+                    <label class="control-label" for="jugementDate">Date d'expiration</label>  
+                </div>
+                <div class="col-sm-4" jsf:id="dateExpir">                                          
+                    <input type="text"  jsf:id="jugementDate"  jsf:value="#{photoBean.newEtatCivil.dateExpiration}" value="#{connexionBean.convertDate(photoBean.newEtatCivil.dateExpiration, 'dd/MM/yyyy')}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </input>  
+                </div>
+
+                        <label class="col-md-2"> </label>
+                        <div class="col-md-4" >
+                        </div>
+                    </div>
+                </div>
+                   
+
+
+                <div class="form-group   form-actions" >
+                    <!--<button type="submit" class="btn btn-effect-ripple btn-effect-ripple btn-primary"><i class="fa fa-search"></i> #{bundle.Save}</button>-->
+                    <center>
+                    <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new" jsf:action="#{photoBean.doSavePhoto()}">
+                        #{bundle.Save}
+                        <f:ajax execute="@form" render=":msgForm:msg @form pagePhoto " onevent="savePhoto"/>
+                    </button>
+                    </center>
+                </div>
+
+
+
+            </form>
+        </div>
+        </center>
+
+        <!-- END Forms Components Header -->
+
+        <!-- eStore Content -->
+        <div id="pagePhoto" style="background-color: rgba(173, 222, 92, 0.5);border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-top: -26px;margin-left: 25px;margin-right: 25px;margin-bottom: 25px;height: 500px;">
+            <div class="row" style="padding-top: 15px">
+                <div class="col-lg-6">
+                    <div style="padding-left: 25px">
+                        <!--<button onclick="playPause()" class="btn btn-effect-ripple btn-effect-ripple btn-primary">&nbsp; <i class="fa fa-toggle-right"></i> Play/Pause</button>-->
+                        <!--<button onclick="makeBig()" class="btn btn-effect-ripple btn-effect-ripple btn-primary">Big</button>-->
+                        <!--<button onclick="makeSmall()" class="btn btn-effect-ripple btn-effect-ripple btn-primary">Small</button>-->
+                        <!--<button onclick="makeNormal()" class="btn btn-effect-ripple btn-effect-ripple btn-primary">Normal</button>-->
+                        <video id="video" width="200" height="150" autoplay="true" controls="true"></video><br/>
+                        <span style="padding-left: 50px">
+                            <button id="snap" class="btn btn-effect-ripple btn-effect-ripple btn-primary" style=""> &nbsp; <i class="fa fa-camera"></i> Capturer</button>
+                        </span>
+                        <!--<br/><br/>-->
+                        <!--<canvas id="canvas" width="420" height="420"></canvas>-->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div style="text-align:center">
+                        <button id="snapF" class="btn btn-effect-ripple btn-effect-ripple btn-primary"><i class="fa fa-user"></i> Face(F) </button>
+                        <button id="snapPG" class="btn btn-effect-ripple btn-effect-ripple btn-primary"><i class="fa fa-user"></i> Profil Gauche(PG) </button>
+                        <button id="snapPD" class="btn btn-effect-ripple btn-effect-ripple btn-primary"><i class="fa fa-user"></i> Profil Droit(PD) </button>
+                        <br/><br/>
+                        <canvas id="canvas" width="200" height="150" style="border:1px solid #000000;">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div style="text-align:center">
+                        <br/><br/>
+                        <canvas id="canvasF" width="200" height="150" style="border:1px solid #000000;z-index:1">
+                        </canvas>
+                        <input type="button" class="success" style="z-index:2; position:absolute; top:x; left:y" value="F"/>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div style="text-align:center">
+                        <br/><br/>
+                        <canvas id="canvasPG" width="200" height="150" style="border:1px solid #000000;">
+                        </canvas>
+                        <input type="button" class="success" style="z-index:2; position:absolute; top:x; left:y" value="PG"/>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div style="text-align:center">
+                        <br/><br/>
+                        <canvas id="canvasPD" width="200" height="150" style="border:1px solid #000000;z-index:1">
+                        </canvas>
+                        <input type="button" class="success" style="z-index:2; position:absolute; top:x; left:y" value="PD"/>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="row">
+                            <div class="col-lg-6">
+                                <div style="text-align:center">
+                                    <br/><br/>
+                                    <canvas id="canvasA" width="420" height="350" style="border:1px solid #000000;">
+                                    </canvas>
+                                    <input type="button" class="success" style="z-index:2; position:absolute; top:x; left:y" value="A"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div style="text-align:center">
+                                    <br/><br/>
+                                    <canvas id="canvasPD" width="420" height="350" style="border:1px solid #000000;">
+                                    </canvas>
+                                    <input type="button" class="success" style="z-index:2; position:absolute; top:x; left:y" value="PD"/>
+                                </div>
+                            </div>
+                        </div>-->
+
+            <!--            <a href="#" class="btn btn-effect-ripple btn-block btn-success push-bit-top-bottom" style="padding-bottom: 10px">
+                            <i class="fa fa-level-up"></i> En haut
+                        </a>-->
+
+        </div>
+
+
+
+        <!-- END eStore Content -->
+        <!--</div>-->
+        <!-- END Forms Components Header -->
+        <script>
+            var myVideo = document.getElementById("video1");
+
+            function playPause() {
+                if (myVideo.paused)
+                    myVideo.play();
+                else
+                    myVideo.pause();
+            }
+
+            function makeBig() {
+                myVideo.width = 560;
+            }
+
+            function makeSmall() {
+                myVideo.width = 320;
+            }
+
+            function makeNormal() {
+                myVideo.width = 420;
+            }
+        </script>
+
+
+    </ui:composition>
+</html>

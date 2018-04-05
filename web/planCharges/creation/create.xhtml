@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Gestion du plan de charges</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>Plan de Charges</li>
+                            <li>Créaction de chantier</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+
+        <!-- Form Components Row -->
+
+        <h:form id="msgForm" prependId="false">
+            <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+            <p:messages  autoUpdate="true" showDetail="true"/>
+        </h:form>
+
+        <div jsf:id="waitForm">
+            <div class="block row">
+                <div class="block-title"  jsf:id="teteForm">
+                    <h2 style="font-family:Arial; margin-right: 40px; text-transform: none">#{bundle.creation}:</h2>   
+                </div>
+                <!-- Block Tabs -->
+                <div class="">
+                    <form  jsf:id="AvancementForm" jsf:prependId="false" jsf:class="form-horizontal">
+                        <fieldset jsf:id="avancement_id" class="col-sm-12 col-md-12 col-lg-12" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px; margin-left:3% ; width: 95%">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails </legend>     
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="libelle">#{bundle.intitule}</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="intitule_Id" >  
+                                    <input type="text" jsf:id="intitule" name="intitule" class="form-control" jsf:value="#{suiviPaieBean.newSuiviSalaire.montant}" placeholder="Intitulé"/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="directeur">Directeur</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="directeur_id" >                                          
+                                    <h:selectOneMenu class="select-chosen" id="typesuivi" value="#{suiviPaieBean.newProgressionAgent.evenement}"  ph:data-placeholder="-Directeur-">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{suiviPaieBean.listeEvtsSuiviPaies}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                        <f:converter converterId="evenementConverter" />
+                                        <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="datedebut">Date début</label>  
+                                </div>
+                                <div class="col-sm-4" jsf:id="datedebut_id1" >                                          
+                                    <input type="text"  jsf:id="datedebut" value="#{suiviPaieBean.newProgressionAgent.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </input>
+                                </div>  
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="dateFin">Date de fin</label>  
+                                </div>
+                                <div class="col-sm-4" jsf:id="dateFin_id" >                                          
+                                    <input type="text"  jsf:id="dateFin" value="#{suiviPaieBean.newSuiviSalaire.dateSuivi}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </input>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="description">Observation</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="observation_id1" >                                          
+                                    <h:inputTextarea id="observationAanPromo"  value="#{suiviPaieBean.newSuiviSalaire.observation}" rows="4" class="form-control" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="lieu">#{bundle.lieu}</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="lieu_Id" >  
+                                    <input type="text" jsf:id="lieu" name="lieu" class="form-control" jsf:value="#{suiviPaieBean.newSuiviSalaire.montant}" placeholder="Lieu"/>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset jsf:id="section_id" class="col-sm-12 col-md-12 col-lg-12" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px ; margin-left:3% ; padding-bottom: 15px; width: 95%">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Création des sections </legend>     
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="chefsection">#{bundle.chefSection}</label>  
+                                        </div>       
+                                        <div class="col-sm-3" jsf:id="chefsection_id1Col" >                                          
+                                            <h:selectOneMenu class="select-chosen" id="chefsection" value="#{suiviPaieBean.detailSalaire.variableSalaire}"  ph:data-placeholder="#{bundle.chefSection}">
+                                                <f:selectItem itemValue="" itemLabel="" />
+                                                <f:selectItems value="#{suiviPaieBean.listeVariablePrimes}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                                <f:converter converterId="variableSalaireConverter" />
+                                                <f:ajax  execute="@this" render="table_PrimesFixes"   onevent="reinitChoose"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="libelle">#{bundle.Libelle}</label>  
+                                        </div>
+                                        <div class="col-sm-3" jsf:id="libelle_id" >                                          
+                                            <input type="text"  jsf:value="#{suiviPaieBean.detailSalaire.montant}" class="form-control" placeholder="#{bundle.Libelle} Section">
+                                                <f:ajax  execute="@this" render="table_sections"/>
+                                            </input>     
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="datedebutS">Date début</label>  
+                                        </div>
+                                        <div class="col-sm-3" jsf:id="datedebutS_id" >                                          
+                                            <input type="text"  jsf:id="datedebutS" value="#{suiviPaieBean.newProgressionAgent.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </input>
+                                        </div>  
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="dateFinS">Date de fin</label>  
+                                        </div>
+                                        <div class="col-sm-3" jsf:id="dateFinS_id" >                                          
+                                            <input type="text"  jsf:id="dateFinS" value="#{suiviPaieBean.newSuiviSalaire.dateSuivi}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </input>
+                                        </div> 
+                                        <button type="button" title="Ajouter à la liste" class="btn btn-primary"  style="width: 35px"  jsf:id="AddPrimes" jsf:action="#{suiviPaieBean.addVariableToNewVariables()}">
+                                            <i class="ace-icon fa fa-plus"></i>
+                                            <f:ajax execute="@form" listener="#{suiviPaieBean.passDetailVariable()}" render=":collectifForm:table_Primes" onevent="reinitChoose"/>
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="taches">Specification tâches</label>  
+                                        </div>       
+                                        <div class="col-sm-6" jsf:id="taches_id1" >                                          
+                                            <h:inputTextarea id="taches"  value="#{suiviPaieBean.newSuiviSalaire.observation}" rows="3" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12" style="margin-left: 3%; width: 95%;">
+                                    <div class="col-sm-12">
+                                        <table jsf:id="table_sections"  class="table table-bordered table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left" style="font-size:13px;width: 15%;"><center>#{bundle.section}</center> </th>
+                                                    <th class="text-left" style="font-size:13px;width: 25%;"><center>#{bundle.chefSection}</center></th>
+                                                    <th class="text-left" style="font-size:13px;width: 15%;"><center>#{bundle.dateDebut}</center></th>
+                                                    <th class="text-left" style="font-size:13px;width: 15%;"><center>#{bundle.dateFin}</center></th>
+                                                    <th class="text-left" style="font-size:13px;width: 20%;"><center>#{bundle.taches}</center></th>
+                                                    <th class="text-left" style="font-size:13px;width: 10%;"><center>#{bundle.Action}</center></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{suiviPaieBean.newSalaire.detailSalaire}" var="para" varStatus="status">
+                                                    <tr>
+                                                        <td class="text-left"> <center>#{para.variableSalaire.libelle}</center></td> 
+                                                        <td class="text-left"><center>#{para.montant}</center></td>
+                                                        <td class="text-left"> <center>#{para.variableSalaire.libelle}</center></td> 
+                                                        <td class="text-left"><center>#{para.montant}</center></td>
+                                                        <td class="text-left"><center>#{para.montant}</center></td>
+                                                        <td class="text-left">
+                                                            <h:panelGroup rendered="#{para.variableSalaire.typeVariable != suiviPaieBean.typeVariable}">
+                                                                <center>
+                                                                    <p:commandLink id="removeServiceButton"
+                                                                                   styleClass="btn btn-danger btn-xs icon-only shiny"
+                                                                                   update=":collectifForm:table_Primes"
+                                                                                   title="#{bundle.TakeOff}"
+                                                                                   process="@this" >
+                                                                        <f:setPropertyActionListener value="#{para}" target="#{suiviPaieBean.selectedDetailSalaire}" />
+                                                                        <f:actionListener binding="#{suiviPaieBean.removeVariabaleFromNewAgent()}" />
+                                                                        <f:ajax onevent="reinitChosen"/>
+                                                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                                    </p:commandLink>
+                                                                </center>
+                                                            </h:panelGroup>
+                                                        </td>
+                                                    </tr>  
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group form-actions">
+                            <div class="col-md-12 col-md-offset-4 col-lg-offset-5">
+                                <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_Avan" jsf:action="#{suiviPaieBean.doCreateSuiviSalaire(event)}">
+                                    #{bundle.Save}
+                                    <f:ajax execute="@form" render=":msgForm:msg @form :AbsenceForm :AvancementForm :DepartForm :FormationForm :SanctionForm :teteForm :agentForm" onevent="ajaxOnEventInit"/>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row col-sm-12">
+
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="./../../template/base.xhtml">
+        <ui:define name="selectedMenu">
+            <ui:param name="menuAdministrationClass" value="active"/>
+            <ui:param name="menuAdministrationFonctionClass" value="active"/>    
+        </ui:define>
+        <ui:define name="css">
+
+        </ui:define>
+        <ui:define name="content">
+            <ui:include src="create.xhtml"/>
+        </ui:define>
+        <ui:define name="script">
+            <!-- ckeditor.js, load it only in the page you would like to use CKEditor (it's a heavy plugin to include it with the others!) -->
+            <script src="#{request.contextPath}/resources/js/plugins/ckeditor/ckeditor.js"></script> 
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/formsComponents.js"></script> 
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/uiTables.js"></script> 
+            <!--<script src="#{request.contextPath}/resources/js/pages/custumForsetiPenal.js"></script>--> 
+            <!-- jQuery, Bootstrap, jQuery plugins and Custom JS code -->
+
+            <!-- Load and execute javascript code used only in this page -->
+            <script>
+                $(function () {
+                    FormsComponents.init();
+                });
+                $(function () {
+                    UiTables.init('#DataTableID', 2);
+                });
+                $(function () {
+                    UiProgress.init();
+                });
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

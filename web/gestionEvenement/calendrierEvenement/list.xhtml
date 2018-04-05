@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-10">
+                <!-- Clickable Wizard Block -->
+                <div class="block center-block">
+                    <!-- Clickable Wizard Title -->
+                    <div class="block-title">
+                        <div class="block-options pull-right">
+                            <a href="javascript:void(0)" class="btn btn-effect-ripple btn-warning" data-toggle="tooltip" title="Back"><i class="gi gi-refresh"></i></a>
+                            <div class="btn-group">
+                                <a href="javascript:void(0)" class="btn btn-effect-ripple btn-primary dropdown-toggle enable-tooltip" data-toggle="dropdown" title="Extras"><i class="fa fa-chevron-down">#{bundle.Action}</i></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <i class="gi gi-cloud-download pull-right"></i>
+                                            Download
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <i class="gi gi-video_hd pull-right"></i>
+                                            HD Videos
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <i class="gi gi-wifi fa-fw pull-right"></i>
+                                            Wifi
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h2>#{bundle.listDossier}</h2>
+                    </div>
+
+                    <form role="form"  id="listemarginDossierformId" class="form-horizontal ">
+                        <div class="form-group" style="padding-bottom: 5px">
+                            <div class="col-sm-7" style="width: 55%">
+
+                            </div>
+                            <div class="col-sm-5" style="width: 45%">
+                                <button type="button" class="btn btn-primary">#{bundle.audienceRole }<i class="gi gi-shield"></i></button>
+                                <button type="button" class="btn btn-success"><i class="gi gi-plus"></i>#{bundle.Audiencement}</button>
+                                <div class="btn-group">
+                                    <a href="javascript:void(0)" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">#{bundle.Decision}<span class="caret"></span></a>
+                                    <ul class="dropdown-menu text-left">
+                                        <li>
+                                            <a class="open-orienter-renvoie"  onclick="$('#renvoieDialog').modal('show')" href="#">
+                                                <i class="fa fa-user pull-right"></i>
+                                                Renvoyer 
+                                                <f:ajax render=":renvoieDialogForm" event="click"/>
+                                            </a>
+                                            
+                                        </li>
+                                        <li>
+                                            <a class="open-orienter-delibere" onclick="$('#renvoieDialog').modal('show')" href="#">
+                                                <i class="fa fa-pencil pull-right"></i>
+                                                Renvoie ferme
+                                                <f:ajax render=":renvoieDialogForm" event="click"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="open-orienter-juge" onclick="$('#jugeDialog').modal('show')" href="#">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Juger sur le siège
+                                                <f:ajax render=":jugeDialogForm" event="click"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Mettre en délibéré
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Proroger le délibéré
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Rabattre le délibéré
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="open-orienter-radier" href="#">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Radier
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                ADD
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="fa fa-cog pull-right"></i>
+                                                Jonction
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="padding-top: 10px;padding-left:10px;padding-right:10px">
+                                <div class="table-responsive">
+                                    <table jsf:id="listeDossierAudience" class="table table-striped table-bordered table-vcenter">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 13px">#{bundle.NumeroRG}</th>
+                                                <th style="font-size: 13px">#{bundle.Statut}</th>
+                                                <th style="font-size: 13px">#{bundle.Infractions}</th>
+                                                <th style="font-size: 13px">#{bundle.Victime}</th>
+                                                <th style="font-size: 13px">#{bundle.Auteur}</th>
+                                                <th style="font-size: 13px">#{bundle.Temoin}</th>
+                                                <th style="font-size: 13px">#{bundle.DateForfait}</th>        
+                                            </tr>    
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END Clickable Wizard Content -->
+                </div>     
+            </div>
+            <div class="col-md-1">
+
+            </div>
+        </div>  
+    </ui:composition>
+</html>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="planningFinalDirection" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="ed5ae5c4-0d41-4e67-af68-280a951dc1c2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="17"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table 1" uuid="1c500c3a-9220-4332-996f-4b1958b390ec">
+		<parameter name="totalEcolage" class="java.lang.String"/>
+		<parameter name="totalGeneraux" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="cpt" class="java.lang.Long">
+			<fieldDescription><![CDATA[cpt]]></fieldDescription>
+		</field>
+		<field name="matricule" class="java.lang.String">
+			<fieldDescription><![CDATA[matricule]]></fieldDescription>
+		</field>
+		<field name="nomPrenom" class="java.lang.String">
+			<fieldDescription><![CDATA[nomPrenom]]></fieldDescription>
+		</field>
+		<field name="poste" class="java.lang.String">
+			<fieldDescription><![CDATA[poste]]></fieldDescription>
+		</field>
+		<field name="date1" class="java.lang.String">
+			<fieldDescription><![CDATA[date1]]></fieldDescription>
+		</field>
+		<field name="date2" class="java.lang.String">
+			<fieldDescription><![CDATA[date2]]></fieldDescription>
+		</field>
+		<field name="observation" class="java.lang.String">
+			<fieldDescription><![CDATA[observation]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="MINISTERE" class="java.lang.String"/>
+	<parameter name="DIRECTION" class="java.lang.String"/>
+	<parameter name="TITRE" class="java.lang.String"/>
+	<parameter name="data1" class="java.util.List"/>
+	<parameter name="ANNEE" class="java.lang.String"/>
+	<parameter name="DIRECTION1" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="186" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7e787da9-8a4d-4aee-9e9d-5eae14346dc9" x="58" y="0" width="684" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MINISTERE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7b700dca-d65b-4b10-9348-de3e450310bc" x="58" y="37" width="684" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DIRECTION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="befaa8a5-0575-42ed-b9c7-bf47b32b1a20" x="58" y="20" width="684" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[***********************]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="86fd039f-3291-4005-84f6-467ff0dcf5db" x="0" y="71" width="822" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="bfcde8d6-5682-42e4-a8b5-1018859d38a6" x="585" y="82" width="86" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Année civile :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="26c06754-9ad9-46d3-97ce-8178ca6cdc50" x="685" y="82" width="117" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ANNEE}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement uuid="8085ddd3-b52f-4c0c-8543-206fedf91aaa" mode="Opaque" x="111" y="108" width="593" height="32" forecolor="#000000" backcolor="#CCCCCC"/>
+			</frame>
+			<staticText>
+				<reportElement uuid="ae831c12-6ea4-4103-bc95-3afb06e3ce3d" x="38" y="153" width="95" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Direction :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7a29580d-67f9-4e70-8292-03d6ecf6e430" x="133" y="153" width="474" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DIRECTION1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40d4e923-448c-491c-8e95-71bde5cdfcd4" x="111" y="108" width="593" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITRE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="58" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="ae5ec911-aaa4-4d45-9453-7ee0e97a4fbd" key="table" style="table" x="38" y="0" width="492" height="50" isPrintWhenDetailOverflows="true"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Table 1" uuid="530b3fae-44ed-4ed9-b18b-d7de2cc0b430">
+						<datasetParameter name="REPORT_DATA_SOURCE">
+							<datasetParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{data1})]]></datasetParameterExpression>
+						</datasetParameter>
+					</datasetRun>
+					<jr:column width="40" uuid="a1fe4693-1ab0-4552-b4d9-53b03f8e7bb8">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="a9c63ee2-3876-4854-8452-8f652ce76e6b" x="0" y="0" width="40" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[N°]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField>
+								<reportElement uuid="a9fb30cf-5b6b-4787-a004-4a62c1fe947f" x="0" y="0" width="40" height="25"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cpt}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="120" uuid="0537a99c-11bd-4293-b40d-3eabf980a4df">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="a60eb902-6c14-4a9c-8bc7-0c28a1a5ac9b" x="0" y="0" width="120" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Matricule]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField>
+								<reportElement uuid="728ef875-30da-4acc-bbb4-5ff52be54ade" x="0" y="0" width="120" height="25"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{matricule}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="170" uuid="7dd356d3-de83-490b-84c4-b2bc8f767ca8">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="0bc8135e-f89b-428b-95be-57734fbe5b83" x="0" y="0" width="170" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Nom & Prénom(s)]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="9a80d657-df65-42b9-98c9-10e3c45b49dd" x="0" y="0" width="170" height="25"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nomPrenom}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="99" uuid="efd3f82e-ccd3-4ea4-a745-6bfcc7964286">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="81feda51-674b-49ac-8f9e-88ee55319702" x="0" y="0" width="99" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Poste]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="20f27404-b40b-4712-b066-924d97aa5460" x="0" y="0" width="99" height="25"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{poste}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="efea4aa7-4f63-4cee-a73d-3be5603997c6">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="f2303fb7-85fa-47be-a93e-ef2453928543" x="0" y="0" width="110" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Période initiale]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="2ae073d0-7c2a-41c1-bba2-5a646141ab67" x="0" y="0" width="110" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Top">
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{date1}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="f190365c-7e6d-4d66-abb7-acda9ad2983f">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="84b5c0f0-7473-4e00-8ddb-8590cf650d89" x="0" y="0" width="110" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Période retenue]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="fe11ba34-f363-4f10-af42-0acbc95ec51c" x="0" y="0" width="110" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Top">
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{date2}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="86" uuid="8f92e725-ff2f-4db2-9f6e-177ff7d6cd4c">
+						<jr:tableHeader style="table_TH" height="24" rowSpan="1">
+							<staticText>
+								<reportElement uuid="80545470-8329-4e37-a04a-b731839eb53a" x="0" y="0" width="86" height="24"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<text><![CDATA[Observation]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="25" rowSpan="1">
+							<textField>
+								<reportElement uuid="68de49dc-eccd-4749-8d16-84fa489162a6" x="0" y="0" width="86" height="25"/>
+								<textElement>
+									<font fontName="Times New Roman" size="12"/>
+									<paragraph leftIndent="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{observation}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch">
+			<line>
+				<reportElement uuid="5bbe3120-7bf8-4834-bcb2-c125ed4754e7" x="0" y="8" width="802" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bbfd1205-adcb-4bf7-bb83-07d15f97f192" x="326" y="15" width="163" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Edité par Digital GRH version 1.0]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="42caf384-4da2-43a0-9165-325282e25127" x="607" y="15" width="151" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" sur"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="a104a6fa-e377-4a07-be3c-5483cc6e18d7" x="758" y="15" width="44" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="41ded2af-46a2-44dc-bdaf-eed7e7a3952f" x="0" y="15" width="183" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

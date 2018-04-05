@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <form  jsf:id="AvancementForm" jsf:prependId="false" jsf:class="form-horizontal">
+            <div class="row">
+                <fieldset jsf:id="avancement_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails avancement / promotion</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="typeavancement">Type</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="typeavancement_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="typeavancement" value="#{suiviPersonnelBean.newProgressionAgent.evenement}"  ph:data-placeholder="Nature mutation">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeEvtsAvancePromo}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="evenementConverter" />
+                                <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="avance">Catégorie Base</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="avance_id1" >                                          
+                            <h:selectOneMenu class="select-chosen" id="avance1" value="#{suiviPersonnelBean.selectSousCategorie}"  ph:data-placeholder="Catégorie base">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeSousCategories}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="sousCategorieConverter" />
+                                <f:ajax  listener="#{suiviPersonnelBean.passSousCategorie()}" render="avancePromo"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="avance">Poste</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="avance_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="avance" value="#{suiviPersonnelBean.newProgressionPoste.poste}"  ph:data-placeholder="Nature mutation">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listePostes}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="posteConverter" />
+                                <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="avancePromo">Catégorie</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="avancePromo" >                                          
+                            <h:selectOneMenu class="select-chosen" id="avancePromo1" value="#{suiviPersonnelBean.newProgressionPoste.categorie}"  ph:data-placeholder="#{bundle.direction}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeCategories}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="categorieConverter" />
+                                <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="avance3">Direction</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="avance_id3" >                                          
+                            <h:selectOneMenu class="select-chosen" id="avance3" value="#{suiviPersonnelBean.newProgressionPoste.direction}"  ph:data-placeholder="Nature mutation">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeDirections}" var="item" itemValue="#{item}" itemLabel="#{item.libelleCourt}" />
+                                <f:converter converterId="directionConverter" />
+                                <f:ajax  listener="#{suiviPersonnelBean.passDirection()}" render="avancePromoService"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="avancePromo3">Service</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="avancePromoService" >                                          
+                            <h:selectOneMenu class="select-chosen" id="avancePromo23" value="#{suiviPersonnelBean.newProgressionPoste.service}"  ph:data-placeholder="#{bundle.service}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeServices}" var="item" itemValue="#{item}" itemLabel="#{item.libelleCourt}" />
+                                <f:converter converterId="serviceConverter" />
+                                <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="dateAvis1">Date de l'avis</label>  
+                        </div>
+                        <div class="col-sm-4" jsf:id="dateAvis_id1" >                                          
+                            <input type="text"  jsf:id="dateAvis1" value="#{suiviPersonnelBean.newProgressionAgent.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </input>
+                        </div>  
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="observation1">Observation</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="observation_id1" >                                          
+                            <h:inputTextarea id="observationAanPromo"  value="#{suiviPersonnelBean.newAvanacement.observation}" rows="4" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-12 col-md-offset-4 col-lg-offset-5">
+                            <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_Avan" jsf:action="#{suiviPersonnelBean.doCreateAvancement(event)}">
+                                #{bundle.Save}
+                                <f:ajax execute="@form" render=":msgForm:msg @form :AbsenceForm :AvancementForm :DepartForm :FormationForm :SanctionForm :teteForm :agentForm" onevent="ajaxOnEventInit"/>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>      
+            </div>
+        </form>
+    </ui:composition>
+</html>

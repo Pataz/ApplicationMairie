@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Formulaire du suivi salarial</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>Gestion de la paie</li>
+                            <li>Suivi du salaire</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h:form id="msgForm" prependId="false">
+            <h:messages id="msg"  style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+            <p:messages  autoUpdate="true" showDetail="true"/>
+        </h:form> 
+        <div class="block center-block" jsf:id="block">
+            <div class="block-title">
+                <ul class="nav nav-tabs" data-toggle="tabs">
+                    <li class="active"><a href="#block-tabs-home"><strong>Individuel</strong></a></li>
+                    <li><a href="#block-tabs-profile"><strong>Collectif</strong></a></li>
+                </ul>
+            </div>
+            <div class="tab-content" id="idtabContent">
+                <div class="tab-pane active" id="block-tabs-home">
+                    <ui:include src="individualSave.xhtml"/>
+                </div>
+                <div class="tab-pane" id="block-tabs-profile">
+                    <ui:include src="collectifSave.xhtml"/>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

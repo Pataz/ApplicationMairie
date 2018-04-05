@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h1 style="font-style:italic;font-family:Century">#{bundle.TakePhotos}</h1>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>#{connexionBean.currentExerciceFonction.service.libelle}</li>
+                            <li> #{bundle.PhotosManagement}</li>
+                            <!--<li>#{bundle.menuAdministrationFonction}</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="block full col-md-10" style="border-top-left-radius:10px;border-top-right-radius: 10px; width: 74em; margin-left: 35px;" id="creatPhoto">
+                <!-- Horizontal Form Title -->
+                <div class="block-title">
+
+
+                    <div class="block-options pull-right">
+                        <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="Toggles .form-bordered class">#{bundle.Style}</a>-->
+                        <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="#{bundle.Style}">#{bundle.Style}</a>-->
+                    </div>
+                    <h2 style="font-family:Arial; text-transform: none">Information de pièce</h2>
+                </div>
+
+                <form jsf:prependId="false"  jsf:id="photosForm" jsf:class="form-horizontal form-bordered" enctype="multipart/form-data">
+                    <h:inputText id="inputPhotoF" style="display: none" value="#{photoBean.photoURLF}"/>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2" style="padding-left: 5em;"> #{bundle.dossier}</label>
+                            <div class="col-md-4" jsf:id="dossierSelecteds" >
+                                <h:selectOneMenu class="select-chosen" id="liste-dossier" value="#{photoBean.dossierCondamne}" ph:data-placeholder="Dossier Concernée" >
+                                    <f:selectItem itemValue="" itemLabel=""/>
+                                    <f:selectItems  value="#{photoBean.findAllDossierCondam()}" var="dos" itemValue="#{dos}" itemLabel="#{dos.numeroRP}"/>
+                                    <f:converter converterId="dossierConverter"/>
+                                    <f:ajax  listener="#{photoBean.findAllPartieCondam()}" render="partieSelecteds naturePiece refPiece " onevent="actualiserPartieAndEtat"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <label class="col-md-2" style="padding-left: 5em;"> #{bundle.Auteur}</label>
+                            <div class="col-md-4" jsf:id="partieSelecteds" >
+                                <h:selectOneMenu class="select-chosen" id="liste-partie" value="#{photoBean.partieCondamne}" ph:data-placeholder="Partie Concernée"  onchange="actualiserPartieAndEtat">
+                                    <f:selectItem itemValue="" itemLabel="---Partie Condamner---"/>
+                                    <f:selectItems value="#{photoBean.listePartieCondamnees}" var="a" itemValue="#{a}" itemLabel="#{a.personnePhysique.name}"/>
+                                    <f:converter converterId="partieConverter"/>
+                                    <f:ajax listener="#{photoBean.receiveListEtatCiv()}" render="naturePiece refPiece dateExpirTelechar"  onevent="actualiserPartieAndEtat"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group ">
+                            <label class="col-md-2"> #{bundle.NaturePiece}</label>
+                            <div class="col-md-4" jsf:id="naturePiece" >
+                                <h:selectOneMenu class="select-chosen" id="liste-NaturePiece" value="#{photoBean.newEtatCivil.naturePiece}" ph:data-placeholder="Nature de pièce">
+                                    <f:selectItem itemValue="" itemLabel=""/>
+                                    <f:selectItems value="#{photoBean.listeNaturePiece}" var="nature" itemValue="#{nature.libelle}" itemLabel="#{nature.libelle}"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <label class="col-md-2"> #{bundle.referencePiece}</label>
+                            <div class="col-md-4" jsf:id="refPiece" >
+                                <input type="text" jsf:id="code" name="code" class="form-control" jsf:value="#{photoBean.newEtatCivil.referencePiece}" placeholder="Reférence de pièce" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                    <div class="form-group ">
+                        <div class="col-sm-2" >
+                    <label class="control-label" for="jugementDate">Date d'expiration</label>  
+                </div>
+                <div class="col-sm-4" jsf:id="dateExpirTelechar">                                          
+                    <input type="text"  jsf:id="jugementDate"  jsf:value="#{photoBean.newEtatCivil.dateExpiration}"  class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </input>  
+                </div>
+
+                        <label class="col-md-2"> </label>
+                        <div class="col-md-4" >
+                        </div>
+                    </div>
+                </div>
+
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <h:inputFile value="#{photoBean.filePGauche}">
+                                    <f:ajax listener="#{photoBean.saveTest(photoBean.filePGauche,bundle.PG)}" onevent="actualiserPartieAndEtat"  render="divPhoto"/>
+                                </h:inputFile>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h:inputFile value="#{photoBean.fileFace}">
+                                    <f:ajax listener="#{photoBean.saveTest(photoBean.fileFace,bundle.Face)}" onevent="actualiserPartieAndEtat" render="divPhoto"/>
+                                </h:inputFile>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h:inputFile value="#{photoBean.filePDroite}">
+                                    <f:ajax listener="#{photoBean.saveTest(photoBean.filePDroite,bundle.PD)}" onevent="actualiserPartieAndEtat"  render="divPhoto"/>
+                                </h:inputFile>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <br/>
+                    <div class="row"  jsf:id="divPhoto" >
+
+                        <div class="col-md-4" style=" width:200px; height: 150px; border:1px solid #000000; margin-left: 50px;">
+                            <img src="#{photoBean.filePG}" alt="#{photoBean.filePG}" title="#{photoBean.filePG}" jsf:id="PG" style=" width:200px; height: 150px; margin-left: -15px;"/>
+                        </div>
+
+                        <div class="col-md-4" style=" width:200px; height: 150px; border:1px solid #000000; margin-left: 150px;">
+                            <img src="#{photoBean.fileF}" alt="#{photoBean.fileF}"  jsf:id="Face" style=" width:200px; height: 150px; margin-left: -15px;"/>
+                        </div>
+
+                        <div class="col-md-4" style=" width:200px; height: 150px; border:1px solid #000000; margin-left: 150px;">
+                            <img src="#{photoBean.filePD}" alt="#{photoBean.filePD}"  jsf:id="PD" style=" width:200px; height: 150px; margin-left: -15px;"/>
+                        </div>
+
+                    </div>
+                    <br/>
+                    <div class="row"  jsf:id="visualiser" >
+
+                        <div class="col-md-4" style=" ">
+                            <center>
+                                <button type="button" class="btn btn-effect-ripple btn-default active"   style=" margin-left:-30px;">
+                                    #{bundle.visualiser}
+                                    <f:ajax  render="divPhoto" onevent="actualiserPartieAndEtat"/>
+                                </button>
+                            </center>
+                        </div>
+
+                        <div class="col-md-4" style="">
+                            <center>
+                                <button type="button" class="btn btn-effect-ripple btn-default active"   style=" margin-left:-30px;">
+                                    #{bundle.visualiser}
+                                    <f:ajax  render="divPhoto" onevent="actualiserPartieAndEtat"/>
+                                </button>
+                            </center>
+                        </div>
+
+                        <div class="col-md-4" style=" ">
+                            <center>
+                                <button type="button" class="btn btn-effect-ripple btn-default active"   style=" margin-left:-40px;">
+                                    #{bundle.visualiser}
+                                    <f:ajax  render="divPhoto" onevent="actualiserPartieAndEtat"/>
+                                </button>
+                            </center>
+                        </div>
+
+                    </div>
+
+                   <br/><br/>
+                            <div class="form-group form-actions" >
+                                <!--<button type="submit" class="btn btn-effect-ripple btn-effect-ripple btn-primary"><i class="fa fa-search"></i> #{bundle.Save}</button>-->
+                                <center>
+                                <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new" jsf:action="#{photoBean.doSavePhotoTelecharger()}">
+                                    #{bundle.Save}
+                                    <f:ajax execute="@form" render=":msgForm:msg @form pagePhoto " onevent="savePhoto"/>
+                                </button>
+                                </center>
+                            </div>
+
+                       
+                </form>
+            </div>
+            <div class="col-md-1">
+
+            </div>
+
+        </div>
+        <script>
+            var myVideo = document.getElementById("video1");
+
+            function playPause() {
+                if (myVideo.paused)
+                    myVideo.play();
+                else
+                    myVideo.pause();
+            }
+
+            function makeBig() {
+                myVideo.width = 560;
+            }
+
+            function makeSmall() {
+                myVideo.width = 320;
+            }
+
+            function makeNormal() {
+                myVideo.width = 420;
+            }
+        </script>
+
+
+    </ui:composition>
+</html>

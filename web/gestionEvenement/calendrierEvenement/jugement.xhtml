@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition >
+        <div jsf:id="modalJugement" class="modal"  tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" style="height: 50em; width: 70em">
+                <div class="modal-content" style="width: 70em;">
+                    <form jsf:id="detailsDialogJugementForm" jsf:prependId="false" >
+                        <div class="modal-header" style="width: 70em;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">#{bundle.jugement} </h4>
+                        </div>
+
+                        <!-- /.col -->
+                        <div class=" row modal-body" style="height:43em; width: 70em;  padding: 0px 0px 0px 0px;">
+
+                            <div class="modal-body">
+                                <div class="form-group" style="padding: 0px 0px 0px 0px;">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <table jsf:id="listeDossierTableJugement" class="table table-striped table-bordered table-vcenter">
+                                                <thead>
+                                                    <tr> 
+                                                        <th style="font-size: 13px">#{bundle.NumeroRP}</th>
+                                                        <th style="font-size: 13px">#{bundle.Statut}</th>
+                                                        <th style="font-size: 13px">#{bundle.Infractions}</th>
+                                                        <th style="font-size: 13px">#{bundle.Victime}</th>
+                                                        <th style="font-size: 13px">#{bundle.Auteur}</th>
+                                                        <th style="font-size: 13px">#{bundle.Temoin}</th>
+                                                        <th style="font-size: 13px; width: 5em;">#{bundle.DateForfait}</th>      
+                                                        <th class="text-center" style="font-size: 13px; width: 75px;">#{bundle.Actions}</th>
+                                                    </tr>   
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{audienceBean.listeDossiersCondamne}" var="item" varStatus="status">
+                                                        <tr> 
+                                                            <td>
+                                                                #{item.dossier.numeroRP}
+                                                            </td>
+                                                            <td>
+                                                                #{item.statut.libelle}
+                                                            </td>
+                                                            <td>
+                                                                <ul>
+                                                                    <ui:repeat var="infracInitiale" value="#{item.dossier.infractionsInitiales}">
+                                                                        <li>#{infracInitiale.infraction.libelle}</li>
+                                                                    </ui:repeat>
+                                                                </ul>
+                                                            </td>
+                                                            <td>
+                                                                <ul>
+                                                                    <ui:repeat var="partie" value="#{partieBean.getPartiesDossierType(item.dossier.id, 'Vit')}">
+                                                                        <li>#{partie.personne.name}</li>
+                                                                    </ui:repeat>
+                                                                </ul>
+                                                            </td>
+                                                            <td>
+                                                                <ul>
+                                                                    <ui:repeat var="partie" value="#{partieBean.getPartiesDossierType(item.dossier.id, 'Aut')}">
+                                                                        <li>#{partie.personne.name}</li>
+                                                                    </ui:repeat>
+                                                                </ul>
+                                                            </td>
+                                                            <td>
+                                                                <ul>
+                                                                    <ui:repeat var="partie" value="#{partieBean.getPartiesDossierType(item.dossier.id, 'Tem')}">
+                                                                        <li>#{partie.personne.name}</li>
+                                                                    </ui:repeat>
+                                                                </ul>
+                                                            </td>
+                                                            <td>#{connexionBean.convertDate(item.dossier.dateForfait)}</td>
+                                                            <td> <div style="line-height: 4em; ">
+                                                                    <div class="btn-group">
+                                                                        <button data-toggle="dropdown" class="btn btn-success  dropdown-toggle">
+                                                                            Actions
+                                                                            <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu dropdown-success">
+                                                                            <li>
+                                                                                <h:commandLink class="open-details" action="#{jugementBean.extraitJugement(item)}" >
+                                                                                    <i class="ace-icon fa fa-search bigger-130">&nbsp;</i><h:outputText value=" Générer l'extrait de Jugement "/>
+
+                                                                                </h:commandLink>
+
+                                                                            </li>
+                                                                            <h:panelGroup rendered="#{connexionBean.currentExerciceFonction.service.typeService.label=='Chambre Correctionnelle Flagrant Délit'}">
+
+                                                                                <li>
+                                                                                    <h:commandLink class="open-details" action="#{jugementBean.JugementArchiFD(item)}" >
+                                                                                        <i class="ace-icon fa fa-search bigger-130">&nbsp;</i><h:outputText value=" Générer l'architecture du jugement (FD) "/>
+
+                                                                                    </h:commandLink>
+
+                                                                                </li>
+                                                                            </h:panelGroup>
+                                                                            <h:panelGroup rendered="#{connexionBean.currentExerciceFonction.service.typeService.label=='Chambre Correctionnelle Citation Directe'}">
+                                                                                <li>
+                                                                                    <h:commandLink class="open-details" action="#{jugementBean.JugementArchiCD(item)}" >
+                                                                                        <i class="ace-icon fa fa-search bigger-130">&nbsp;</i><h:outputText value=" Générer l'architecture du jugement (CD) "/>
+                                                                                    </h:commandLink>
+
+                                                                                </li>
+                                                                            </h:panelGroup>
+
+                                                                        </ul>
+                                                                    </div>                                         
+                                                                </div>
+                                                            </td>
+                                                        </tr> 
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END Datatables Block -->
+
+        <script>
+//            $(function () {
+//                $('#functions-datatable').dataTable({
+//                    columnDefs: [{orderable: false, targets: [4]}],
+//                    pageLength: 10,
+//                    lengthMenu: [[5, 10, 20], [5, 10, 20]]
+//                });
+//            });
+        </script>
+    </ui:composition>
+</html>
+

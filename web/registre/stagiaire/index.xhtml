@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="./../../template/base.xhtml">
+        <ui:define name="selectedMenu">  
+            <ui:param name="menuRegistreManagerClass" value="active"/>  
+            <ui:param name="menuRegistreStagiaireClass" value="active"/>
+        </ui:define>
+
+        <ui:define name="css">
+            <link rel="stylesheet" href="../../resources/css/bootstrap.vertical-tabs.css"/>
+            <link rel="stylesheet" href="../../resources/css/bootstrap.vertical-tabs.min.css"/>
+        </ui:define>
+
+        <ui:define name="content">       
+            <ui:include src="create.xhtml"/>  
+<!--            <ui:include src="personneEtudiant.xhtml"/>  
+            <ui:include src="personneParent.xhtml"/>-->
+            <!--           
+                          <ui:include src="editEtudiant.xhtml"/>  
+                           <ui:include src="editParent.xhtml"/>  
+                        <ui:include src="personneParent.xhtml"/> -->
+            <!--<ui:include src="confirmCreate.xhtml"/>-->  
+        </ui:define>   
+        <ui:define name="script">
+            <!-- ckeditor.js, load it only in the page you would like to use CKEditor (it's a heavy plugin to include it with the others!) -->
+<!--            <script src="#{request.contextPath}/resources/js/ckeditor/ckeditor.js"></script> -->
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/formsComponents.js"></script> 
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/uiTables.js"></script> 
+            <script src="#{request.contextPath}/resources/js/pages/formsWizard.js"></script> 
+            <script>
+                $(function () {
+                    FormsComponents.init();
+                });
+                $(function () {
+                    UiTables.init();
+                });
+                  $(function () {
+                    UiTables.init('#stagiaireDataTable', 6);
+                });
+                $(function () {
+                    UiProgress.init();
+                });
+                $(function () {
+                    FormsWizard.init();
+                });
+                jQuery(function ($) {
+                    initialiserParDefaut();
+                });
+                function reinitialiser(data) {
+//                    alert('dfdsgs');
+                    if (data.status === "begin") {
+                        startWaitMe('#CreateDossierForm');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#CreateDossierForm');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            FormsWizard.init();
+
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function reinitChoosen(data) {
+                    if (data.status === "begin") {
+                        startWaitMe1('#block');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe1('#block');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function startWaitMe(element) {
+                    $('#CreateDossierForm').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                }
+
+                function stopWaitMe(element) {
+                    $('#CreateDossierForm').waitMe('hide');
+                }
+
+                function startWaitMe1(element) {
+                    $('#block').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                }
+
+                function stopWaitMe1(element) {
+                    $('#block').waitMe('hide');
+                }
+                function reload() {
+                    window.location.reload(true);
+                }
+
+                function ajaxOnEventNouveauPersonne(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#personneDialog');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#personneDialog');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                            $('#personneDialog').modal('show');
+                            $('#pp-tab').click();
+                        } catch (err) {
+                        }
+                    }
+                }
+                function ajaxOnEventEditPersonne(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#editpersonneDialog');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#editpersonneDialog');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                            $('#editpersonneDialog').modal('show');
+                            $('#pp-tab').click();
+                        } catch (err) {
+                        }
+                    }
+                }
+                function initializeDate() {
+                    $('.input-datepicker').datepicker({
+                        autoclose: true,
+                        todayBtn: "linked",
+                        language: "fr",
+                        todayHighlight: true
+                    });
+                }
+                function ajaxOnEventNewEtudiant(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#etudiantDialog');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#etudiantDialog');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                            $('#etudiantDialog').modal('show');
+                            $('#pp-tab').click();
+                        } catch (err) {
+                        }
+                    }
+                }
+                function ajaxOnEventEditEtudiant(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#editEtudiantDialog');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#editEtudiantDialog');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                            $('#editEtudiantDialog').modal('show');
+                            $('#pp-tab').click();
+                        } catch (err) {
+                        }
+                    }
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>
+

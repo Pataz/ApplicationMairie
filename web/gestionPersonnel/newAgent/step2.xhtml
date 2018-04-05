@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <!--<div style="padding-left: 18px;padding-top: 18px;border-left: 4px solid #d0d0d0;border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;font-style:italic;">-->
+            <!-- Step Info -->
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-parents"></i> <strong>Identité agent</strong></a></li>
+                            <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-second"><i class=" gi gi-folder_open"></i> <strong>Fonction détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Autres détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-four"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <fieldset jsf:id="autresInfos" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-4 col-lg-10 col-lg-offset-3" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px; margin-left: 110px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Autres détails</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="grade">#{bundle.TypeDirection}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="grade_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="grade" value="#{agentBean.selectedTypeDirection}"  ph:data-placeholder="#{bundle.TypeDirection}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.typeDirectionItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" listener="#{agentBean.returnDirections()}" render="direction_id"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="direction">#{bundle.direction}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="direction_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="direction" value="#{agentBean.newProgressionPoste.direction}"  ph:data-placeholder="#{bundle.direction}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{agentBean.listeDirections}" var="dir" itemValue="#{dir}" itemLabel="#{dir.libelle}" />
+                                <f:converter converterId="directionConverter" />
+                                <f:ajax  execute="@this" listener="#{agentBean.returnServices()}" render="service_id tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div> 
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="service">Service</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="service_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="service" value="#{agentBean.newProgressionPoste.service}"  ph:data-placeholder="Service">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{agentBean.listeServices}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="serviceConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div> 
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="categorie">#{bundle.Categorie}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="categorie_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="categorie" value="#{agentBean.newProgressionPoste.categorie}"  ph:data-placeholder="#{bundle.Categorie}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{categorieBean.listeCategories}" var="item" itemValue="#{item}" itemLabel="#{item.sousCategorie.libelle}-#{item.echelle}" />
+                                <f:converter converterId="categorieConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>   
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="fonction">#{bundle.Poste}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="fonction_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="fonction" value="#{agentBean.newProgressionPoste.poste}"  ph:data-placeholder="#{bundle.Poste}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{posteBean.listePostes}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="posteConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>    
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="dateentree">#{bundle.PriseService}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="dateentree_id" >                                          
+                            <input type="text"  jsf:id="dateentree" value="#{agentBean.newAgent.debutFonction}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </input>
+                        </div> 
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="nature">#{bundle.Nature}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="nature_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="nature" value="#{agentBean.newProgressionPoste.natureAgent}"  ph:data-placeholder="#{bundle.Nature}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.natureAgentItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="numss">#{bundle.NumSecurite}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="numss_id" >                                          
+                            <input type="text" jsf:value="#{agentBean.newAgent.nsSociale}" class="form-control" placeholder="N° Sécurité sociale">
+                                <f:ajax  execute="@this" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </input>        
+                        </div>   
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="typeentree">#{bundle.TypeRenumeration}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="typeentree_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="typeentree" value="#{agentBean.newAgent.renumeration}"  ph:data-placeholder="#{bundle.TypeRenumeration}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.renumerationItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu2"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="basehoraire">#{bundle.BaseHoraire}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="horaire_id">                                          
+                            <input type="text" jsf:value="#{agentBean.newProgressionPoste.baseHoraire}" class="form-control" placeholder="#{bundle.BaseHoraire}">
+                                <f:ajax  execute="@this" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </input>        
+                        </div>      
+                    </div>
+
+                </fieldset>
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="reset" class="btn btn-effect-ripple btn-danger" id="back1">Précedent</button>
+                        <button type="submit" class="btn btn-effect-ripple btn-primary" id="next1">Suivant</button>
+                    </div>
+                </div>
+            </div>
+        </ui:composition>
+    </body>
+</html>

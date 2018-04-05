@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="BeanToUse" required="true" />
+        <cc:attribute name="BeanToConvertDate" required="true"/>
+    </cc:interface>
+    <!-- IMPLEMENTATION -->
+    
+    <cc:implementation>
+        <div id="detailsAgentDialog" class="modal" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form jsf:id="detailsAgentDialogForm" prependId="false">
+                        <div class="modal-header" style="border-bottom:1px solid #ffcccc;height: 70px">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3  style="color: #fff;">Détails sur l'agent</h3>
+                        </div>
+                        <div class="row tabbable">
+
+                            <div class="col-sm-3 " >
+
+                                <ul class="nav nav-tabs tabs-left" id="myTab3">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#home3">
+                                            <i class="pink ace-icon fa fa-tachometer bigger-110" style="color: #ff6666;"></i>
+                                            #{bundle.Agent}
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a data-toggle="tab" href="#profile3">
+                                            <i class="blue ace-icon fa fa-user bigger-110" style="color:#3399ff;"></i>
+                                            #{bundle.OtherInfos}
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a data-toggle="tab" href="#dropdown13">
+                                            <i class="ace-icon fa fa-rocket"></i>
+                                            #{bundle.Evenement}
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!--                                <div style=" width: 10em; border-right: 1px solid #ddd; margin-top: -2px;"></div>-->
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="tab-content" style=" margin-left: -2em;">
+                                    <div id="home3" class="tab-pane active">
+                                        <div class="row">
+                                            <div class="col-sm-6" style="border: 0px solid black">
+
+                                                <div class="widget-body">
+                                                    <table class="table table-striped table-bordered table-vcenter" style="margin-left: 1em; ">
+
+
+                                                        <tbody style="font-size: 13px">
+                                                            <tr>
+
+                                                                <th style="font-weight:bold;">#{bundle.matricule}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.matricule}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.nSSocial}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.nsSociale}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.nomPrenom}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.name}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.Sexe}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.sexe.label}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.LieuNaiss}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.lieuNaissance}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >Situation matrimoniale</th>
+                                                                <td>#{cc.attrs.BeanToUse.getProgressionPoste(cc.attrs.BeanToUse.selectedAgent).situationMat.label}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >Nbre d'enfant</th>
+                                                                <td>#{cc.attrs.BeanToUse.getProgressionPoste(cc.attrs.BeanToUse.selectedAgent).nbreEnfant}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.address}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.adresse}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.contact}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.telephone}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;" >#{bundle.Email}</th>
+                                                                <td>#{cc.attrs.BeanToUse.selectedAgent.personne.email}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-weight:bold;">Statut</th>
+                                                                <td style="font-weight:bold;">#{cc.attrs.BeanToUse.getProgressionAgent(cc.attrs.BeanToUse.selectedAgent).statut.libelle}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-sm-6" style="border: 0px solid black;">
+                                                <div class="widget-body" style=" margin-top: 5px;">
+                                                    <div class="widget-main" style="border: 0px solid black;padding-top: 0px;padding-left: 0px;padding-bottom: 0px;padding-right: 10px;">
+                                                        <table class="table table-bordered" jsf:rendered="#{cc.attrs.BeanToUse.getPlanningConge(cc.attrs.BeanToUse.selectedAgent)!=null}">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <span style="color: #D20005">Congé</span>   
+                                                                    </td>   
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="font-weight:bold;font-size:13px" >Planning initial</td>
+                                                                    <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.getPlanningConge(cc.attrs.BeanToUse.selectedAgent).dateDebut,'dd MMM yyyy')}</td>
+                                                                    <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.getPlanningConge(cc.attrs.BeanToUse.selectedAgent).dateFin,'dd MMM yyyy')}</td>
+                                                                </tr>
+                                                                <tr jsf:rendered="#{cc.attrs.BeanToUse.getFinalPlanningConge(cc.attrs.BeanToUse.selectedAgent)!=null}">
+                                                                    <td style="font-weight:bold;font-size:13px" >Planning retenu</td>
+                                                                    <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.getFinalPlanningConge(cc.attrs.BeanToUse.selectedAgent).dateDebut,'dd MMM yyyy')}</td>
+                                                                    <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.getFinalPlanningConge(cc.attrs.BeanToUse.selectedAgent).dateFin,'dd MMM yyyy')}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="font-weight:bold;font-size:13px" >Congé anticipé</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <!--<div class="space-1"></div>-->
+                                            <div class="col-sm-6" style="border: 0px solid black;">
+                                                <div class="widget-body" style=" margin-top: 5px;">
+                                                    <div class="widget-main" style="border: 0px solid black;padding-top: 0px;padding-left: 0px;padding-bottom: 0px;padding-right: 10px;">
+                                                        <table class="table table-bordered" jsf:rendered="#{cc.attrs.BeanToUse.getPlanningConge(cc.attrs.BeanToUse.selectedAgent)!=null}">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <span style="color: #D20005">Retraite</span>   
+                                                                    </td>   
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="font-weight:bold;font-size:13px" >#{bundle.DateNaissance}</td>
+                                                                    <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.selectedAgent.personne.dateNaissance,'dd MMM yyyy')}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="font-weight:bold;font-size:13px" >Fin fonction</td>
+                                                                    <td>#{cc.attrs.BeanToUse.getFinFonction(cc.attrs.BeanToUse.selectedAgent)}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+
+                                    </div><!--home-->
+
+                                    <div id="profile3" class="tab-pane">                                          
+                                        <div class="col-sm-6" style="border: 0px solid black">
+                                            <div class="widget-body">
+                                                <table class="table table-striped table-bordered table-vcenter" style="margin-left: 1em; ">
+
+
+                                                    <tbody style="font-size: 13px">
+                                                        <tr>
+                                                            <th style="font-weight:bold;" >#{bundle.VoieEntree}</th>
+                                                            <td>#{cc.attrs.BeanToUse.selectedAgent.typeEntree.label}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="font-weight:bold;" >Prise fonction</th>
+                                                            <td>#{cc.attrs.BeanToConvertDate.convertDate(cc.attrs.BeanToUse.selectedAgent.debutFonction,'dd MMM yyyy')}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="font-weight:bold;">Position actuelle</th>
+                                                            <td> #{cc.attrs.BeanToUse.getProgressionPoste(cc.attrs.BeanToUse.selectedAgent).direction.libelleCourt}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="font-weight:bold;" >#{bundle.Poste}</th>
+                                                            <td>#{cc.attrs.BeanToUse.getProgressionPoste(cc.attrs.BeanToUse.selectedAgent).poste.libelle}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="dropdown13" class="tab-pane" style="border: 0px solid black">
+                                        <div class="widget-body table-responsive" style="margin-left: 2em; margin-top: 1em; margin-bottom: 1em; width:45em;">
+                                         <table id="dynamic-table-event-EnCour"  class="table table-striped table-bordered table-vcenter"  >
+                                                <thead>
+                                                    <tr>
+                                                        <th style="font-size: 13px;">N°</th>
+                                                        <th style="font-size: 13px;">#{bundle.Evenement}</th>
+                                                        <th style="font-size: 13px;">#{bundle.DateEvenement}</th>
+                                                        <th style="font-size: 13px;">#{bundle.effectuerPar}</th>
+                                                        
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{cc.attrs.BeanToUse.getListeProgressionAgents(cc.attrs.BeanToUse.selectedAgent)}" var="item" varStatus="statut">
+                                                        <tr> 
+                                                            <td>#{(statut.index)+1}</td>
+                                                            <td >#{item.evenement.libelle}</td>
+                                                            <td >#{cc.attrs.BeanToConvertDate.convertDateHeure(item.dateCreation)}</td>
+                                                            <td >#{item.utilisateur.personne.name}</td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- /.col -->
+
+
+                        </div><!-- /.row -->
+                        <div class="modal-footer">
+
+
+                            <button class="btn btn-default btn-lg active" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal" >
+                                <i class="ace-icon fa fa-times"></i>
+                                #{bundle.Close}
+                            </button>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END Datatables Block -->
+
+    </cc:implementation>
+</html>

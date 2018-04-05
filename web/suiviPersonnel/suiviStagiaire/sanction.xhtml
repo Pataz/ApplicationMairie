@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <form  jsf:id="SanctionForm" jsf:prependId="false" jsf:class="form-horizontal">
+            <div class="row">
+                <fieldset jsf:id="Sanction_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails absence</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="typeSanction">Type de sanction</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="typeSanction_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="typeSanction" value="#{suiviPersonnelBean.newProgressionStagiaire.evenement}"  ph:data-placeholder="Motif d'absence">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPersonnelBean.listeEvtsSanctions}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                <f:converter converterId="evenementConverter" />
+                                <f:ajax  execute="@this" render="block"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="dateAvisSanction">Date de l'avis</label>  
+                        </div>
+                        <div class="col-sm-4" jsf:id="dateAvisSanction_id" >                                          
+                            <input type="text"  jsf:id="dateAvisSanction" value="#{suiviPersonnelBean.newProgressionStagiaire.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </input>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="datedebutSanction">Date de début</label>  
+                        </div>
+                        <div class="col-sm-4" jsf:id="datedebutSanction_id" >                                          
+                            <input type="text"  jsf:id="datedebutSanction" value="#{suiviPersonnelBean.newSanctionStagiaire.dateDebut}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </input>
+                        </div> 
+
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="datefinSanction">Date de fin</label>  
+                        </div>
+                        <div class="col-sm-4" jsf:id="datefintSanction_id" >                                          
+                            <input type="text"  jsf:id="datefinSanction" value="#{suiviPersonnelBean.newSanctionStagiaire.dateFin}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </input>
+                        </div>  
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="observationSanction">Observation</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="observation_idSanction" >     
+                            <h:inputTextarea id="observationSanct"  value="#{suiviPersonnelBean.newSanctionStagiaire.observation}" rows="4" class="form-control" />
+                        </div>  
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-12 col-md-offset-4 col-lg-offset-5">
+                            <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submitSanction_new" jsf:action="#{suiviPersonnelBean.doCreateSanctionStagiaire(event)}">
+                                #{bundle.Save}
+                                <f:ajax execute="@form" render=":msgForm:msg @form :AbsenceForm :MutationForm :SanctionForm :DelaiForm :teteForm :stagiaireForm" onevent="ajaxOnEventInit"/>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>      
+            </div>
+        </form>
+    </ui:composition>
+</html>

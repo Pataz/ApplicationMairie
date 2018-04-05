@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition>
+        <form jsf:prependId="false"  jsf:id="collectifForm" jsf:class="form-horizontal"  enctype="multipart/form-data">
+            <div class="row">
+                <div class="row col-sm-12">
+                    <fieldset jsf:id="detailSalaire_id" class="col-sm-12  col-md-12 col-lg-12" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px; margin-left:3% ; margin-bottom: 15px; width: 95%">
+                        <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails Suivi</legend>     
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class=" control-label" for="typeSuivi">Type</label>  
+                            </div>       
+                            <div class="col-sm-4" jsf:id="typesuivi_id3" >                                          
+                                <h:selectOneMenu class="select-chosen" id="typesuivi3" value="#{suiviPaieBean.newSuiviHeures.variableSalaires}"  ph:data-placeholder="Type">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{suiviPaieBean.listeVariableHeureSuppl}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                    <f:converter converterId="variableSalaireConverter" />
+                                    <f:ajax  execute="@this" render=":collectifForm"   onevent="reinitChoosen"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class=" control-label" for="dateAvis1">Le jour</label>  
+                            </div>
+                            <div class="col-sm-4" jsf:id="dateAvis_id3" >                                          
+                                <input type="text"  jsf:id="dateAvis3" value="#{suiviPaieBean.newProgressionAgent.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </input>
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class=" control-label" for="datesuivi3">Date notification</label>  
+                            </div>
+                            <div class="col-sm-4" jsf:id="datesuivi_id3" >                                          
+                                <input type="text"  jsf:id="datesuivi3" value="#{suiviPaieBean.newSuiviHeures.dateSuivi}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </input>
+                            </div> 
+                            <div class="col-sm-2">
+                                <label class=" control-label" for="observation3">Observation</label>  
+                            </div>       
+                            <div class="col-sm-4" jsf:id="observation_id3" >                                          
+                                <h:inputTextarea id="observation3"  value="#{suiviPaieBean.newSuiviHeures.observation}" rows="4" class="form-control" />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="row col-sm-12">
+                    <fieldset jsf:id="liste_id" class="col-sm-12 col-md-12 col-lg-12" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px ; margin-left:3% ; padding-bottom: 15px; width: 95%">
+                        <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Liste des agents</legend>     
+                        <form jsf:id="agentColForm" jsf:prependId="false" jsf:class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                                    <label class="control-label" for="direction">#{bundle.direction}</label>  
+                                </div>
+                                <div class="col-sm-3" style="width:23%">                                          
+                                    <h:selectOneMenu class="select-chosen" id="directionCol" value="#{suiviPaieBean.selectedDirection}" ph:data-placeholder="#{bundle.direction}">
+                                        <f:selectItem itemValue="" itemLabel=""/>
+                                        <f:selectItems value="#{suiviPaieBean.listeDirections}" var="d" itemValue="#{d}" itemLabel="#{d.libelleCourt}"/>
+                                        <f:converter converterId="directionConverter" />
+                                        <f:ajax  listener="#{suiviPaieBean.passDirection()}" render="grp-liste-serviceCol :collectifForm :collectifSaveDataTable" onevent="reinitChoosen"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                                    <label class="control-label" for="service">#{bundle.service}</label>  
+                                </div>
+                                <div class="col-sm-3" style="width:23%" jsf:id="grp-liste-serviceCol">                                          
+                                    <h:selectOneMenu class="select-chosen" id="serviceCol" value="#{suiviPaieBean.selectedService}" ph:data-placeholder="#{bundle.service}">
+                                        <f:selectItem itemValue="" itemLabel=""/>
+                                        <f:selectItems value="#{suiviPaieBean.listeServices}" var="s" itemValue="#{s}" itemLabel="#{s.libelleCourt}"/>
+                                        <f:converter converterId="serviceConverter" />
+                                        <f:ajax   listener="#{suiviPaieBean.passService()}" render=":collectifForm :collectifSaveDataTable" onevent="reinitChoosen"/>
+                                    </h:selectOneMenu>
+                                </div> 
+                            </div> 
+                        </form>
+                        <div class="modal-body">
+                            <div class="col-sm-12" jsf:id="table"> 
+                                <table jsf:id="collectifSaveDataTable" class="table table-striped table-bordered table-hover dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 2%;" class="text-center">
+                                                <label class="csscheckbox csscheckbox-primary">
+                                                    <h:selectBooleanCheckbox class="ace" value="#{suiviPaieBean.selelectedAgentcheckbox}">
+                                                        <f:ajax listener="#{suiviPaieBean.ajouterTousAgentsTableau()}"/>
+                                                    </h:selectBooleanCheckbox> 
+                                                    <span> </span>
+                                                </label>
+                                            </th>
+                                            <th style="font-size: 15px; width: 15%">#{bundle.matricule}</th>
+                                            <th style="font-size: 15px; width: 20%">#{bundle.Nom}</th>
+                                            <th style="font-size: 15px; width: 25%">#{bundle.Prenom}</th>
+                                            <th style="font-size: 15px; width: 20%">#{bundle.telephone}</th>
+                                            <th style="font-size: 15px; width: 13%">#{bundle.Action}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ui:repeat value="#{suiviPaieBean.listeAgents}" var="item" varStatus="status">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <label class="csscheckbox csscheckbox-primary">
+                                                        <h:selectBooleanCheckbox value="#{item.checkbox}">
+                                                            <f:ajax listener="#{suiviPaieBean.ajouterAgentTableauChoisir(item)}"/>
+                                                        </h:selectBooleanCheckbox>  
+                                                        <span> </span>
+                                                    </label>
+                                                </td>
+                                                <td>#{item.matricule}</td>   
+                                                <td>#{item.personne.nom}</td>   
+                                                <td>#{item.personne.prenom}</td>   
+                                                <td>#{item.personne.telephone}</td>   
+                                                <td class="text-center"> 
+                                                    <div class="btn-group dropup text-right">
+                                                        <a href="javascript:void(0)" class="btn btn-effect-ripple btn-success active dropdown-toggle enable-tooltip" data-toggle="dropdown"><i class="hi hi-chevron-up">#{bundle.Action}</i></a>
+                                                        <ul class="dropdown-menu dropdown-header"> 
+                                                            <li>
+                                                                <h:commandLink  class="open-details" title="#{bundle.Primes}" onclick="$('#primesDialog').modal('show')">
+                                                                    <h:outputText value="#{bundle.Primes}"/>
+                                                                    <f:ajax listener="#{suiviPaieBean.passItem(item)}" render=":primesDialogForm" />
+                                                                </h:commandLink>
+                                                            </li>
+                                                            <li>
+                                                                <h:commandLink class="open-details" title="#{bundle.CotisationCNSS}" onclick="$('#cotisationsDialog').modal('show')">
+                                                                    <h:outputText value="#{bundle.CotisationCNSS}"/>
+                                                                    <f:ajax listener="#{suiviPaieBean.passItem(item)}" render=":cotisationsDialogForm" onevent="reinitEditForm"/>
+                                                                </h:commandLink>
+                                                            </li>
+                                                            <li>
+                                                                <h:commandLink class="open-details" title="#{bundle.Totaux}" onclick="$('#totauxDialog').modal('show')">
+                                                                    <h:outputText value="#{bundle.Totaux}"/>
+                                                                    <f:ajax listener="#{suiviPaieBean.passItem(item)}" render=":totauxDialogForm" onevent="reinitEditForm"/>
+                                                                </h:commandLink>
+                                                            </li>
+                                                            <li>
+                                                                <h:commandLink class="open-details" onclick="$('#detailsAgentDialog').modal('show')" >
+                                                                    <h:outputText value="#{bundle.Consulter}"/>
+                                                                    <f:ajax render=":test:detailsAgentDialogForm" listener="#{agentBean.passItem(item)}"   onevent="showDetail"/>
+                                                                </h:commandLink>
+                                                            </li>
+                                                        </ul>      
+                                                    </div>
+                                                </td>   
+                                            </tr>
+                                        </ui:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </fieldset>
+                </div>
+
+                <div class="form-group form-actions">
+                    <div class="col-md-9 col-md-offset-5">
+                        <button type="button" class="btn btn-primary" jsf:id="submit_col" jsf:action="#{suiviPaieBean.doCreateSuiviCollectif(event)}">
+                            #{bundle.Save}
+                            <f:ajax execute="@form" render=":msgForm:msg  :collectifForm :collectifSaveDataTable" onevent="ajaxSaveSuiviCollectif"/>  
+                        </button>     
+                    </div>
+                </div> 
+
+            </div>  
+        </form>
+    </ui:composition>
+</html>
+

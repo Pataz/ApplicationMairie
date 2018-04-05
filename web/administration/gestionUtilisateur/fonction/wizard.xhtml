@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Wizards Content -->
+        <!-- Form Wizards are initialized in js/pages/formsWizard.js -->
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                <!-- Clickable Wizard Block -->
+                <div class="block">
+                    <!-- Clickable Wizard Title -->
+                    <div class="block-title">
+                        <div class="block-options pull-right">
+                            <a href="javascript:void(0)" class="btn btn-effect-ripple btn-default" data-toggle="tooltip" title="Settings"><i class="fa fa-cog"></i></a>
+                        </div>
+                        <h2>Wizard with Clickable Steps</h2>
+                    </div>
+                    <!-- END Clickable Wizard Title -->
+
+                    <!-- Clickable Wizard Content -->
+                    <form id="clickable-wizard" action="page_forms_wizard.html" method="post" class="form-horizontal ">
+                        <!-- First Step -->
+                        <div id="clickable-first" class="step">
+                            <!-- Step Info -->
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <ul class="nav nav-pills nav-justified clickable-steps">
+                                        <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="fa fa-user"></i> <strong>Account</strong></a></li>
+                                        <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class="fa fa-pencil-square-o"></i> <strong>Profile</strong></a></li>
+                                        <li><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- END Step Info -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-username">Username</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-username" name="example-clickable-username" class="form-control" placeholder="Choose a nice username.."/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-email">Email</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-email" name="example-clickable-email" class="form-control" placeholder="Enter your valid email.."/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-password">Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" id="example-clickable-password" name="example-clickable-password" class="form-control" placeholder="Choose a good one.."/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-password2">Confirm Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" id="example-clickable-password2" name="example-clickable-password2" class="form-control" placeholder="..and confirm it to be safe!"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END First Step -->
+
+                        <!-- Second Step -->
+                        <div id="clickable-second" class="step">
+                            <!-- Step Info -->
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <ul class="nav nav-pills nav-justified clickable-steps">
+                                        <li><a href="javascript:void(0)" class="text-muted" data-gotostep="clickable-first"><i class="fa fa-user"></i> <del><strong>Account</strong></del></a></li>
+                                        <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-second"><i class="fa fa-pencil-square-o"></i> <strong>Profile</strong></a></li>
+                                        <li><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- END Step Info -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-firstname">Firstname</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-firstname" name="example-clickable-firstname" class="form-control" placeholder="Enter your firstname.."/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-lastname">Lastname</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-lastname" name="example-clickable-lastname" class="form-control" placeholder="Enter your lastname.."/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-country">Country</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-country" name="example-clickable-country" class="form-control" placeholder="Where do you live?"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-city">City</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-city" name="example-clickable-city" class="form-control" placeholder="In which city?"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Second Step -->
+
+                        <!-- Third Step -->
+                        <div id="clickable-third" class="step">
+                            <!-- Step Info -->
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <ul class="nav nav-pills nav-justified clickable-steps">
+                                        <li><a href="javascript:void(0)" class="text-muted" data-gotostep="clickable-first"><i class="fa fa-user"></i> <del><strong>Account</strong></del></a></li>
+                                        <li><a href="javascript:void(0)" class="text-muted" data-gotostep="clickable-second"><i class="fa fa-pencil-square-o"></i> <del><strong>Profile</strong></del></a></li>
+                                        <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- END Step Info -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-pc">Postal Code</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="example-clickable-pc" name="example-clickable-pc" class="form-control" placeholder="eg: 125314"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="example-clickable-suggestions">Suggestions</label>
+                                <div class="col-md-8">
+                                    <textarea id="example-clickable-suggestions" name="example-clickable-suggestions" rows="5" class="form-control" placeholder="Share your ideas with us.."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><a href="#modal-terms" data-toggle="modal">Terms</a></label>
+                                <div class="col-md-6">
+                                    <label class="switch switch-primary" for="example-clickable-terms">
+                                        <input type="checkbox" id="example-clickable-terms" name="example-clickable-terms" value="1"/>
+                                            <span data-toggle="tooltip" title="I agree to the terms!"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Third Step -->
+
+                        <!-- Form Buttons -->
+                        <div class="form-group form-actions">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="reset" class="btn btn-effect-ripple btn-danger" id="back1">Back</button>
+                                <button type="submit" class="btn btn-effect-ripple btn-primary" id="next1">Next</button>
+                            </div>
+                        </div>
+                        <!-- END Form Buttons -->
+                    </form>
+                    <!-- END Clickable Wizard Content -->
+                </div>
+                <!-- END Clickable Wizard Block -->
+            </div>
+        </div>
+        <!-- END Wizards Content -->
+    </ui:composition>
+</html>

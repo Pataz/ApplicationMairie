@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Formulaire d'enregistrement des départs en congé</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li> Gestion des congés</li>
+                            <li>Départ congé</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+
+        <!-- Form Components Row -->
+        <div class="row" jsf:id="block">
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+            <div class="col-sm-12 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-12 col-lg-offset-0">
+                <div class="block">
+                    <div class="block-title">
+                        <h2 style="font-family:Arial; text-transform: none">Détails du départ congé</h2>
+                    </div>
+                    <h:form role="form"  id="createAgentForm" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="row">
+                            <fieldset jsf:id="autresInfos" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                                <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails départ congé</legend>     
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="natureConge">#{bundle.NatureConge}</label>  
+                                    </div>       
+                                    <div class="col-sm-4" jsf:id="natureConge_id" >                                          
+                                        <h:selectOneMenu class="select-chosen" id="natureConge" value="#{planningCongeBean.selectedEvenement}"  ph:data-placeholder="#{bundle.NatureConge}">
+                                            <f:selectItem itemValue="" itemLabel="" />
+                                            <f:selectItems value="#{planningCongeBean.listeEvenements}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                            <f:converter converterId="evenementConverter" />
+                                            <f:ajax  execute="@this" listener="#{planningCongeBean.returnListeAgent()}"  render="natureConge_id agent_id areaAnti"   onevent="reinitChoosen"/>
+                                        </h:selectOneMenu>
+                                    </div> 
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="agent">#{bundle.Agent}</label>  
+                                    </div>       
+                                    <div class="col-sm-4" jsf:id="agent_id" >                                          
+                                        <h:selectOneMenu class="select-chosen" id="agent" value="#{planningCongeBean.newPlanningConge.agent}"  ph:data-placeholder="#{bundle.Agent}">
+                                            <f:selectItem itemValue="" itemLabel="" />
+                                            <f:selectItems value="#{planningCongeBean.listeAgents}" var="item" itemValue="#{item}" itemLabel="#{item.personne.name}" />
+                                            <f:converter converterId="agentConverter" />
+                                            <f:ajax  execute="@this"  render="agent_id poste direction service planning"   onevent="reinitChoosen"/>
+                                        </h:selectOneMenu>
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="direction">#{bundle.direction}</label>  
+                                    </div>       
+                                    <div class="col-sm-4" jsf:id="direction_id" >                                          
+                                        <input type="text" readonly="true" jsf:id="direction"  jsf:value="#{planningCongeBean.progressionPoste.direction.libelleCourt}" class="form-control" placeholder="Date retour"/>
+                                    </div> 
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="service">#{bundle.service}</label>  
+                                    </div>       
+                                    <div class="col-sm-4" jsf:id="service_id" >                                          
+                                        <input type="text" readonly="true" jsf:id="service"  jsf:value="#{planningCongeBean.progressionPoste.service.libelleCourt}" class="form-control" placeholder="Date retour"/>
+                                    </div>  
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="poste">#{bundle.Poste}</label>  
+                                    </div>
+                                    <div class="col-sm-4" jsf:id="poste_id" >                                          
+                                        <input type="text" readonly="true" name="poste" jsf:id="poste"  jsf:value="#{planningCongeBean.progressionPoste.poste.libelle}" class="form-control" placeholder="#{bundle.Poste}"/>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="planning">Planning retenu</label>  
+                                    </div>
+                                    <div class="col-sm-4" jsf:id="planning_id" >                                          
+                                        <input type="text" readonly="true" name="planning" jsf:id="planning"  jsf:value="#{connexionBean.convertDate(planningCongeBean.selectedPlanningConge.dateDebut, 'dd MMMM yyyy')} au #{connexionBean.convertDate(planningCongeBean.selectedPlanningConge.dateFin, 'dd MMMM yyyy')}" class="form-control" placeholder="Planning retenu"/>
+                                    
+                                    </div>
+                                </div>  
+                                <h:panelGroup id="areaAnti">
+                                     <div class="form-group" jsf:rendered="#{planningCongeBean.selectedEvenement.code!='CON1' and planningCongeBean.selectedEvenement!=null}">
+                                  <div class="col-sm-2">
+                                        <label class=" control-label" for="datedepart">Date départ</label>  
+                                    </div>
+                                    <div class="col-sm-4" jsf:id="datedepart_id" >                                          
+                                        <input type="text"   jsf:id="datedepart" jsf:value="#{planningCongeBean.newPlanningConge.dateDebut}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                            <f:ajax  execute="@this"  listener="#{planningCongeBean.returnDateRetour()}" render="dateretour"/>
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </input>
+                                    </div> 
+                                    <div class="col-sm-2">
+                                        <label class=" control-label" for="dateretour">Date retour</label>  
+                                    </div>
+                                    <div class="col-sm-4" jsf:id="dateretour_id" >                                          
+                                        <input type="text" readonly="true" jsf:id="dateretour"  jsf:value="#{connexionBean.convertDate(planningCongeBean.newPlanningConge.dateFin, 'dd/MM/yyyy')}" class="form-control" placeholder="Date retour"/>
+                                    </div>
+                                </div> 
+                                    <div class="form-group" jsf:rendered="#{planningCongeBean.selectedEvenement.code!='CON1' and planningCongeBean.selectedEvenement!=null}">
+                                 <div class="col-sm-2">
+                                     <label class=" control-label" for="Observation">#{bundle.Observation}</label>  
+                                    </div>
+                                    <div class="col-sm-10" jsf:id="Observation_id" >                                          
+                                        <textarea type="text"  jsf:id="Observation"  jsf:value="#{planningCongeBean.newConge.observation}" class="form-control"/>
+                                    </div>
+                                    </div>  
+                                </h:panelGroup>
+                               
+                                <div class="form-group form-actions">
+                                    <div class="col-md-9 col-md-offset-5">
+                                        <button  class="btn btn-effect-ripple btn-primary"  type="submit" jsf:id="submit_new" jsf:action="#{planningCongeBean.doCreateConge(event)}">
+                                            #{bundle.Save}
+                                            <!--<f:ajax execute="@form" render=":msgForm:msg @form" onevent="ajaxOnEventInit"/>-->
+                                        </button>
+                                    </div>
+                                </div>   
+                            </fieldset>
+                        </div>  
+                    </h:form>
+                </div>  
+            </div>
+        </div>
+    </ui:composition>
+</html>

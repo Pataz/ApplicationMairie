@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="./../../template/base.xhtml">
+        <ui:define name="selectedMenu">
+            <ui:param name="menuAudienceClass" value="active"/>
+            <ui:param name="menuAudienceGestionClass" value="active"/> 
+        </ui:define>
+        <ui:define name="css">
+            <!--<link rel="stylesheet" href="#{request.contextPath}/resources/css/fullcalendar.css" />-->
+            <link rel="stylesheet" href="../../resources/css/fullcalendar.css" />
+        </ui:define>
+        <ui:define name="content">
+            <!--             BEGIN MODAL DIALOG -->
+            <ui:include src="renvoie.xhtml"/>
+            <ui:include src="juge.xhtml"/>
+
+            <!-- CREATION DES AUDIENCES -->
+            <ui:include src="audience_creer.xhtml"/>
+            <!-- BEGIN PAGE -->
+            <div id="page" >
+                <!-- PAGE CALENDRIER -->
+                <ui:include src="page_calendrier.xhtml"/>
+                <!-- PAGE DETAIL D'UNE AUDIENCE -->
+                <ui:include src="page_audience.xhtml"/>
+            </div>
+            <!-- END PAGE -->
+
+            <!-- BEGIN FORMULAIRE D'ENVOI ET RECEPTION DE DONNEES VIA AJAX -->
+            <form jsf:id="selectedAudienceForm" jsf:prependId="false" class="hidden">
+                <h:inputText id="audience-id" value="#{audienceBean.audienceId}"/>
+                <h:outputText id="list-audiences-initial" value="#{audienceBean.jsonData}"/>
+
+                <h:outputText id="selectedAudienceJson" value="#{audienceBean.selectedAudienceJson}" />
+                <input id="actualiser-audience" /> <!-- Indique s'il faut actualiser l'audience selectionnée dans le calendrier.
+                                                        Valeurs possibles :
+                                                            0 : Ne pas actualiser.
+                                                            1 : Actualiser-->
+
+                <button type="submit" jsf:id="submit-ajax" jsf:action="#{audienceBean.selectionnerAudience()}">
+                    <f:ajax execute="@form" render="@form dialogFormModifier DataTableID" onevent="ajaxOnEventAfficher" />
+                </button>  
+            </form>
+            <!-- END FORMULAIRE SOUMIS VIA AJAX -->
+        </ui:define>
+        <ui:define name="script">
+            <!-- Load and execute javascript code used only in this page -->
+            <!--<script src="#{request.contextPath}/resources/js/pages/compCalendar.js"></script>-->
+            <script src="#{request.contextPath}/resources/js/pages/moment.js"></script>
+            <script src="#{request.contextPath}/resources/js/pages/fullcalendar.js"></script>
+            <script src="#{request.contextPath}/resources/js/pages/lang-all.js"></script>
+            <script>
+                $(function () {
+                    $('#page-audience').hide();
+                    $('#page-audience').removeClass('hidden');
+                    UiTables.init('#tableDossiers', 6);
+                });
+
+                $(function () {
+                    console.log("#list-audiences-initial avant init ==> " + $('#list-audiences-initial').val());
+                    initialiserCalendar();
+                    console.log("#list-audiences-initial apres init ==> " + $('#list-audiences-initial').val());
+                });
+
+                //cette fonction permet d'initialiser le calendrier
+                function initialiserCalendar() {
+                    /* Initialize FullCalendar */
+                    var date = new Date();
+                    var d = date.getDate();
+                    var m = date.getMonth();
+                    var y = date.getFullYear();
+
+                    $('#calendar').fullCalendar({
+                        lang: 'fr',
+                        columnFormat: 'dddd',
+                        timeFormat: "H[h](mm)",
+                        buttonHtml: {
+                            prev: '<i class="ace-icon fa fa-chevron-left"></i>',
+                            next: '<i class="ace-icon fa fa-chevron-right"></i>'
+                        },
+                        theme: {
+                            enable: true
+                        },
+                        header: {
+                            left: 'title',
+                            center: '',
+                            right: 'today prev,next',
+                            prev: 'ui-icon-circle-triangle-w',
+                            next: 'ui-icon-circle-triangle-e',
+                            prevYear: 'seek-prev',
+                            nextYear: 'seek-next'
+                        },
+                        events: chargerLesAudiences($.parseJSON($('#list-audiences-initial').text())),
+                        firstDay: 1,
+                        editable: false,
+                        droppable: false,
+                        selectable: true,
+//                        selectHelper: true,
+                        select: function (start, end, allDay) {
+                            afficherDialogCreer(start);
+                        },
+                        eventClick: function (event, jsEvent, view) {
+                            afficherPageAudience(event.id);
+                        },
+                        eventAfterRender: function (event, element, view) {
+                            element.on('mousedown', function (e) {
+                                if (e.which === 3) { // clic droit de la sourie
+                                    $('#audience-id').val(event.id);
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+//                function afficherDialogCreer(date) {
+//                    $('#dialogCreer').modal();
+//                }
+
+                /**
+                 * Affiche la boîte de dialogue de création d'une audience.
+                 * @param {moment} date Date de l'audience
+                 */
+                function afficherDialogCreer(date) {
+                    if (date) {
+                        $('#form-group-dateheure-creer').hide();
+                        $('#form-group-heure').show();
+                    } else {
+                        date = moment().startOf('day');
+                        $('#form-group-dateheure-creer').show();
+                        $('#form-group-heure').hide();
+                    }
+
+                    initialiserParDefaut();
+
+
+//                    $('.datetime-picker').datetimepicker({
+//                        language: 'fr',
+//                        format: 'DD/MM/YYYY HH:mm',
+//                        //maskInput: true,
+//                        pick12HourFormat: false
+//                    }).next().on('click', function () {   //show picker when clicking on the icon
+//                        $(this).prev().focus();
+//                    });
+
+
+                    $('#dateheure-creer').val(date.format('DD/MM/YYYY HH:mm'));
+                    $('#date-creer').val(date.format('DD/MM/YYYY'));                                 // use moment.js
+                    $('#heure-creer').val(date.format('HH:mm'));
+                    $('#heure-creer').change(function () {
+                        $('#dateheure-creer').val($('#date-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    $('#date-creer').change(function () {
+                        $('#dateheure-creer').val($('#date-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    console.log("dateheure-creer => " + $('#dateheure-creer').val());
+                    console.log("1 - afficherDialogCreer");
+                    $('#dialogCreer').modal();
+
+                }
+
+                function afficherPageAudience(id) {
+                    $('#page-calendrier').fadeOut();
+                    $('#page-audience').fadeIn();
+
+                    selectionnerAudience(id);
+                }
+
+                function selectionnerAudience(id) {
+//                        $('#actualiser-audience').val(0);
+                    $('#audience-id').val(id);
+//                    $('#audience-id-audiencer').val(id);
+                    $('#submit-ajax').click();
+                }
+
+
+                function ajaxOnEventCreer(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#calendar');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#calendar');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            // récupère l'audience créée
+                            var audience = $.parseJSON($('#audience-creer').text());
+                            // et l'affiche dans le calendrier
+                            $('#calendar').fullCalendar('renderEvent', chargerUneAudience(audience, '(Créée)'), true);
+
+                            initialiserContextMenu();
+
+                            //toastr['success']("Audience créée avec succès.", "Création d'une audience");
+                        } catch (err) {
+                        }
+                    }
+                    $('#dialogCreer').modal('hide');
+                    $('#calendar').fullCalendar('unselect');
+                }
+
+                /**
+                 * Renvoie un tableau des object Audience à afficher dans le calendrier.
+                 * @param {type} listaudiences
+                 * @returns {Array} Tableau des object Audience à afficher dans le calendrier.              
+                 **/
+                function chargerLesAudiences(listaudiences) {
+                    // récupère la liste des audiendes
+                    //var json = $('#json-list-audiences').val();
+                    //var listaudiences = $.parseJSON(json);
+                    var array = [];
+                    $.each(listaudiences, function (i, audience) {
+                        array.push(chargerUneAudience(audience));
+                    });
+                    return array;
+                }
+
+                function chargerUneAudience(audience, info) {
+                    return {
+                        id: audience.id,
+                        title: (info ? info : '')
+                                //+ '\n' + moment(audience.date).format('HH:mm') 
+//                                + '\n' + (audience.nbredossier > 0 ? audience.nbredossier + ' #{bundle.AudienceDossiers}' : '#{bundle.AudienceZeroDossiers}')
+                                //+ '\n' + (audience.publicite ? audience.publicite.label : '')
+                                //+ ' - ' + (audience.salle ? audience.salle.libelle : '')
+                        ,
+                        start: new Date(audience.date),
+                        className: 'label-audience-' + (audience.publicite ? audience.publicite.name : 'NOME')
+                    };
+                }
+
+                function ajaxOnEventAfficher(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#view');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#view');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            $('#table-dossiers').dataTable({
+                                "language": {
+                                    "url": "/forsetiV2/resources/js/French.json"
+                                }
+                            });
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function initialiserContextMenu() {
+                    $('#calendar .fc-event').contextmenu({
+                        target: '#context-menu-audience',
+                        before: function (e) {
+                            e.preventDefault();
+                            selectionnerAudience($('#audience-id').val());
+                            return true;
+                        },
+                        onItem: function (context, e) {
+                            //alert($(e.target).text());
+                        }
+                    });
+                }
+
+                function ajaxOnErrorCreer(data) {
+                    console.log(JSON.stringify(data));
+                }
+
+                function startWaitMe(element) {
+                    //$(element).waitMe({
+//                    alert('----------ds wait-------------');
+//                    $('.page').waitMe({
+//                        alert('OK 1');
+//                        effect: 'timer',
+//                        text: 'Traitement encours...',
+//                        bg: 'rgba(255,255,255,0.7)',
+//                        color: '#000',
+//                        sizeW: '',
+//                        sizeH: ''
+//                    });
+                    $('#calendar').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+//                    alert('----------ds wait fin-------------');
+                }
+
+                function stopWaitMe(element) {
+//                        $(element).waitMe('hide');
+                    $('#calendar').waitMe('hide');
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

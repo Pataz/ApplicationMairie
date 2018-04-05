@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Checkout Modal -->
+        <div id="editDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="weight:600px;height:50px">
+                <div class="modal-content">
+                    <form  jsf:id="editDialogForm" jsf:class="push">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title"><strong>#{bundle.VariableElementEdition}</strong></h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-lg-offset-1">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4" for="typeVariable">#{bundle.TypeVariable}</label>
+                                        <div class="col-xs-12 col-sm-8 input-group">
+                                            <h:selectOneMenu class="select-chosen" id="typeDirection" value="#{variableSalaireBean.selectedVariableSalaire.typeVariable}"  ph:data-placeholder="#{bundle.TypeVariable}">
+                                                <f:selectItem itemValue="" itemLabel="" />
+                                                <f:selectItems value="#{globalBean.typeVAriableItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                                <f:converter converterId="genericEnumConverter" />
+                                                <f:ajax  execute="@this" render="type_id"   onevent="reinitChoosen"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right" for="libelle_edit">#{bundle.libelleLong}</label>
+                                        <div class="col-sm-8 input-group">
+                                            <input type="text" id="libelle_editLong" class="form-control" jsf:value="#{variableSalaireBean.selectedVariableSalaire.libelle}" placeholder="#{bundle.Label}" required="true"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right" for="valeur_edit">#{bundle.partEmploye}</label>
+                                        <div class="col-sm-8 input-group">
+                                            <input type="text" id="valeur_editLong" class="form-control" jsf:value="#{variableSalaireBean.selectedVariableSalaire.partEmploye}" placeholder="#{bundle.Valeur}" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right" for="valeur_edit">#{bundle.partEmployeur}</label>
+                                        <div class="col-sm-8 input-group">
+                                            <input type="text" id="valeur_editLong" class="form-control" jsf:value="#{variableSalaireBean.selectedVariableSalaire.partEmployeur}" placeholder="#{bundle.Valeur}"/>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit_edit" jsf:action="#{variableSalaireBean.doEdit(event)}">
+                                <f:ajax execute="@form" render=":msgForm:msg @form :listeDirectionForm:dynamic-table" onevent="updateGritter(xhr)"/>
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Edit}
+                            </button>
+                            <button class="btn btn-effect-ripple btn-danger" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times"></i>
+                                #{bundle.Close}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END Checkout Modal -->
+    </ui:composition>
+</html>

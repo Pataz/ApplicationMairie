@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <!--<div style="padding-left: 18px;padding-top: 18px;border-left: 4px solid #d0d0d0;border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;font-style:italic;">-->
+            <!-- Step Info -->
+            <div class="row">  
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-folder_open"></i> <strong>Identité agent</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class="gi gi-parents"></i> <strong>Fonction détails</strong></a></li>
+                            <li  ><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="gi gi-parents"></i> <strong>Autres détails</strong></a></li>
+                            <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-four"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- END Step Info -->
+                <fieldset jsf:id="recaputilatif" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Identités Agent</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" jsf:id="tableauRecapu">
+                                <tbody>
+                                    <tr >
+                                        <th style="width: 40%;">#{bundle.matricule}</th>
+                                        <td jsf:id="matricule-id" style="width: 60%;">
+                                            #{agentBean.newAgent.matricule}   
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.nSSocial}</th>
+                                        <td>#{agentBean.newAgent.nsSociale}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.nomPrenom}</th>
+                                        <td>#{agentBean.newAgent.personne.civilite.label} #{agentBean.newAgent.personne.nom} #{agentBean.returnMajusculeAjustee(agentBean.newAgent.personne.prenom)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.Sexe}</th>
+                                        <td>#{agentBean.newAgent.personne.sexe.label}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.DateNaiss}</th>
+                                        <td>#{connexionBean.convertDate(agentBean.newAgent.personne.dateNaissance, 'dd MMM yyyy')}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.LieuNaiss}</th>
+                                        <td>#{agentBean.newAgent.personne.lieuNaissance}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.contact}</th>
+                                        <td>#{agentBean.newAgent.personne.telephone}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.address}</th>
+                                        <td>#{agentBean.newAgent.personne.adresse}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.email}</th>
+                                        <td>#{agentBean.newAgent.personne.email}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.situationMtr}</th>
+                                        <td>#{agentBean.newProgressionPoste.situationMat.label}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.nbreEnfant}</th>
+                                        <td>#{agentBean.newProgressionPoste.situationMat.label}  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.dPriseService}</th>
+                                        <td>#{connexionBean.convertDate(agentBean.newAgent.debutFonction, 'dd MMM yyyy')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset jsf:id="recaputilatif2" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Autres détails</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" jsf:id="tableauRecapu2">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 40%;">#{bundle.Nature}</th>
+                                        <td style="width: 60%;">#{agentBean.newProgressionPoste.natureAgent.label} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.TypeRenumeration}</th>
+                                        <td>#{agentBean.newAgent.renumeration.label}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.direction}</th>
+                                        <td>#{agentBean.newProgressionPoste.direction.libelle}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.service}</th>
+                                        <td>#{agentBean.newProgressionPoste.service.libelle}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.Poste}</th>
+                                        <td>#{agentBean.newProgressionPoste.poste.libelle}</td>
+                                    </tr>
+                                    <!--                                    <tr>
+                                                                            <th>#{bundle.Corps}</th>
+                                                                            <td>#{agentBean.newProgressionPoste.corps.libelle}</td>
+                                                                        </tr>-->
+                                    <tr>
+                                        <th>#{bundle.Categorie}</th>
+                                        <td>#{agentBean.newProgressionPoste.categorie.sousCategorie.libelle}-#{agentBean.newProgressionPoste.categorie.echelle}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.SalaireBase} Mensuel</th>
+                                        <td>#{agentBean.newProgressionPoste.categorie.salaireMensuel}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.GainHoraire}</th>
+                                        <td>#{agentBean.newProgressionPoste.categorie.salaireUnitaire}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset jsf:id="recaputilatif3" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Primes et Indemnités</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" jsf:id="tableauRecapu3">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 40%;">#{bundle.PrimesFixes}</th>
+                                        <td  style="width: 60%;">
+                                            <table jsf:id="tableRecap" class="table table-bordered table-vcenter">
+                                                <tbody>
+                                                    <ui:repeat value="#{agentBean.newAgent.detailVariableFixes}" var="prime" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                #{prime.variableSalaire.libelle}
+                                                            </td>
+                                                            <td>
+                                                                #{prime.montant}
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- Form Buttons -->
+
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="reset" class="btn btn-effect-ripple btn-danger" id="back11">Précedent</button>
+                        <button type="button" style="margin-left: 5px" class="btn btn-primary" jsf:id="submit_new" jsf:action="#{agentBean.doCreate(event)}">
+                            <i class="gi gi-disk_saved"></i> #{bundle.Save}
+                            <f:ajax execute="@this" render=":msgForm:msg @form :confirmAgentDialogForm" onevent="ajaxOnEventInit"/>  
+                        </button> 
+                    </div>
+                </div>
+
+            </div>  
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <application>
+        <locale-config>
+            <default-locale>fr_FR</default-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>/util.Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+        <!--        <lifecycle>
+            <phase-listener>listener.ForsetiListener</phase-listener>
+        </lifecycle>-->
+<!--        <managed-bean>
+            <managed-bean-name>StatistiqueBean</managed-bean-name>
+            <managed-bean-class>
+                controller.StatistiqueBean
+            </managed-bean-class>
+            <managed-bean-scope>session</managed-bean-scope>
+        </managed-bean>-->
+    </application>
+</faces-config>

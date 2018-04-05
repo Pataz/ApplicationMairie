@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Checkout Modal -->
+        <div id="primesDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="weight:800px;height:50px">
+                <div class="modal-content">
+                    <form  jsf:id="primesDialogForm" jsf:class="push">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title"><strong>#{bundle.PrimesFixes}</strong></h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-lg-offset-1">
+                                    <div class="table-responsive">
+                                        <form jsf:id="primesForm" jsf:prependId="false" class="center-table"> 
+                                            <table jsf:id="PrimesID" class="table table-striped table-bordered table-vcenter">
+                                                <thead  style="font-size: 13px">
+                                                    <tr>
+                                                        <th class="text-center" style="font-size:13px; width: 50%">#{bundle.Libelle}</th>
+                                                        <th class="text-center" style="font-size:13px; width: 20%">#{bundle.taux}</th>
+                                                        <th class="text-center" style="font-size:13px; width: 30%">#{bundle.montant}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{suiviPaieBean.selectedAgent.detailVariableFixes}" var="item" varStatus="status">
+                                                        <tr>
+                                                            <td class="text-center">#{item.variableSalaire.libelle}</td>
+                                                            <td class="text-center">#{item.variableSalaire.partEmploye}</td>
+                                                            <td class="text-center">#{suiviPaieBean.getByPrimeEmploye(item.variableSalaire , suiviPaieBean.selectedAgent)}</td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-effect-ripple btn-danger" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times"></i>
+                                #{bundle.Close}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

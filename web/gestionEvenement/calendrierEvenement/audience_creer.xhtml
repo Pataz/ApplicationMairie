@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition>
+
+        <div jsf:id="dialogCreer" class="modal fade draggable" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="dialogFormCreer" jsf:prependId="false" >
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">#{bundle.AudienceTitreCreation}</h4>
+                        </div>
+                        <div class="modal-body" style="padding-left: 120px">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <fieldset>                                           
+                                        <div class="form-group row">
+                                            <label class="col-md-2 control-label" for="chambre-creer">#{bundle.Chambre}*</label>
+                                            <div class="col-md-8">
+                                                <h:selectOneMenu class="select-chosen" id="chambre-creer" value="#{audienceBean.newAudience.chambre}" p:data-placeholder="#{bundle.Chambre}" required="true" disabled="true">
+                                                    <f:selectItem itemValue="" itemLabel=""/>
+                                                    <f:selectItems value="#{chambreBean.listeChambres}" var="i" itemValue="#{i}" itemLabel="#{i.libelle}" />
+                                                    <f:converter converterId="chambreConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 control-label" for="salle">#{bundle.Salle}*</label>
+                                            <div class="col-md-8">
+                                                <h:selectOneMenu class="select-chosen" id="salle" value="#{audienceBean.newAudience.salle}" p:data-placeholder="#{bundle.Salle}">
+                                                    <f:selectItem itemValue="" itemLabel=""/>
+                                                    <f:selectItems value="#{salleBean.listeSalles}" var="i" itemValue="#{i}" itemLabel="#{i.libelle}" />
+                                                    <f:converter converterId="salleConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 control-label" for="periodicite-creer">#{bundle.AudiencePublicite}*</label>
+                                            <div class="col-sm-8">
+                                                <h:selectOneMenu class="select-chosen" id="periodicite-creer" value="#{audienceBean.newAudience.publicite}" p:data-placeholder="#{bundle.AudiencePublicite}" required="true" >
+                                                    <f:selectItems value="#{publiciteBean.liste}" var="i" itemValue="#{i}" itemLabel="#{i.label}" />
+                                                    <f:converter converterId="genericEnumConverter" />
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 control-label" for="typeAudience-creer">#{bundle.TypeAudience}*</label>
+                                            <div class="col-sm-8">
+                                                <h:selectOneMenu class="select-chosen" id="typeAudience-creer" value="#{audienceBean.newAudience.typeAudience}" p:data-placeholder="#{bundle.AudiencePublicite}" required="true" >
+                                                    <f:selectItems value="#{typeAudienceBean.liste}" var="i" itemValue="#{i}" itemLabel="#{i.label}" />
+                                                    <f:converter converterId="genericEnumConverter" />
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" id="form-group-dateheure-creer">
+                                                <!--<h:outputLabel value="#{bundle.AudienceDate} " for="datePV"><span class="text-danger">*</span></h:outputLabel>-->
+                                            <label class="col-sm-2 control-label" for="dateheure-creer">#{bundle.AudienceDate}*</label>
+                                            <div class="col-sm-8">
+                                                <input type="text"  jsf:id="dateheure-creer" jsf:value="#{audienceBean.dateCreee}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </input>   
+                                            </div> 
+                                        </div>
+
+                                        <div class="form-group row" id="form-group-heure">
+                                            <label class="col-sm-2 control-label" for="heure-creer">Heure (24h)*</label>
+                                            <div class="col-sm-8 input-group bootstrap-timepicker" style="padding-left: 15px">
+                                                <input type="text" id="heure-creer" jsf:value="#{audienceBean.dateHeureCree}" p:placeholder="HH:mm" name="example-timepicker24" class="form-control input-timepicker24">
+                                                    <f:convertDateTime   pattern="HH:mm"/>
+                                                </input>
+                                                <span class="input-group-btn">
+                                                    <a href="javascript:void(0)" class="btn btn-effect-ripple btn-primary"><i class="fa fa-clock-o"></i></a>
+                                                </span>
+                                            </div>
+                                            <input type="hidden" id="date-creer" jsf:value="#{audienceBean.newAudience.date}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                            </input>
+                                        </div>
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 control-label" for="ministerePublic">#{bundle.MinisterePublic}*</label>
+                                            <div class="col-sm-8">
+                                                <h:selectOneMenu class="select-chosen" id="ministerePublic" value="#{audienceBean.newAudience.ministerepublic}" p:data-placeholder="#{bundle.MinisterePublic}">
+                                                   <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{exerciceFonctionBean.rListeExercerFonctionInJuridiction()}" var="sub"  itemLabel="#{sub.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter"/> 
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 control-label" for="juge">#{bundle.Juge}</label>
+                                            <div class="col-sm-8">
+                                               
+                                                <h:selectOneMenu class="select-chosen" id="juge" value="#{audienceBean.newAudience.juge}" p:data-placeholder="#{bundle.Juge}" >
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{exerciceFonctionBean.rListeExercerFonctionInJuridiction('JUG')}" var="sub"  itemLabel="#{sub.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter"/> 
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 control-label" for="greffier">#{bundle.Greffier}</label>
+                                            <div class="col-sm-8">
+                                                <h:selectOneMenu class="select-chosen" id="greffier" value="#{audienceBean.newAudience.greffier}" p:data-placeholder="#{bundle.Greffier}">
+                                                   <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{exerciceFonctionBean.rListeExercerFonctionInJuridiction('GRE')}" var="sub"  itemLabel="#{sub.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter"/> 
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+                                        <h:outputText id="audience-creer" value="#{audienceBean.jsonData}" class="hidden"/>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit-new" jsf:action="#{audienceBean.creerAudience()}">
+                                <f:ajax execute="@form" render=":msgForm:msg @form" onevent="ajaxOnEventCreer" onerror="ajaxOnErrorCreer"/>
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Create}
+                            </button>
+
+                            <!--                            <button class="btn btn-sm" data-dismiss="modal">
+                                                            <i class="ace-icon fa fa-times"></i>
+                            #{bundle.Close}
+                                                    </button>-->
+                            <!--                            <button class="btn btn-effect-ripple btn-primary" data-dismiss="modal">
+                            #{bundle.Close}
+            </button>-->
+                            <!--<button class="btn btn-default btn-lg active" type="button" style="height: 35px; font-size: 15px; padding: -30px; margin-bottom: 3px;" data-dismiss="modal">-->
+                            <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                #{bundle.Close}
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--    <script type="text/javascript">
+                $(function () {
+                    $('#datetimepicker1')..datetimepicker({
+                        language: 'pt-BR'
+                    });
+                });
+            </script>-->
+
+    </ui:composition>
+
+</html>
+

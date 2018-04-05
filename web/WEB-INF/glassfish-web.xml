@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app error-url="">
+  <context-root>/grh</context-root>
+  <security-role-mapping>
+    <role-name>Admin</role-name>
+    <group-name>Admin</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Common</role-name>
+    <group-name>Common</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Juge</role-name>
+    <group-name>Juge</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Greffier</role-name>
+    <group-name>Greffier</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Procureur</role-name>
+    <group-name>Procureur</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Substitut</role-name>
+    <group-name>Substitut</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>PresidentChambre</role-name>
+    <group-name>PresidentChambre</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>PresidentTpi</role-name>
+    <group-name>PresidentTpi</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Secretaire</role-name>
+    <group-name>Secretaire</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>PresidentCa</role-name>
+    <group-name>PresidentCa</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Conseiller</role-name>
+    <group-name>Conseiller</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>ProcureurGeneral</role-name>
+    <group-name>ProcureurGeneral</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Inspection</role-name>
+    <group-name>Inspection</group-name>
+  </security-role-mapping>
+  <class-loader delegate="true"/>
+  <jsp-config>
+    <property name="keepgenerated" value="true">
+      <description>Keep a copy of the generated servlet class' java code.</description>
+    </property>
+  </jsp-config>
+  <parameter-encoding default-charset="UTF-8"/>
+</glassfish-web-app>

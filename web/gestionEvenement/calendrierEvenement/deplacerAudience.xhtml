@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition >
+        <div jsf:id="deplacerAudienceDialog" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="deplacerAudienceForm" jsf:prependId="false">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">#{bundle.DeplacerAud}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" style="">
+                                <div class="col-xs-9 col-sm-10" >
+                                    <fieldset>
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-4 control-label no-padding-right" >#{bundle.AudienceDateAncienne}</label>
+                                            <h:outputText value="#{audienceBean.selectedAudience.date}" class="label-view" >
+                                                <f:convertDateTime pattern="EEE dd MMM yyyy HH:mm" />
+                                            </h:outputText>     
+                                        </div>
+                                        <div class="form-group row" id="form-group-dateheure-modifier">
+                                            <label class="col-sm-4 control-label no-padding-right" for="dateheure-modifier">#{bundle.AudienceDate}*</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:inputText id="dateheure-modifier" value="#{audienceBean.selectedAudience.date}" class="form-control input-datepicker date-picker" p:placeholder="#{bundle.AudienceDate}" required="True">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:inputText>
+
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="date-creer" jsf:value="#{audienceBean.newAudience.date}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                        </input>
+                                    </fieldset>
+                                </div>
+
+
+
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" data-dismiss="modal" jsf:id="submit_deplacer_audience" jsf:action="#{audienceBean.deplacerAudience()}">
+                                <f:ajax execute="@form" render=":msgForm:msgPage @form :table-audience" onevent="detail" />
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Deplacer}
+                            </button>
+
+                            <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                #{bundle.Close}
+                            </button>
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <!-- PAGE CONTENT ENDS -->
+        <script type="text/javascript">
+
+        </script>
+
+    </ui:composition>
+</html>
+

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Formulaire d'enregistrement d'un nouveau stagiaire</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>Gestion du personnel</li>
+                            <li>Nouveau stagiaire</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+
+        <!-- Form Components Row -->
+
+        <h:form id="msgForm" prependId="false">
+            <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+            <p:messages  autoUpdate="true" showDetail="true"/>
+        </h:form>
+
+        <div class="row" jsf:id="form_id">
+
+            <div class="col-sm-12 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-12 col-lg-offset-0">
+                <div class="block">
+                    <div class="block-title">
+                        <h2 style="font-family:Arial; text-transform: none">Détails d'enregistrement d'un nouveau stagiaire</h2>
+                    </div>
+                    <h:form role="form"  id="createAgentForm" class="form-horizontal" enctype="multipart/form-data">
+                        <div id="clickable-first" class="step">
+                            <ui:include src="step1.xhtml"/> 
+                        </div>  
+                        <div id="clickable-second" class="step">
+                            <ui:include src="step2.xhtml"/>   
+                        </div>
+                        <div id="clickable-third" class="step">
+                            <ui:include src="step3.xhtml"/>   
+                        </div>
+                    </h:form>
+                </div>  
+            </div>
+        </div>
+
+
+
+        <!-- END Form Components Row -->
+
+    </ui:composition>
+</html>

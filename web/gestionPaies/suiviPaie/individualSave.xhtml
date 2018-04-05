@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition>
+        <form jsf:prependId="false"  jsf:id="individualForm" jsf:class="form-horizontal"  enctype="multipart/form-data">
+            <div class="block full">
+                <form jsf:id="agentForm" jsf:prependId="false" jsf:class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="direction">#{bundle.direction}</label>  
+                        </div>
+                        <div class="col-sm-3" style="width:23%">                                          
+                            <h:selectOneMenu class="select-chosen" id="direction" value="#{suiviPaieBean.selectedDirection}" ph:data-placeholder="#{bundle.direction}">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{suiviPaieBean.listeDirections}" var="d" itemValue="#{d}" itemLabel="#{d.libelleCourt}"/>
+                                <f:converter converterId="directionConverter" />
+                                <f:ajax  listener="#{suiviPaieBean.passDirection()}" render="grp-liste-service grp-liste-agents teteForm" onevent="reinitChoose"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="service">#{bundle.service}</label>  
+                        </div>
+                        <div class="col-sm-3" style="width:23%" jsf:id="grp-liste-service">                                          
+                            <h:selectOneMenu class="select-chosen" id="service" value="#{suiviPaieBean.selectedService}" ph:data-placeholder="#{bundle.service}">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{suiviPaieBean.listeServices}" var="s" itemValue="#{s}" itemLabel="#{s.libelleCourt}"/>
+                                <f:converter converterId="serviceConverter" />
+                                <f:ajax   listener="#{suiviPaieBean.passService()}" render="grp-liste-agents teteForm" onevent="reinitChoose"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="grp-liste-agents">Agent</label>  
+                        </div> 
+                        <div class="col-sm-3" style="width:30%" jsf:id="grp-liste-agents">                                          
+                            <h:selectOneMenu class="select-chosen" id="liste-agents" value="#{suiviPaieBean.selectedAgent}" ph:data-placeholder="Agent">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPaieBean.listeAgents}" var="a" itemValue="#{a}" itemLabel="#{a.personne.name}"/>
+                                <f:converter converterId="agentConverter" />
+                                <f:ajax   listener="#{suiviPaieBean.passAgent()}" render=":SuiviPersonnelForm :table_PrimesFixes  teteForm :infoTeteForm" onevent="reinitChoose"/> 
+                            </h:selectOneMenu>
+                        </div>  
+                    </div> 
+                </form>
+            </div>
+
+            <div class="block">
+                <div class="block-title"  jsf:id="teteForm">
+                    <form  jsf:id="infoTeteForm" jsf:prependId="false" class="center-table"> 
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <a href="javascript:void(0)" class="btn btn-effect-ripple btn-primary dropdown-toggle enable-tooltip" data-toggle="dropdown" title="Consultation"><i class="fa fa-chevron-down">#{bundle.Action}</i></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <h:commandLink class="open-details" onclick="$('#detailsAgentDialog').modal('show')" >
+                                            <h:outputText value="#{bundle.Consulter}"/>
+                                            <f:ajax render=":test:detailsAgentDialogForm" listener="#{agentBean.passItem(suiviPaieBean.selectedAgent)}"/>
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form> 
+                    <h2 style="font-family:Arial; margin-right: 40px; text-transform: none">#{bundle.matricule}: <span class="text-success">#{suiviPaieBean.selectedAgent.matricule}</span></h2>   
+                    <h2 style="font-family:Arial; margin-right: 40px;text-transform: none">#{bundle.nSSocial}: <span class="text-success">#{suiviPaieBean.selectedAgent.nsSociale}</span></h2>
+                    <h2 style="font-family:Arial;text-transform: none">#{bundle.Poste} :<span class="text-success">#{suiviPaieBean.newProgressionPoste.poste.libelle}</span></h2> 
+                </div>
+                <div class="row">
+                    <form  jsf:id="SuiviPersonnelForm" jsf:prependId="false" jsf:class="form-horizontal">
+                        <fieldset jsf:id="suiviIndividuel_id" class="col-sm-12 col-md-12 col-lg-12" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px; margin-left: 3%; width: 95%">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails </legend>     
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="typeSuivi">Libellé Operation</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="typesuivi_id" >                                          
+                                    <h:selectOneMenu class="select-chosen" id="typesuivi" value="#{suiviPaieBean.newProgressionAgent.evenement}"  ph:data-placeholder="Libellé suivi">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{suiviPaieBean.listeEvtsSuiviPaies}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                        <f:converter converterId="evenementConverter" />
+                                        <f:ajax  execute="@this" render=":SuiviPersonnelForm"   onevent="reinitChoose"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="montant">#{bundle.montant}</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="montant_Id" >  
+                                    <input type="text" jsf:id="montant" name="montant" class="form-control" jsf:value="#{suiviPaieBean.newPretSalaire.montant}" placeholder="Montant"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="dateAvis1">Date de l'avis</label>  
+                                </div>
+                                <div class="col-sm-4" jsf:id="dateAvis_id1" >                                          
+                                    <input type="text"  jsf:id="dateAvis1" value="#{suiviPaieBean.newProgressionAgent.dateProgression}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </input>
+                                </div>  
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="datesuivi">Date prise d'effet</label>  
+                                </div>
+                                <div class="col-sm-4" jsf:id="datesuivi_id1" >                                          
+                                    <input type="text"  jsf:id="datesuivi" value="#{suiviPaieBean.newPretSalaire.dateSuivi}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </input>
+                                </div> 
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="observation2">Observation</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="observation_id2" >                                          
+                                    <h:inputTextarea id="observationAanPromo"  value="#{suiviPaieBean.newPretSalaire.observation}" rows="4" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group form-actions">
+                                <div class="col-md-12 col-md-offset-4 col-lg-offset-5">
+                                    <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_Avan" jsf:action="#{suiviPaieBean.doCreateSuiviSalaire(event)}">
+                                        #{bundle.Save}
+                                        <f:ajax execute="@form" render=":msgForm:msg @form :SuiviPersonnelForm :teteForm :agentForm" onevent="ajaxSaveSuivi"/>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </fieldset>      
+                    </form>
+                </div>
+            </div>
+        </form>
+    </ui:composition>
+</html>
+

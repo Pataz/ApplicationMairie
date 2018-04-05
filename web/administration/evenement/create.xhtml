@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h1 style="font-style:italic;font-family:Century">#{bundle.EvenementManagement}</h1>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li> #{bundle.menuAdministration}</li>
+                            <li>#{bundle.Evenement}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+
+        <!-- Form Components Row -->
+        <div class="row" jsf:id="idContent">
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+            <div class="col-md-6">
+                <!-- Horizontal Form Block -->
+                <div class="block">
+                    <!-- Horizontal Form Title -->
+                    <div class="block-title">
+                        <div class="block-options pull-right">
+                            <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="Toggles . class">#{bundle.Style}</a>-->
+                            <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default toggle-bordered enable-tooltip" data-toggle="button" title="#{bundle.Style}">#{bundle.Style}</a>-->
+                        </div>
+                        <h2 style="font-family:Arial; text-transform: none">#{bundle.EvenementCreation}</h2>
+                    </div>
+                    <!-- END Horizontal Form Title -->
+
+                    <!-- Horizontal Form Content -->
+                    <form jsf:id="createEvenementForm" jsf:prependId="false" jsf:class="form-horizontal ">
+                        <div class="row" style="margin-top: 15px">
+                            <div class="col-xs-12 col-sm-11">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4" for="code">#{bundle.Code}</label>
+                                            <div class="col-xs-12 col-sm-8 input-group">
+                                                <input type="text" jsf:id="code" name="code" class="form-control" jsf:value="#{directionBean.newDirection.code}" placeholder="#{bundle.Code}" required="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4" for="libelleLong">#{bundle.libelleLong}</label>
+                                            <div class="col-xs-12 col-sm-8 input-group">
+                                                <input type="text" jsf:id="libelleLong" name="libelleLong" class="form-control" jsf:value="#{directionBean.newDirection.libelle}" placeholder="#{bundle.libelleLong}" required="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4" for="delai">#{bundle.Delai}</label>
+                                            <div class="col-xs-12 col-sm-8 input-group">
+                                                <input type="text" jsf:id="delai" name="delai" class="form-control" jsf:value="#{directionBean.newDirection.libelle}" placeholder="#{bundle.Delai}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4" for="typeevenement">#{bundle.TypeEvenement}</label>
+                                            <div class="col-xs-12 col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="typeevenement"  value="#{evenementBean.newEvenement.typeEvenement}" ph:data-placeholder="#{bundle.TypeEvenement}">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{evenementBean.listeTypeEvenements}" var="c" itemValue="#{c}" itemLabel="#{c.libelle}" />
+                                                    <f:converter converterId="typeEvenementConverter" />
+                                                </h:selectOneMenu>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4" for="modele">#{bundle.Modele}</label>
+                                            <div class="col-xs-12 col-sm-8 input-group">
+                                                <h:selectOneMenu id="modele" class="select-chosen" value="#{evenementBean.newEvenement.modele}"  ph:data-placeholder="#{bundle.Modele}">
+                                                    <f:selectItem itemValue="" itemLabel=""/>
+                                                    <f:selectItems value="#{modeleBean.listeModeles}" var="n" itemValue="#{n}" itemLabel="#{n.libelle}"/>
+                                                    <f:converter converterId="modeleConverter" />
+                                                </h:selectOneMenu>       
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-actions">
+                            <div class="col-md-9 col-md-offset-3">
+                                <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new" jsf:action="#{evenementBean.doCreate(event)}">
+                                    #{bundle.Save}
+                                    <f:ajax execute="@form" render=":msgForm:msg :listeEvenementForm: createEvenementForm" onevent="ajaxOnEventInit"/>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <ui:include src="list.xhtml"/>
+            </div>
+        </div>
+        <!-- END Form Components Row -->
+    </ui:composition>
+</html>

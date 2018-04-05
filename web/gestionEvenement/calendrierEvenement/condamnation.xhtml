@@ -1,0 +1,502 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition >
+        <div jsf:id="modalCondamnation" class="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="min-height:54em; width:70em;" >
+
+                    <div class="modal-header" style="width: 70em;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="blue bigger">#{bundle.condamnation} </h4>
+                    </div>
+
+                    <!-- /.col -->
+                    <div class="modal-body" style="min-height:54em; width:70em;  ">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home">Formulaire de condamnation</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Relaxer</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade in active" >
+                                <form jsf:id="condamnerForm" jsf:prependId="false" jsf:role="form">
+                                    <div class=" row">
+                                        <br/><br/>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Dossier</label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="dossierCondamnes" value="#{audienceBean.selectedDossierACondamner}" ph:data-placeholder="dossier" required="true">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.listeDossiersACondamne}" var="a" itemValue="#{a}" itemLabel="#{a.numeroRP}"/>
+                                                    <f:converter converterId="dossierConverter"/>
+                                                    <f:ajax  listener="#{audienceBean.partiesDossierDaudience()}" render=":parties :beneficiairePartie" onevent="detail"/>
+                                                </h:selectOneMenu>
+                                            </div>
+
+                                            <!--  <label class="col-md-2 control-label">Jugement N°</label>
+                                              <label class="col-md-4 control-label" ></label>-->
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <hr style="width:70em; margin-left: -5px; margin-top: 3.5em;"/>
+                                        </div>
+
+                                        <div class="form-group " jsf:id="parties">
+                                            <label class="col-md-2 control-label" style="border: 0px solid black;"> Auteur (s)</label>
+                                            <div class="col-md-4" style="border: 0px solid black; padding: 0px 0px 0px 0px;"> 
+                                                <h:selectManyMenu id="auteurs"  class="select-chosen" value="#{audienceBean.selectedAuteurs}" ph:data-placeholder="Choisir l'auteur" style="width: 7em;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.auteurs}" var="auteur" itemValue="#{auteur}" itemLabel="#{auteur.personne.name}" />                                           
+                                                    <f:passThroughAttribute name="multiple" value="" />
+                                                    <f:converter converterId="partieConverter" />
+                                                    <f:ajax  listener="#{audienceBean.dejaCondamne()}" render=":tableCondamnation" onevent="detail"/>
+                                                </h:selectManyMenu>  
+                                            </div>
+
+                                            <label class="col-md-2 control-label"> Victime (s)</label>
+                                            <div class="col-md-4" style="padding: 0px 0px 0px 0px;"> 
+                                                <h:selectManyMenu id="victimes"  class="select-chosen" value="#{audienceBean.selectedVictimes}" ph:data-placeholder="Choisir la victime" style="width: 7em;">
+                                                    <f:selectItem itemValue="" itemLabel="---Victime---" />
+                                                    <f:selectItems value="#{audienceBean.victimes}" var="victime" itemValue="#{victime}" itemLabel="#{victime.personne.name}" />
+                                                    <f:passThroughAttribute name="multiple" value="" />
+                                                    <f:converter converterId="partieConverter" />
+                                                </h:selectManyMenu>  
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <hr style="width:70em; margin-left: -5px; margin-top: 5em;"/>
+                                        </div>
+
+                                        <div class="form-group" jsf:id="natureDecision">
+                                            <label class="col-md-2 control-label" for="code">Nature décision</label>
+                                            <div class="col-md-10" style="padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="Mandat1" value="#{audienceBean.jugement.natureDecision}" p:data-placeholder="#{bundle.Anne}" style=" ">
+                                                    <f:selectItem itemValue="" itemLabel="--Nature--" />
+                                                    <f:selectItems value="#{natureDecisionBean.natureDecisionItems}" var="a" itemValue="#{a}" itemLabel="#{a.label}" />
+
+                                                    <f:ajax   render=":ajaxRole" onevent="afficheSucces"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="height: 3em;">
+
+                                        </div>
+                                        <div class="form-group" jsf:id="prisonFermeSurcis">
+                                            <label class="col-md-2 control-label" for="code">Prison ferme</label>
+                                            <div class="col-md-2" style="padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="code" name="code" class="form-control" jsf:value="#{audienceBean.jugement.prisonFerme}" placeholder="Ferme" />
+                                            </div>
+                                            <div class="col-md-2" style="padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="dureFerme" value="#{audienceBean.jugement.dureeFerme}" p:data-placeholder="#{bundle.Anne}" style=" ">
+                                                    <f:selectItem itemValue="#{bundle.un}" itemLabel="#{bundle.Annee}" />
+                                                    <f:selectItem itemValue="#{bundle.zero}" itemLabel="#{bundle.mois}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <label class="col-md-2 control-label" for="codeRg">Prison sursis</label>
+                                            <div class="col-md-2" style="padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="libelle" name="codeRg" class="form-control" jsf:value="#{audienceBean.jugement.prisonSurcis}" placeholder="Surcis" />
+                                            </div>
+                                            <div class="col-md-2" style=" padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="dureSurcis" value="#{audienceBean.jugement.dureeSurcis}" p:data-placeholder="#{bundle.Anne}" style=" ">
+                                                    <f:selectItem itemValue="#{bundle.un}" itemLabel="#{bundle.ans}" />
+                                                    <f:selectItem itemValue="#{bundle.zero}" itemLabel="#{bundle.mois}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="height:4em;">
+
+                                        </div>
+                                        <div class="form-group" jsf:id="amendeFermeSurcis">
+                                            <label class="col-md-2 control-label" for="code">Amende ferme</label>
+                                            <div class="col-md-4" style="padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="amendeFerme"  class="form-control" jsf:value="#{audienceBean.jugement.amendeFerme}" placeholder=" Ferme"/>
+                                            </div>
+
+                                            <label class="col-md-2 control-label" for="codeRg">Amende sursis</label>
+                                            <div class="col-md-4" style="padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="AmendeSurcis"  class="form-control" jsf:value="#{audienceBean.jugement.amendeSurcis}" placeholder="Surcis" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="height:4em;">
+
+                                        </div>
+                                        <div class="form-group" jsf:id="mandatCCE">
+                                            <label class="col-md-2 control-label">Mandat</label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="mandat" value="#{audienceBean.jugement.mandat}" p:data-placeholder="#{bundle.Anne}" style="width: 31em; ">
+
+                                                    <f:selectItems value="#{mandatBean.mandatItems}" var="a" itemValue="#{a}" itemLabel="#{a.label}" />
+
+                                                    <f:ajax   render=":ajaxRole" onevent="afficheSucces"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <label class="col-md-2 control-label">CCE <label style="color: #ff6666;"> *</label></label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="cce"  class="form-control" jsf:value="#{audienceBean.jugement.cce}" placeholder="Etat" />
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="form-group" style="height:4em;">
+
+                                        </div>
+                                        <div class="form-group" jsf:id="contraintes">
+                                            <label class="col-md-2 control-label">CCJ <label style="color: #ff6666;"> **</label></label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="ccj"  class="form-control" jsf:value="#{audienceBean.jugement.ccj}" placeholder="justice" />
+                                            </div>
+                                            <label class="col-md-2 control-label">CCP<label style="color: #ff6666;"> ***</label></label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <input type="text" jsf:id="cccp"  class="form-control" jsf:value="#{audienceBean.jugement.ccp}" placeholder="Particulier" />
+                                            </div>
+
+                                        </div>
+                                        <br/><br/><br/>
+                                        <div  style="border: 0px solid black; width: 6.4em; padding-left: 5px; padding-right: 0px; float: right;" >
+                                            <button type="button" title="Ajouter dans liste" class="btn btn-primary"  style=""  jsf:id="AddCondamnation" jsf:action="#{audienceBean.ajouterCondamner()}" >
+                                                ajouter
+                                                <f:ajax execute="@form" render=":tableCondamnation :contraintes :mandatCCE :amendeFermeSurcis :prisonFermeSurcis :natureDecision :parties" onevent="ajoutCondamne"/>
+                                            </button>
+                                        </div>
+                                        <div class="form-group" >
+                                            <hr style="width:70em; margin-left: -5px; margin-top: 3em;"/>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <!--<table jsf:id="table_Infractions"  class="table table-striped table-bordered table-vcenter">-->
+                                            <table jsf:id="tableCondamnation"  class="table table-bordered table-vcenter">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left" style="font-size: 13px;" rowspan="2">#{bundle.Auteurs}</th>
+                                                        <th class="text-left" style="font-size: 13px;" rowspan="2">#{bundle.NatureDecision}</th>
+                                                        <th class="text-left" style="font-size: 13px;" rowspan="2">#{bundle.mandat}</th>
+                                                        <th class="text-left" style="font-size: 13px;" colspan="2"><center>#{bundle.Prison}</center></th>
+                                                        <th class="text-left" style="font-size: 13px;" colspan="2"><center>#{bundle.Amende}</center></th>
+                                                        <th class="text-left" style="font-size: 13px;" colspan="3"><center>#{bundle.Contraintes}</center></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Ferme}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Surcis}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Ferme}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Surcis}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.CCE}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.CCJ}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.CCP}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{audienceBean.listeTotalJugement}" var="itemJugement" varStatus="status">
+                                                        <h:panelGroup rendered="#{itemJugement.relaxe==true}">
+                                                             <tr>
+                                                           <td class="text-left">
+                                                                <ui:repeat value="#{itemJugement.listePartie}" var="itemPartie" varStatus="statusPartie">
+                                                                    #{itemPartie.personne.name}  | 
+                                                                </ui:repeat>
+                                                            </td> 
+                                                            <td colspan="9">
+                                                                <center>
+                                                                 Relaxer
+                                                                </center>
+                                                            </td>
+                                                        </tr>
+                                                        </h:panelGroup>
+                                                         <h:panelGroup rendered="#{itemJugement.relaxe!=true}">
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                <ui:repeat value="#{itemJugement.listePartie}" var="itemPartie" varStatus="statusPartie">
+                                                                    #{itemPartie.personne.name}  | 
+                                                                </ui:repeat>
+                                                            </td> 
+                                                            <td>
+                                                                #{itemJugement.natureDecision.label} 
+                                                            </td>
+                                                            <td>
+                                                                #{itemJugement.mandat.label} 
+                                                            </td>
+                                                            <td jsf:rendered="#{itemJugement.dureeFerme=='0'}">
+                                                                #{itemJugement.prisonFerme} mois
+                                                            </td>
+                                                            <td jsf:rendered="#{itemJugement.dureeFerme=='1'}">
+                                                                #{itemJugement.prisonFerme} ans
+                                                            </td>
+                                                            <td jsf:rendered="#{itemJugement.dureeSurcis=='0'}">
+                                                                #{itemJugement.prisonSurcis} mois
+                                                            </td>
+                                                            <td jsf:rendered="#{itemJugement.dureeSurcis=='1'}">
+                                                                #{itemJugement.prisonSurcis} ans
+                                                            </td>
+                                                            <td>
+                                                                #{itemJugement.amendeFerme} F
+                                                            </td>
+                                                            <td >
+                                                                #{itemJugement.amendeSurcis} F
+                                                            </td>
+                                                            <td>
+                                                                #{itemJugement.cce}  F
+                                                            </td>
+                                                            <td >
+                                                                #{itemJugement.ccj} F
+                                                            </td>
+                                                            <td >
+                                                                #{itemJugement.ccp} F
+                                                            </td>
+
+
+                                                        </tr> 
+                                                         </h:panelGroup>
+                                                   
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="form-group" >
+                                            <hr style="width:70em; margin-left: -5px; margin-top: 5em;"/>
+                                        </div>
+                                        <div class="form-group" id="dommageInt">
+                                            <label class="col-md-2 control-label">Beneficiaire</label>
+
+                                            <div class="col-md-4" jsf:id="beneficiairePartie" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu id="beneficiaire"  class="select-chosen" value="#{audienceBean.beneficiaire}" ph:data-placeholder="Bénéficiaire" style="width: 7em;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.victimes}" var="victime" itemValue="#{victime.personne.name}" itemLabel="#{victime.personne.name}" />
+                                                </h:selectOneMenu>  
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <table style="margin-left: -4em;">
+                                                    <tr>
+                                                        <td>
+                                                            <div class=" input-group" style="border :0px solid black;padding: 0px 0px 0px 0px; width: 21.5em;" >
+                                                                <input type="text" jsf:id="montant"  id="example-input2-group1" class="form-control"  jsf:value="#{audienceBean.montant}" placeholder="Montant du dommage"/>
+                                                                <span class="input-group-addon">FCFA</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div  style="border: 0px solid black; width: 6.4em; padding-left: 5px; padding-right: 0px;" >
+                                                                <button type="button" title="Ajouter dans liste" class="btn btn-primary"  style=""  jsf:id="AddBeneficiaire" jsf:action="#{audienceBean.addBeneficiaire()}" >
+                                                                    ajouter
+                                                                    <f:ajax execute="@form" render=":tableBeneficiaire " onevent="ajouterBeneficiaire"/>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <br/><br/><br/>
+                                        <div class="table-responsive">
+                                            <!--<table jsf:id="table_Infractions"  class="table table-striped table-bordered table-vcenter">-->
+                                            <table jsf:id="tableBeneficiaire"  class="table table-bordered table-vcenter">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.NomEtPrenom}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Montant}</th>
+                                                        <th class="text-left" style="font-size: 13px;">#{bundle.Action}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{audienceBean.listDommageInterets}" var="itemBenef" varStatus="status">
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                #{itemBenef.beneficiaire}  
+                                                            </td> 
+                                                            <td>
+                                                                #{itemBenef.montant}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <p:commandLink id="removeServiceButton">
+                                                                    <f:ajax listener="#{audienceBean.supprimerDommage(itemBenef)}" render=":tableBeneficiaire"/>
+                                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                                </p:commandLink>
+
+                                                            </td>
+                                                        </tr>  
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                        <div class="form-group" >
+                                            <hr style="width:70em; margin-left: -5px; margin-top: 5em;"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label"></label>
+
+                                            <div class="col-md-2" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+
+                                            </div>
+                                            <label class="col-md-2 control-label">Revocation Surcis</label>
+
+                                            <div class="col-md-4" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <label class="csscheckbox csscheckbox-primary">
+                                                    <h:selectBooleanCheckbox value="#{audienceBean.jugement.revocationSurcis}">
+                                                        <f:ajax listener="#{audienceBean.uneRevocationSurcis}"/>
+                                                    </h:selectBooleanCheckbox>  
+                                                    <span> </span>
+                                                </label>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer" style="width: 69.5em; margin-left: -1.2em; margin-bottom: -1.4em;">
+                                        <div style=" font-size:11px;  color: #ff6666; float: left;">
+                                            <table> 
+                                                <tr>
+                                                    <td>
+                                                        (*): Contrainte Corps Etat
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        (**): Contrainte Corps Jusstice
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        (***): Contrainte Corps Partiiculier
+                                                    </td>
+                                                </tr>
+
+
+                                            </table>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit-condamnation" jsf:action="#{audienceBean.persistCondamnation()}">
+                                            <f:ajax  render=":msgFormPage:msgPage dossierCondamnes tableDossiers" onevent="ajaxOnEventCreerCondamnation"/>
+                                            <i class="ace-icon fa fa-check"></i>
+                                            #{bundle.Save}
+                                        </button>
+                                        <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                            #{bundle.Close}
+                                        </button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+
+                                <form jsf:id="relaxerForm" jsf:prependId="false" jsf:role="form">
+
+                                    <div class=" row">
+                                        <br/><br/>
+                                        <div class="form-group">
+                                            <label class="col-md-2"></label>
+
+                                            <div class="col-md-8" style="border :0px solid black;padding: 0px 0px 0px 0px;">
+                                                <h:selectOneMenu class="select-chosen" id="dossiers" value="#{audienceBean.selectedDossierARelaxe}" ph:data-placeholder="dossier" required="true">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.listeDossiersACondamne}" var="a" itemValue="#{a}" itemLabel="#{a.numeroRP}"/>
+                                                    <f:converter converterId="dossierConverter"/>
+                                                    <f:ajax execute="@form" render=":tableAuteurNonCondamne" onevent="actualiseArelaxe" listener="#{audienceBean.partiesNonCondamne()}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+
+<!--                                            <div class="col-md-2">
+                                                <button  type="submit" jsf:id="submit_stat"  jsf:action=""  class="btn btn-info">
+                                                    <i class="gi gi-ok_2"></i> 
+                                                    #{bundle.Actualiser}
+                                                    <f:ajax execute="@form" render=":tableAuteurNonCondamne" onevent="actualiseArelaxe"/>
+                                                </button>
+                                            </div>-->
+
+                                            <!--  <label class="col-md-2 control-label">Jugement N°</label>
+                                              <label class="col-md-4 control-label" ></label>-->
+                                        </div>
+                                    </div>
+                                    <br/><br/>
+                                    <div class="table-responsive">
+                                        <!--<table jsf:id="table_Infractions"  class="table table-striped table-bordered table-vcenter">-->
+                                        <table jsf:id="tableAuteurNonCondamne"  class="table table-bordered table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left" style="font-size: 13px;">#{bundle.Auteurs}</th>
+                                                    <th class="text-left" style="font-size: 13px;">#{bundle.Profession}</th>
+                                                    <th class="text-left" style="font-size: 13px;">#{bundle.relaxer}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{audienceBean.listePartieARelaxe}" var="itemAut" varStatus="status">
+                                                    <tr>
+                                                        <td class="text-left">
+                                                            #{itemAut.personne.name}  
+                                                        </td> 
+                                                        <td class="text-left">
+                                                            #{itemAut.personnePhysique.profession.libelle}  
+                                                        </td> 
+
+                                                        <td class="text-center">
+                                                            <label class="csscheckbox csscheckbox-primary">
+                                                                <h:selectBooleanCheckbox>
+                                                                    <f:ajax listener="#{audienceBean.ajouterCoche(itemAut)}"/>
+                                                                </h:selectBooleanCheckbox> 
+                                                                <span></span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>  
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <div class="modal-footer" style="width: 67em;  margin-bottom: -1.4em;">
+
+                                        <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit-relaxer" jsf:action="#{audienceBean.persistRelaxer()}"> 
+                                            <f:ajax  render=":msgFormPage:msgPage dossierCondamnes tableDossiers" onevent="ajaxOnEventCreerCondamnation"/>
+                                            <i class="ace-icon fa fa-check"></i>
+                                            #{bundle.Save}
+                                        </button>
+                                        <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                            #{bundle.Close}
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- /.row -->
+
+
+
+                </div>
+            </div>
+        </div>
+        <!-- END Datatables Block -->
+
+        <script>
+//            $(function () {
+//                $('#functions-datatable').dataTable({
+//                    columnDefs: [{orderable: false, targets: [4]}],
+//                    pageLength: 10,
+//                    lengthMenu: [[5, 10, 20], [5, 10, 20]]
+//                });
+//            });
+        </script>
+    </ui:composition>
+</html>
+

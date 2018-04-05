@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Registre des congés non approuvés</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>Registre</li>
+                            <li>Congé non approuvés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+        <div class="col-sm-12 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-12 col-lg-offset-0">
+            <div class="block" jsf:id="block">
+                <div class="block-title">
+                    <span class="pull-right text-muted">
+                        <h:form id="printForm">
+                            <h:commandLink id="print"  action="#{pdfEditionBean.listeAgentDirectionReport(registreBean.listeAgents,registreBean.selectedDirection)}" class="btn btn-default active">
+                                <i class="ace-icon fa fa-print bigger-60"></i>
+                                #{bundle.Imprimer}
+                            </h:commandLink>
+                        </h:form>
+                    </span>
+                    <h2 style="font-family:Arial; text-transform: none">Liste des agents en fonction</h2>
+                </div>
+                <form role="form"  jsf:id="registreAgentForm" jsf:prependId="false" jsf:class="form-horizontal" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <label class=" control-label">#{bundle.direction}</label>  
+                            </div>       
+                            <div class="col-sm-3" jsf:id="direction_id">                                          
+                                <h:selectOneMenu class="select-chosen" id="direction"  value="#{planningCongeBean.selectedDirection}" ph:data-placeholder="#{bundle.direction}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{planningCongeBean.listeDirections}" var="dir" itemValue="#{dir}" itemLabel="#{dir.libelleCourt}" />
+                                    <f:converter converterId="directionConverter" />
+                                    <f:ajax  execute="@this" listener="#{planningCongeBean.returnServices()}" render="service_id :registreAgentForm :registreAgentForm:departCongeDataTable :printForm"   onevent="reinitChoosen"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-sm-1">
+                                <label class=" control-label">#{bundle.service}</label>  
+                            </div>       
+                            <div class="col-sm-3" jsf:id="service_id"  >                                          
+                                <h:selectOneMenu class="select-chosen" id="service"  value="#{planningCongeBean.selectedService}" ph:data-placeholder="Service">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{planningCongeBean.listeServices}" var="ser" itemValue="#{ser}" itemLabel="#{ser.libelleCourt}" />
+                                    <f:converter converterId="serviceConverter" />
+                                    <f:ajax  execute="@this" listener="#{planningCongeBean.returnAgentsList()}"  render="service_id :registreAgentForm :registreAgentForm:agentDataTable"   onevent="reinitChoosen"/>
+                                </h:selectOneMenu> 
+                            </div>  
+                        </div> 
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-12 col-lg-offset-0" jsf:id="table">
+                                <table jsf:id="agentDataTable" class="table table-striped table-bordered table-hover dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-size: 13px">#{bundle.matricule}</th>
+                                            <th style="font-size: 13px">#{bundle.nomPrenom}</th>
+                                            <th style="font-size: 13px">#{bundle.Poste}</th>
+                                            <th style="font-size: 13px">#{bundle.DateDepart}</th>
+                                            <th style="font-size: 13px">#{bundle.DateRetour}</th>
+                                            <th style="font-size: 13px">#{bundle.Action}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ui:repeat value="#{planningCongeBean.listeAgents}" var="item" varStatus="status">
+                                            <h:panelGroup rendered="#{planningCongeBean.getFinalPlanningConge(item).etat!='APPR'}">  
+                                                <tr>
+                                                    <td> #{item.matricule}</td>
+                                                    <td>#{item.personne.name}</td>
+                                                    <td>#{planningCongeBean.getProgressionPoste(item).poste.libelle}</td>
+                                                    <h:panelGroup rendered="#{planningCongeBean.getPlanningConge(item)!=null}">
+                                                        <td> #{connexionBean.convertDate(planningCongeBean.getPlanningConge(item).dateDebut, 'dd MMMM yyyy')}</td>
+                                                        <td>#{connexionBean.convertDate(planningCongeBean.getPlanningConge(item).dateFin, 'dd MMMM yyyy')}</td>   
+                                                    </h:panelGroup>
+                                                    <h:panelGroup rendered="#{planningCongeBean.getPlanningConge(item)==null}">
+                                                        <td> <span style="color: #D20005">Non définie</span></td>
+                                                        <td><span style="color: #D20005">Non définie</span></td>
+                                                    </h:panelGroup>
+                                                    <td>
+                                                        <div class="btn-group dropup text-right">
+                                                            <a href="javascript:void(0)" class="btn btn-effect-ripple btn-success active dropdown-toggle enable-tooltip" data-toggle="dropdown"><i class="hi hi-chevron-up">#{bundle.Action}</i></a>
+                                                            <ul class="dropdown-menu dropdown-header">
+                                                                <h:panelGroup rendered="#{planningCongeBean.getFinalPlanningConge(item)==null and planningCongeBean.getPlanningConge(item)!=null}">
+                                                                    <li>
+                                                                        <h:commandLink class="open-dossier-detail" actionListener= "#{planningCongeBean.doApprouve(planningCongeBean.getPlanningConge(item))}">
+                                                                            #{bundle.Approuver}
+                                                                            <f:ajax   render=":registreAgentForm :registreAgentForm:agentDataTable" onevent="reinitChoosen"/>
+                                                                        </h:commandLink>
+                                                                    </li> 
+                                                                    <li>
+                                                                        <h:commandLink class="open-dossier-detail"  onclick="$('#modalReaffecterCongeDialog').modal('show')">
+                                                                            #{bundle.Redefinir}
+                                                                            <f:ajax listener="#{planningCongeBean.passItemAgent(item)}"   render=":registreAgentForm :registreAgentForm:agentDataTable" onevent="reinitChoosen"/>
+                                                                        </h:commandLink>
+                                                                    </li> 
+                                                                    <li>
+                                                                        <h:commandLink class="open-dossier-detail" onclick="$('#modalEditPlanningDialog').modal('show')">
+                                                                            #{bundle.Edit}
+                                                                            <f:ajax listener="#{planningCongeBean.passItem(planningCongeBean.getPlanningConge(item))}"  render=":registreAgentForm :registreAgentForm:agentDataTable :modalEditPlanningDialogForm" onevent="reinitChoosen"/>
+                                                                        </h:commandLink>
+                                                                    </li> 
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{planningCongeBean.getFinalPlanningConge(item)==null and planningCongeBean.getPlanningConge(item)==null}">
+                                                                    <li>
+                                                                        <h:commandLink class="open-dossier-detail" onclick="$('#modalNewPlanningDialog').modal('show')">
+                                                                            #{bundle.NewPlanning}
+                                                                            <f:ajax  listener="#{planningCongeBean.passItemAgent(item)}" render=":registreAgentForm :registreAgentForm:agentDataTable" onevent="reinitChoosen"/>
+                                                                        </h:commandLink>
+                                                                    </li> 
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{planningCongeBean.getFinalPlanningConge(item)!=null}">
+                                                                    <li jsf:rendered="#{planningCongeBean.getFinalPlanningConge(item).etat=='RDEF'}">
+                                                                        <h:commandLink class="open-dossier-detail" onclick="$('#modalPeriodeRetenueDialog').modal('show')">
+                                                                            #{bundle.NewPeriode}
+                                                                            <f:ajax listener="#{planningCongeBean.passItem(planningCongeBean.getFinalPlanningConge(item))}"   render=":registreAgentForm :registreAgentForm:agentDataTable :modalPeriodeRetenueDialogForm" onevent="reinitChoosen"/>
+                                                                        </h:commandLink>
+                                                                    </li> 
+                                                                </h:panelGroup>
+                                                            </ul>      
+                                                        </div>     
+                                                    </td>
+                                                </tr> 
+                                            </h:panelGroup>
+                                        </ui:repeat>    
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>   
+                    </form>
+            </div>  
+        </div>
+        <!-- Form Components Row -->
+
+        <!-- END Form Components Row -->
+    </ui:composition>
+</html>

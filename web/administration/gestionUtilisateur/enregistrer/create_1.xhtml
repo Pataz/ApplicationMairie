@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h1 style="font-style:italic;font-family:Century">#{bundle.UtilisateurManagement}</h1>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>#{connexionBean.currentExerciceFonction.service.libelle}</li>
+                            <li> #{bundle.Administration}</li>
+                            <li>#{bundle.GestionUtilisateur}</li>
+                            <li>#{bundle.Save}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->  
+
+        <!-- Block Tabs -->
+        <div class="block full" jsf="blocTotal">
+            <!-- Block Tabs Title -->
+            <div class="block-title">
+                <div class="block-options pull-right">
+                    <!--<a href="javascript:void(0)" class="btn btn-effect-ripple btn-default" data-toggle="tooltip" title="Settings"><i class="fa fa-cog"></i></a>-->
+                </div>
+                <ul class="nav nav-tabs" data-toggle="tabs">
+                    <li class="active"><a data-toggle="tab" href="#block-tabs-home">Utilisateur</a></li>
+                    <li><a data-toggle="tab" href="#block-tabs-profile">Groupe</a></li>
+                </ul>
+            </div>
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+            <!-- END Block Tabs Title -->
+            <!-- Tabs Content -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="block-tabs-home">
+                    <!-- Form Components Row -->
+                    <div class="row" style="margin-left:50px;">
+                        <div class="col-md-8">
+                            <!-- Horizontal Form Block -->
+
+                            <!-- END Horizontal Form Title -->
+
+                            <!-- Horizontal Form Content -->
+                            <!--<form action="page_forms_components.html" method="post" class="form-horizontal " onsubmit="return false;">-->
+                            <form jsf:id="createUtilisateurForm" jsf:prependId="false" jsf:class="form-horizontal ">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="civilite">#{bundle.Civilite}</label>
+                                    <div class="col-md-9">                     
+                                        <h:selectOneMenu class="select-chosen" id="personne_civilite" value="#{userBean.newUserInBDs.civilite}" ph:data-placeholder="#{bundle.Civilite}">
+                                            <f:selectItem itemValue="" itemLabel="-Sélectionner Ici-" />
+                                            <f:selectItems value="#{civiliteBean.listeCivilite}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                            <f:converter converterId="genericEnumConverter" />
+                                        </h:selectOneMenu>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="nom">#{bundle.Nom}</label>
+                                    <div class="col-md-9">
+                                        <!--<input type="email" id="example-hf-email" name="example-hf-email" class="form-control"/>-->
+                                        <input type="text" jsf:id="nom" name="nom" class="form-control" jsf:value="#{userBean.newUserInBDs.nom}" placeholder="#{bundle.Nom}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="prenom">#{bundle.Prenom}</label>
+                                    <div class="col-md-9">
+                                        <input type="text" jsf:id="prenom" name="prenom" class="form-control" jsf:value="#{userBean.newUserInBDs.prenom}" placeholder="#{bundle.Prenom}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="login">#{bundle.Login}</label>
+                                    <div class="col-md-9">
+                                        <input type="text" jsf:id="login" name="login" class="form-control" jsf:value="#{userBean.newUserInBDs.login}" placeholder="#{bundle.Login}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="password">#{bundle.Password}</label>
+                                    <div class="col-md-9">
+                                        <input type="password" jsf:id="password" name="password" class="form-control" jsf:value="#{userBean.newUserInBDs.mdp}" placeholder="#{bundle.Password}" required="true"/>
+                                        <!--<span class="help-block">Please enter your password</span>-->
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="corps">#{bundle.Corps}</label>
+                                    <div class="col-md-9">                     
+                                        <h:selectOneMenu class="select-chosen" id="Subtitut"  value="#{userBean.newUserInBDs.corps}" p:data-placeholder="#{bundle.Corps}" style="width: auto !important;">
+                                            <f:selectItem itemValue="" itemLabel="-Selectionner Ici-" />
+                                            <f:selectItems value="#{corpsBean.listeCorps}" var="corp"  itemLabel="#{corp.libelle}" />                                                               
+                                            <f:converter converterId="corpsConverter"/> 
+                                        </h:selectOneMenu>
+                                    </div>  
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="email">#{bundle.Email}</label>
+                                    <div class="col-md-9">
+                                        <input type="email" jsf:id="email" name="email" class="form-control" jsf:value="#{userBean.newUserInBDs.mail}" placeholder="#{bundle.Email}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <label class="col-sm-3 control-label no-padding-right" for="user_group_ldap">#{bundle.ChampUtilisateurGroupLdap}</label>
+                                    <div class="col-sm-9">
+                                        <h:selectOneMenu class="select-chosen" id="user_group_ldap" value="#{userBean.newGroupeUtilisateur.groupe}" ph:data-placeholder="#{bundle.ChampUtilisateurGroupLdap}" required="true" >
+                                            <f:selectItem itemValue="#{userBean.selectedGroupCommon}" itemLabel="#{userBean.selectedGroupCommon.cn}" />
+                                            <f:selectItems value="#{userBean.listeGroups}" var="c" itemValue="#{c}" itemLabel="#{c.cn}" />
+                                            <f:converter converterId="groupeConverter" />
+                                        </h:selectOneMenu>
+                                    </div>
+
+                                </div>
+                                <div class="form-group form-actions">
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new" jsf:action="#{userBean.doInsertUser(event)}">
+                                            #{bundle.Save}
+                                            <f:ajax execute="@form" render=":msgForm:msg @form blocTotal" onevent="SaveUser"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- END Horizontal Form Content -->
+
+                            <!-- END Horizontal Form Block -->
+                        </div>
+
+                    </div>
+                    <!-- END Form Components Row -->
+                </div>
+                <div class="tab-pane" id="block-tabs-profile">
+                    <div class="row" style="margin-left:50px;">
+                        <div class="col-md-8">
+                            <form jsf:id="createGroupeFunctionForm" jsf:prependId="false" jsf:class="form-horizontal ">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label no-padding-right" for="groupe_cn">#{bundle.ChampGroupeCn}</label>
+                                    <div class="col-sm-9 input-group">
+                                        <input type="text" jsf:id="groupe_cn" class="form-control" jsf:value="#{userBean.newGroupInBds.cn}" placeholder="#{bundle.ChampGroupe_cn}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="col-sm-3 control-label no-padding-right" for="groupe_desscription">#{bundle.ChampGroupeDescription}</label>
+                                    <div class="col-sm-9 input-group">
+                                        <textarea type="text" jsf:id="groupe_description" class="form-control" jsf:value="#{userBean.newGroupInBds.description}" placeholder="#{bundle.ChampGroupeDescription}" required="true"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group form-actions">
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new_Groupe" jsf:action="#{userBean.doInsertGroup(event)}">
+                                            #{bundle.Save}
+                                            <f:ajax execute="@form" render=":msgForm:msg @form blocTotal" onevent="SaveGroup"/>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Tabs Content -->
+        </div>     
+        <!-- END Block Tabs -->
+    </ui:composition>
+</html>

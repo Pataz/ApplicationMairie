@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="./../../template/base.xhtml">
+        <ui:define name="selectedMenu">
+            <ui:param name="menuPaiesClass" value="active"/>
+            <ui:param name="menuRapportCNSSClass" value="active"/> 
+        </ui:define>
+        <ui:define name="css">
+
+        </ui:define>
+        <ui:define name="content">
+            <ui:include src="create.xhtml"/>
+        </ui:define>
+        <ui:define name="script">
+            <!-- ckeditor.js, load it only in the page you would like to use CKEditor (it's a heavy plugin to include it with the others!) -->
+            <script src="#{request.contextPath}/resources/js/plugins/ckeditor/ckeditor.js"></script> 
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/formsComponents.js"></script> 
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/uiTables.js"></script> 
+            <script src="#{request.contextPath}/resources/js/pages/formsWizard.js"></script> 
+            <script src="#{request.contextPath}/resources/js/pages/formsValidation.js"></script>
+         <!--<script src="#{request.contextPath}/resources/js/pages/custumForsetiPenal.js"></script>--> 
+            <!-- jQuery, Bootstrap, jQuery plugins and Custom JS code -->
+
+            <!-- Load and execute javascript code used only in this page -->
+            <script>
+                $(function () {
+                    FormsComponents.init();
+                });
+                $(function () {
+                    FormsValidation.init();
+                });
+                $(function () {
+                    UiTables.init('#DataTableID', 4);
+                });
+                $(function () {
+                    UiProgress.init();
+                });
+                $(function () {
+                    FormsWizard.init();
+                });
+                $(function () {
+                    initialiserParDefaut();
+                });
+
+                function reinitChoosen(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#waitForm');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#waitForm');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                            initialiserParDefaut();
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function initializeDate() {
+                    $('.input-datepicker').datepicker({
+                        todayBtn: "linked",
+                        language: "fr",
+                        autoclose: true,
+                        todayHighlight: true
+                    });
+                }
+
+                function startWaitMe(element) {
+                    $(element).waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                }
+
+                function stopWaitMe(element) {
+                    $(element).waitMe('hide');
+                }
+
+                function ajaxOnEventInit(data) {
+                    if (data.status === "begin") {
+                        startWaitMe("#waitForm");
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe("#waitForm");
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            initializeDate();
+                        } catch (err) {
+                        }
+                    } else {
+                        try {
+                            FormsWizard.init();
+                            initialiserChosenSelect();
+                        } catch (err) {
+                        }
+                    }
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

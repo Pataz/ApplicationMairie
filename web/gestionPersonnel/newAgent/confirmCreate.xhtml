@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition >
+        <div jsf:id="confirCreateDialog" class="modal fade draggable" data-backdrop="static" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="confirmDossierDialogForm" jsf:prependId="false" >
+                        <div class="modal-header">
+                            <h4 class="modal-title lighter block green center" id="viewNewDossierRG">
+                                <label class="bigger-150">Agent N° matricule :</label>
+                                <label class="label-view bigger-150">#{agentBean.viewMat}</label>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="center">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-4">
+                                    <h4>
+                                            <a  href="/grh/gestionPersonnel/depotPieces/index.xhtml?id=a-#{agentBean.viewId}" data-toggle="tooltip" data-placement="top" title="Scanner les pièces">  
+                                                <span class="bigger-150">Déposer pièces</span>
+                                                <i class="ace-icon fa fa-arrow-right"></i>
+                                            </a>
+                                        </h4>
+                                   </div>
+                                 
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

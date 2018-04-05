@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <!--<div style="padding-left: 18px;padding-top: 18px;border-left: 4px solid #d0d0d0;border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;font-style:italic;">-->
+            <!-- Step Info -->
+            <div class="row">
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-parents"></i> <strong>Identité agent</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class=" gi gi-folder_open"></i> <strong>Fonction détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Autres détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-four"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END Step Info -->
+                <fieldset jsf:id="attribution-id" class="col-sm-9" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;width:70%;padding-top: 0px; margin-left: 5px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Identité agent</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="matricule">#{bundle.matricule}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="matricule_id" >                                          
+                            <input type="text" jsf:value="#{agentBean.newAgent.matricule}" class="form-control" placeholder="Matricule">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="specialite">#{bundle.civilite}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="cilivilte_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="personne_civiliteP" value="#{agentBean.newAgent.personne.civilite}"  ph:data-placeholder="#{bundle.civilite}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.civiliteItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>    
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="nom">#{bundle.Nom}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="nom_id" >                                          
+                            <input type="text" jsf:value="#{agentBean.newAgent.personne.nom}" class="form-control" placeholder="#{bundle.Nom}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="prenom">#{bundle.Prenoms}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="prenom_id" >                                          
+                            <input type="text"  jsf:value="#{agentBean.newAgent.personne.prenom}" class="form-control" placeholder="#{bundle.Prenoms}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="sexe">#{bundle.Sexe}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="sexe_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="sexe" value="#{agentBean.newAgent.personne.sexe}"  ph:data-placeholder="#{bundle.Sexe}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.sexeItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@form" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="datenaiss">#{bundle.DateNaiss}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="datenaiss_id" >                                          
+                            <input type="text"  jsf:id="datenaiss" value="#{agentBean.newAgent.personne.dateNaissance}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>  
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="lieunaiss">#{bundle.LieuNaiss}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="lieunaiss_id" >                                          
+                            <input type="text" jsf:value="#{agentBean.newAgent.personne.lieuNaissance}" class="form-control" placeholder="#{bundle.LieuNaissance}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="adresse">#{bundle.address}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="adresse_id" >                                          
+                            <input type="text"  jsf:value="#{agentBean.newAgent.personne.adresse}" class="form-control" placeholder="#{bundle.address}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="telephone">#{bundle.contact}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="telephone_id" >                                          
+                            <input type="text"  jsf:value="#{agentBean.newAgent.personne.telephone}" class="form-control" placeholder="#{bundle.contact}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>        
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="val-digits">Email</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="email_id" >                                          
+                            <input type="email" id="email" jsf:value="#{agentBean.newAgent.personne.email}" name="email" class="form-control" placeholder="#{bundle.Email}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>        
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="situationmat">Situation mat.</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="situation_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="situationmat" value="#{agentBean.newProgressionPoste.situationMat}"  ph:data-placeholder="Situation matrimoniale">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.situationMatItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="val-digits">Nbre d'enfant</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="nbreEnfant_id" >                                          
+                            <input type="text" id="val-digits" jsf:value="#{agentBean.newProgressionPoste.nbreEnfant}" name="val-digits" class="form-control" placeholder="Nbre d'enfant">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>        
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset jsf:id="id_Fieldset" class="col-sm-3" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;width: 25%;padding-top: 0px; margin-left: 5px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Photo d'identité</legend>     
+                    <div class="form-group" jsf:id="divPhoto">
+                        <div class="col-md-4"  style=" width:200px; height: 180px; border: 1px solid #dae0e8;border-radius: 10px; margin: 0px;">
+                            <h:graphicImage library="photoProfilTempon" name="#{agentBean.photoIdentite.submittedFileName}" alt="" style=" width:200px; height: 180px; margin-left: -15px;border: 1px solid #dae0e8;border-radius: 10px;"/>
+                        </div>   
+                        <div class="col-md-4">
+                            <h:inputFile value="#{agentBean.photoIdentite}" >
+                                <f:ajax listener="#{agentBean.saveTest(agentBean.photoIdentite)}" onevent="reinitChoosen"  render="divPhoto"/>
+                            </h:inputFile>
+                        </div> 
+                    </div>
+                </fieldset>
+
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="button"  class="btn btn-primary hidden"  style="width: 35px" id="next2"  jsf:id="next2">
+                            <i class="ace-icon fa fa-plus"></i>
+                            <f:ajax execute="@this" render="tableauRecapu" onevent="reinitChosen"/>
+                        </button>
+                        <button type="submit" class="btn btn-effect-ripple btn-primary" onclick="execute_Ajax()"  id="next1">Suivant</button>
+                    </div>
+                </div>
+
+            </div>
+        </ui:composition>
+    </body>
+</html>

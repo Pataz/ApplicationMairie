@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <!--<div style="padding-left: 18px;padding-top: 18px;border-left: 4px solid #d0d0d0;border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;font-style:italic;">-->
+            <!-- Step Info -->
+            <div class="row">  
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-parents"></i> <strong>Identité stagiaire</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class=" gi gi-folder_open"></i> <strong>Autres détails</strong></a></li>
+                            <li  class="active"><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END Step Info -->
+                <fieldset jsf:id="recaputilatif" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Récaputilatifs</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" jsf:id="tableauRecapu">
+                                <tbody>
+                                    <tr>
+                                        <th>#{bundle.nomPrenom}</th>
+                                        <td>#{stagiaireBean.newStagiaire.personne.nom} #{stagiaireBean.returnMajusculeAjustee(stagiaireBean.newStagiaire.personne.prenom)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.address}</th>
+                                        <td>#{stagiaireBean.newStagiaire.personne.adresse} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.telephone}</th>
+                                        <td>#{stagiaireBean.newStagiaire.personne.telephone} </td>
+                                    </tr>
+                                     <tr>
+                                         <th>#{bundle.email}</th>
+                                         <td>#{stagiaireBean.newStagiaire.personne.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.Sexe}</th>
+                                        <td>#{stagiaireBean.newStagiaire.personne.sexe} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.typeStage}</th>
+                                        <td>#{stagiaireBean.newStage.typeStage.label} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.DomaineStage}</th>
+                                        <td>#{stagiaireBean.newStage.domaineStage.libelle} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.Periode}</th>
+                                        <td>#{connexionBean.convertDate(stagiaireBean.newStage.dateDebut, 'dd MMM yyyy')} au #{connexionBean.convertDate(stagiaireBean.newStage.dateFin, 'dd MMM yyyy')}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.direction}</th>
+                                        <td>#{stagiaireBean.newStage.direction.libelle}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.service}</th>
+                                        <td>#{stagiaireBean.newStage.service.libelle}</td>
+                                    </tr>
+<!--                                    <tr>
+                                        <th>#{bundle.sousCouvert}</th>
+                                        <td>#{stagiaireBean.newStage.sousCouvert.personne.name}</td>
+                                    </tr>-->
+                                    <tr>
+                                        <th>#{bundle.NiveauEtude}</th>
+                                        <td>#{stagiaireBean.newStage.niveau.libelle}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>#{bundle.objetStage}</th>
+                                        <td>#{stagiaireBean.newStage.objetStage}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </fieldset>    
+                <!-- Form Buttons -->
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="reset" class="btn btn-effect-ripple btn-danger" id="back11">Précedent</button>
+                        <button type="button" style="margin-left: 5px" class="btn btn-primary" jsf:id="submit_new" jsf:action="#{stagiaireBean.doCreate(event)}">
+                            <i class="gi gi-disk_saved"></i> #{bundle.Save}
+                            <f:ajax execute="@this" render=":msgForm:msg @form :confirmStagiaireDialogForm" onevent="ajaxOnEventInit"/>  
+                        </button> 
+                    </div>
+                </div>
+
+            </div>  
+
+        </ui:composition>
+    </body>
+</html>

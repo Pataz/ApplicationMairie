@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <!-- Large Modal -->
+        <div jsf:id="modalEditPlanningDialog"  class="modal  fade draggable" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="modalEditPlanningDialogForm" jsf:prependId="false" >
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">Modifier période retenue</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" style="margin-top: 15px">
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="datedepart3">#{bundle.DateDepart}</label>
+                                                <div class="col-xs-12 col-sm-8 input-group">
+                                                    <input type="text"  jsf:id="datedepart3" jsf:value="#{planningCongeBean.selectedPlanningConge.dateDebut}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                                        <f:ajax    listener="#{planningCongeBean.returnDateRetour()}" render="dateretour3"/>
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="dateretour3">#{bundle.DateRetour}</label>
+                                                <div class="col-xs-12 col-sm-8 input-group">
+                                                    <input type="text" readonly="true" class="form-control" jsf:id="dateretour3" name="dateretour3" jsf:value="#{connexionBean.convertDate(planningCongeBean.selectedPlanningConge.dateFin, 'dd/MM/yyyy')}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit_defaultEdit" jsf:action="#{planningCongeBean.doEditDefault(event)}" data-dismiss="modal">
+                                <f:ajax  execute="@form" render="@form :msgForm:msg :planningFinalForm :planningFinalForm:departCongeDataTable" onevent="reinitChoosen"/>  
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Edit}
+                            </button>
+                            <button type="button" class="btn btn-default btn-lg active" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                                #{bundle.Close}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END Large Modal -->    
+    </ui:composition>
+</html>

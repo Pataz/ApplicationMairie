@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="header-section">
+                        <h1>Tableau de bord de la GRH</h1>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="header-section">
+                        <h1>Année civile : #{connexionBean.currentYear.libelle}</h1>
+                    </div>
+
+                </div>
+                <div class="col-sm-5 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li>Direction</li>
+                            <li>Accueil</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- First Row -->
+        <div class="row" jsf:id="first">
+            <div class="  alert alert-block alert-info themed-background   col-sm-6 col-lg-12">
+                <button type="button" class="close" data-dismiss="alert">
+                    <!--<i class="ace-icon fa fa-times"></i>-->
+                </button>
+
+                <i class="ace-icon fa fa-check green"></i>
+                <strong class="green">
+                    #{bundle.WelcomeMessageShort}
+
+                    <span style="font-size: 15px">#{bundle.AppName}</span>  
+                    <small>(version 1.0)</small>
+                </strong>
+            </div>
+
+            <h:form id="msgForm" prependId="false">
+                <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+                <p:messages  autoUpdate="true" showDetail="true"/>
+            </h:form>
+
+            <!-- Simple Stats Widgets -->
+            <div jsf:id="dsboard" class="col-sm-20 col-lg-3" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px; width: 100%; padding-top: 10px; margin-bottom: 10px;">
+                <div class="col-sm-6 col-lg-3">
+                    <a href="javascript:void(0)" class="widget" jsf:id="newdossiers">
+                        <div class="widget-content widget-content-mini text-right clearfix">
+                            <div class="widget-icon pull-left themed-background">
+                                <i class="gi gi-cardio text-light-op"></i>
+                            </div>
+                            <h2 class="widget-heading h3">
+                                <strong><span data-toggle="counter" data-to="#{dashboardBean.agentActif}"></span></strong>
+                            </h2>
+                            <span class="text-muted"><strong style="font-size: 12px">Agent(s) interne(s)</strong></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-lg-3" jsf:id="encours">
+                    <a href="javascript:void(0)" class="widget">
+                        <div class="widget-content widget-content-mini text-right clearfix">
+                            <div class="widget-icon pull-left themed-background-success">
+                                <i class="gi gi-user text-light-op"></i>
+                            </div>
+                            <h2 class="widget-heading h3 text-success">
+                                <strong> <span data-toggle="counter" data-to="0"></span></strong>
+                            </h2>
+                            <span class="text-muted"><strong style="font-size: 12px">Agent(s) rétraité(s)</strong></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-lg-3" jsf:id="attentereglement">
+                    <a href="javascript:void(0)" class="widget">
+                        <div class="widget-content widget-content-mini text-right clearfix">
+                            <div class="widget-icon pull-left themed-background-warning">
+                                <i class="gi gi-briefcase text-light-op"></i>
+                            </div>
+                            <h2 class="widget-heading h3 text-warning">
+                                <strong> <span data-toggle="counter" data-to="#{dashboardBean.conge}"></span></strong>
+                            </h2>
+                            <span class="text-muted"><strong style="font-size: 12px">Agent(s) en congé</strong></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-lg-3" jsf:id="frappeappel">
+                    <a href="javascript:void(0)" class="widget">
+                        <div class="widget-content widget-content-mini text-right clearfix">
+                            <div class="widget-icon pull-left themed-background-danger">
+                                <i class="gi gi-wallet text-light-op"></i>
+                            </div>
+                            <h2 class="widget-heading h3 text-danger">
+                                <strong> <span data-toggle="counter" data-to="0"></span></strong>
+                            </h2>
+                            <span class="text-muted"><strong style="font-size: 12px">Agent(s) muté(s)</strong></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+                <!-- Chart Widget -->
+                <div class="widget">
+                    <div class="widget-content border-bottom">
+                        <h:form id="idAction1">
+                            <div class="block-options pull-right">
+                                <div class="btn-group">
+                                    <a href="javascript:void(0)" class="btn btn-effect-ripple btn-success active dropdown-toggle enable-tooltip" data-toggle="dropdown" title="Action"><i class="fa fa-chevron-down">#{bundle.Action}</i></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <h:commandLink class="open-dossier-detail" actionListener="#{pdfEditionBean.presenceViewReportPDF(connexionBean.currentAnneeScolaire, dashboardEnseignantBean.selectedAttributionClasse.classe)}">
+                                                Imprimer Fiche
+                                            </h:commandLink>
+                                        </li> 
+
+                                    </ul>      
+                                </div>
+                            </div>
+                        </h:form>
+                        <strong>Liste des agents</strong>
+                    </div>
+                    <!--<div class="widget-content border-bottom themed-background-muted">-->
+                    <div class="widget-content border-bottom">
+                        <!-- Flot Charts (initialized in js/pages/readyDashboard.js), for more examples you can check out http://www.flotcharts.org/ -->
+                        <ui:include src="list_Agents.xhtml"/>
+                    </div>
+                    <div class="widget-content widget-content-full">
+                        <div class="row text-center">
+                        </div>
+                    </div>
+                </div>
+                <!-- END Chart Widget -->
+            </div>
+
+            <div class="col-sm-6 col-lg-6">
+                <!-- Chart Widget -->
+                <div class="widget">
+                    <div class="widget-content border-bottom">
+                        <div class="block-options pull-right">
+
+                        </div>
+
+                        <strong>Listes des agents en congé</strong>
+                    </div>
+                    <!--<div class="widget-content border-bottom themed-background-muted">-->
+                    <div class="widget-content border-bottom">
+                        <ui:include src="list_AgentConge.xhtml"/>
+                    </div>
+                    <div class="widget-content widget-content-full">
+                        <div class="row text-center">
+                        </div>
+                    </div>
+                </div>
+                <!-- END Chart Widget -->
+            </div>
+        </div>
+
+    </ui:composition>
+</html>

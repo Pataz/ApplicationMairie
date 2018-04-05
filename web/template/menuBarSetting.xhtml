@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div id="sidebar-scroll-alt">
+            <!-- Sidebar Content -->
+            <div class="sidebar-content" style="width: 800px">
+                <!-- Profile -->
+                <div class="sidebar-section" >
+                    <h3 class="text-light">Liste des agents en partance à la retraite</h3>
+
+                    <h:form id="notesForm">
+                        <table jsf:id="notesTable" class="table table-striped table-bordered table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 13px;">#{bundle.matricule}</th>
+                                    <th style="font-size: 13px;">#{bundle.nomPrenom}</th>
+                                    <th style="font-size: 13px;">#{bundle.direction}</th>
+                                    <th style="font-size: 13px;">#{bundle.Poste}</th>
+                                    <th style="font-size: 13px">#{bundle.DateNaissance}</th>
+                                    <th style="font-size: 13px">#{bundle.DateRetraite}</th>
+                                    <th style="font-size: 13px">#{bundle.NbreDay}</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <ui:repeat value="#{notificationBean.notificationRetraiteRecentes}" var="item" varStatus="status">
+                                    <tr style="background-color: #4A545B;color: #F9F9F9">
+                                        <td> #{item.agent.matricule}</td>
+                                        <td> #{item.agent.personne.name}</td>
+                                        <td>#{notificationBean.getProgressionPoste(item.agent).direction.libelleCourt}</td>
+                                        <td>#{notificationBean.getProgressionPoste(item.agent).poste.libelle}</td>
+                                        <td> #{connexionBean.convertDate(item.agent.personne.dateNaissance, 'dd MMM yyyy')}</td>
+                                        <td> #{connexionBean.convertDate(item.dateLimite, 'dd MMM yyyy')}</td>
+                                        <td>#{notificationBean.zDayCounter(item)}</td>
+                                    </tr>
+                                </ui:repeat>  
+                            </tbody>
+                        </table>
+                    </h:form>
+                </div>
+                <!-- END Profile -->
+            </div>
+            <!-- END Sidebar Content -->
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Forms Components Header -->
+        <div class="content-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="header-section">
+                        <h2 style="font-family:Times New Roman;font-size: 25px">Formulaire de dépôt des pièces</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6 hidden-xs">
+                    <div class="header-section">
+                        <ul class="breadcrumb breadcrumb-top">
+                            <li> Gestion personnel</li>
+                            <li>Dépôt des pièces</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Forms Components Header -->
+
+        <!-- Form Components Row -->
+
+        <h:form id="msgForm" prependId="false">
+            <h:messages id="msg" style="display: none;" errorClass="erreurmessage" infoClass="succesmessage" showDetail="true"/>
+            <p:messages  autoUpdate="true" showDetail="true"/>
+        </h:form>
+
+
+
+        <div class="col-sm-12 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-12 col-lg-offset-0">
+            <div class="block" jsf:id="block">
+                <div class="block-title">
+                    <h2 style="font-family:Arial; text-transform: none">Détails dépôt des pièces</h2>
+                </div>
+                <form role="form"  jsf:id="createAgentForm" jsf:prependId="false" jsf:class="form-horizontal" enctype="multipart/form-data">
+                   <div class="form-group col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-4 col-lg-10 col-lg-offset-3">
+                       <h:panelGroup rendered="#{depotPieceBean.id==null}">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="grade">Personnel</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="grade_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="grade" value="#{depotPieceBean.selectedPersonnel}"  ph:data-placeholder="Personnel">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.personnelItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" listener="#{depotPieceBean.returnPersonnel()}" render="personnelArea agent_id stagiaire_id"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                       </h:panelGroup> 
+                     
+                       <h:panelGroup id="personnelArea">
+                         <h:panelGroup rendered="#{depotPieceBean.selectedPersonnel.label=='Agent'}">
+                             <div class="col-sm-2">
+                            <label class=" control-label" for="agent">#{bundle.Agent}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="agent_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="agent" value="#{depotPieceBean.selectedAgent}"  ph:data-placeholder="#{bundle.Agent}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{depotPieceBean.listeAgents}" var="item" itemValue="#{item}" itemLabel="#{item.personne.name}" />
+                                <f:converter converterId="agentConverter" />
+                                <f:ajax  execute="@this"  render="agent_id"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{depotPieceBean.selectedPersonnel.label=='Stagiaire'}">
+                       <div class="col-sm-2">
+                           <label class=" control-label" for="stagiaire">#{bundle.Stagiaire}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="stagiaire_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="stagiaire" value="#{depotPieceBean.selectedStagiaire}"  ph:data-placeholder="#{bundle.Stagiaire}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{depotPieceBean.listeStagiaires}" var="item" itemValue="#{item}" itemLabel="#{item.personne.name}" />
+                                <f:converter converterId="stagiaireConverter" />
+                                <f:ajax  execute="@this"  render="stagiaire_id"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                       </h:panelGroup>    
+                       </h:panelGroup>
+                                    
+
+                    </div> 
+                    <div class="row">
+                         <fieldset jsf:id="depot" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-4 col-lg-10 col-lg-offset-3" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px; margin-left: 110px;margin-bottom: 15px">
+                        <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Ajout de pièces</legend>     
+                        <div class="form-group">
+                            <div class="col-sm-5">
+                                <h:inputFile id="id-input-file" class="file-input"  value="#{depotPieceBean.file}" >
+                                    <f:ajax execute="@this"  render="tableau" onevent="reinitChoosen"/>  
+                                </h:inputFile>
+                            </div>
+                            <div class="col-sm-2" style="padding-left: 5px">
+                                <label class=" control-label" for="typedocument">#{bundle.TypeDocument}</label>  
+                            </div>       
+                            <div class="col-sm-4" jsf:id="id-type-document" >                                          
+                                <h:selectOneMenu class="select-chosen" id="typedocument" value="#{depotPieceBean.newDocument.typeDocument}" ph:data-placeholder="#{bundle.TypeDocument}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{depotPieceBean.listeTypeDocuments}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                    <f:converter converterId="typeDocumentConverter" />
+                                    <f:ajax execute="@this"  onevent="reinitChoosen"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-sm-1" style="margin-left: 0px;float: left">
+                                <h:commandLink title="Ajouter pièce" class="btn btn-primary"  style="width: 35px"  actionListener="#{depotPieceBean.ajouterDocument(event)}">
+                                    <i class="ace-icon fa fa-plus"></i>
+                                    <f:ajax render="tableau id-type-document id-input-file" onevent="reinitChoosen" />
+                                </h:commandLink>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" jsf:id="tableau">
+                                    <tr style="background-color: #2e5f70;color: #fff">
+                                        <th>Type document</th>
+                                        <th>Nom fichier</th>
+                                        <th>Taille</th>
+                                        <th>#{bundle.Action}</th>   
+                                    </tr>
+                                    <tbody>
+                                        <ui:repeat value="#{depotPieceBean.listePieces}" var="item">
+                                            <tr>
+                                                <td>#{item.typeDocument.libelle}</td>
+                                                <td><div style="word-wrap:break-word;width: 140px;" >#{item.nomFichier}</div></td>
+                                                <td>#{item.taille}</td>
+                                                <td> 
+                                                    <h:commandLink id="retirer" class="btn btn-danger btn-xs icon-only shiny" value="">
+                                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                        <f:ajax listener="#{depotPieceBean.retirerDocument(event,item)}" render="tableau id-type-document" onevent="ajaxOnEventInit" />
+                                                    </h:commandLink> 
+                                                </td>
+                                            </tr> 
+                                        </ui:repeat>
+                                    </tbody>
+                                </table>    
+                            </div>
+                        </div>
+                    </fieldset>
+                     <div class="form-group form-actions">
+                            <div class="col-md-9 col-md-offset-5">
+                                <button  class="btn btn-effect-ripple btn-primary"  type="submit" jsf:id="submit_new" jsf:action="#{depotPieceBean.doCreate(event)}">
+                                    #{bundle.Save}
+                                    <f:ajax execute="@form" render=":msgForm:msg @form" onevent="ajaxOnEventInit"/>
+                                </button>
+                              </div>
+                        </div>   
+                    </div>  
+                </form>
+            </div>  
+        </div>
+
+
+
+
+        <!-- END Form Components Row -->
+
+    </ui:composition>
+</html>

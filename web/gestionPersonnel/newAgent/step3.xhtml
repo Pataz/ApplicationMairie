@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <div class="row">  
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-parents"></i> <strong>Identité agent</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class=" gi gi-folder_open"></i> <strong>Fonction détails</strong></a></li>
+                            <li  class="active"><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Autres détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-four"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END Step Info -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-offset-1 col-sm-12">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class=" control-label" for="primes">#{bundle.PrimesFixes}</label>  
+                            </div>       
+                            <div class="col-sm-4" jsf:id="primes_id" >                                          
+                                <h:selectOneMenu class="select-chosen" id="primes" value="#{agentBean.detailVariable.variableSalaire}"  ph:data-placeholder="#{bundle.Primes}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{agentBean.listeVariableSalaires}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                    <f:converter converterId="variableSalaireConverter" />
+                                    <f:ajax  execute="@this" listener="#{agentBean.passDetailVariable()}" onevent="reinitChoosen"/>
+                                </h:selectOneMenu>
+                            </div>
+<!--                            <div class="col-sm-1">
+                                <label class=" control-label" for="valeur">#{bundle.Valeur}</label>  
+                            </div>
+                            <div class="col-sm-2" jsf:id="valeurId" >                                          
+                                <input type="text"  jsf:value="#{agentBean.detailVariable.montant}" class="form-control" placeholder="#{bundle.Valeur}">
+                                    <f:ajax  listener="#{agentBean.passDetailVariable()}" execute="@this" />
+                                </input>     
+                            </div>-->
+                            <button type="button" title="Ajouter dans liste" class="btn btn-primary"  style="width: 35px"  jsf:id="AddInfraction" jsf:action="#{agentBean.addVariableToNewVariables()}">
+                                <i class="ace-icon fa fa-plus"></i>
+                                <f:ajax render=":createAgentForm:table_Infractions tableauRecapu3" onevent="reinitChoosen"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-offset-1 col-sm-12" style="margin-left: 5%; width: 80%;">
+                        <div class="col-sm-12">
+                            <table jsf:id="table_Infractions"  class="table table-bordered table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="font-size:13px;width: 70%;">#{bundle.listeParametrSalaire}</th>
+                                        <th class="text-left" style="font-size:13px;width: 10%;">#{bundle.Action}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{agentBean.newAgent.detailVariableFixes}" var="para" varStatus="status">
+                                        <tr>
+                                            <td class="text-left">
+                                                #{para.variableSalaire.libelle}  
+                                            </td> 
+<!--                                            <td class="text-left">
+                                                #{para.montant}  
+                                            </td> -->
+                                            <td class="text-center">
+                                                <p:commandLink id="removeServiceButton"
+                                                               styleClass="btn btn-danger btn-xs icon-only shiny"
+                                                               update=":createAgentForm:table_Infractions :createAgentForm:tableauRecapu2"
+                                                               title="#{bundle.TakeOff}"
+                                                               process="@this" >
+                                                    <f:setPropertyActionListener value="#{para}" target="#{agentBean.selectedDetailVariable}" />
+                                                    <f:actionListener binding="#{agentBean.removeVariabaleFromNewAgent()}" />
+                                                    <f:ajax onevent="reinitChosen"/>
+                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                </p:commandLink>
+                                            </td>
+                                        </tr>  
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Buttons -->
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="reset" class="btn btn-effect-ripple btn-danger" id="back11">Précedent</button>
+                        <button type="submit" class="btn btn-effect-ripple btn-primary" id="next1">Suivant</button>
+                    </div>
+                </div>
+
+            </div>  
+        </ui:composition>
+    </body>
+</html>

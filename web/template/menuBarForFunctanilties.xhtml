@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+        <div id="sidebar-scroll">
+            <!-- Sidebar Content -->
+            <div class="sidebar-content">
+                <!-- Sidebar Navigation -->
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="/grh/"><i class="gi gi-compass sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">#{bundle.Dashboard}</span></a>
+                    </li>                   
+                    <li class="#{menuAdministrationClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-cogs sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">#{bundle.menuAdministration}</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/administration/categorie/index.xhtml" class="#{menuCategorieClass}">#{bundle.Categorie}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/categorieBase/index.xhtml" class="#{menuCategorieBaseClass}">#{bundle.CategorieBase}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/corps/index.xhtml" class="#{menuCorpsClass}">#{bundle.Corps}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/direction/index.xhtml" class="#{menuDirectionClass}">#{bundle.direction}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/domaineStage/index.xhtml" class="#{menuDomaineStageClass}">#{bundle.DomaineStage}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/evenement/index.xhtml" class="#{menuEvenementClass}">#{bundle.Evenement}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/modele/index.xhtml" class="#{menuModeleClass}">#{bundle.Modele}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/poste/index.xhtml" class="#{menuPosteClass}">#{bundle.Poste}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/salaire/index.xhtml" class="#{menuSalaireClass}">#{bundle.SalaireBase}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/service/index.xhtml" class="#{menuServiceClass}">#{bundle.service}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/sousCategorie/index.xhtml" class="#{menuSousCategorieClass}">#{bundle.SousCategorie}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/typeDocument/index.xhtml" class="#{menuTypeDocumentClass}">#{bundle.TypeDocument}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/typeEvenement/index.xhtml" class="#{menuTypeEvenementClass}">#{bundle.TypeEvenement}</a>
+                            </li>
+<!--                            <li>
+                                <a href="/grh/administration/parametre/index.xhtml" class="#{menuParametreClass}">#{bundle.Parametre}</a>
+                            </li>-->
+                            <li>
+                                <a href="/grh/administration/variableSalaire/index.xhtml" class="#{menuVariableClass}">Elémént variable</a>
+                            </li>
+                            <li>
+                                <a href="/grh/administration/natureSalaire/index.xhtml" class="#{menuNatureSalaireClass}">Nature Salaire</a>
+                            </li>
+                            <li>
+                                <a href="#" class="sidebar-nav-submenu"><i class="fa fa-chevron-left sidebar-nav-indicator"></i>#{bundle.GestionUtilisateur}</a>
+                                <ul>
+                                    <li>
+                                        <a href="/grh/administration/gestionUtilisateur/utilisateur/index.xhtml" class="#{menuUtilisateurClass}">#{bundle.Utilisateur}</a>
+                                    </li>  
+                                    <li>
+                                        <a href="/grh/administration/gestionUtilisateur/fonction/index.xhtml" class="#{menuFonctionClass}">#{bundle.Fonction}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuPersonnelManagerClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Gestion du personnel</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/gestionPersonnel/newAgent/index.xhtml" class="#{menuNewAgentClass}">Agent</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPersonnel/newStagiaire/index.xhtml" class="#{menuNewStagiaireClass}">Stagiaire</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPersonnel/depotPieces/index.xhtml" class="#{menuDepotPieceClass}">Dépôt de pièces</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuPersonnelSuiviClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-sort sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Suivi du personnel</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/suiviPersonnel/suiviAgent/index.xhtml" class="#{menuSuiviAgentClass}">Suivi agent</a>
+                            </li>
+                            <li>
+                                <a href="/grh/suiviPersonnel/suiviStagiaire/index.xhtml" class="#{menuSuiviStagiaireClass}">Suivi stagiaire</a>
+                            </li>
+                            <li>
+                                <a href="/grh/suiviPersonnel/gradeAgent/index.xhtml" class="#{menuGradeAgentClass}">#{bundle.Avancement}</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuCongeManagerClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Gestion des congés</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/gestionConge/planning/index.xhtml" class="#{menuPlanningCongeClass}">Nouveau planning</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionConge/departConge/index.xhtml" class="#{menuDepartCongeClass}">Départ congé</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionConge/planningDirection/index.xhtml" class="#{menuPlanningDirectionClass}">Planning/Direction</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionConge/planningFinal/index.xhtml" class="#{menuPlanningFinalClass}">Planning final</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuEventManagerClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-street-view sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Calendrier</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/gestionEvenement/calendrierEvenement/index.xhtml" class="#{menuCalendarEventClass}">Calendrier evènements</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuPaiesClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Gestion des paies</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/gestionPaies/suiviPaie/index.xhtml" class="#{menuSuiviPaieClass}">Suivi du Salaire</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPaies/heuresSupple/index.xhtml" class="#{menuHeuresSuppleClass}">Heures Supplé..</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPaies/traitement/index.xhtml" class="#{menuTraitementClass}">Traitement</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPaies/paiestraites/index.xhtml" class="#{menuPaiesTraitesClass}">Paies Traitées</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPaies/rapportCNSS/index.xhtml" class="#{menuRapportCNSSClass}">Rapport CNSS</a>
+                            </li>
+                            <li>
+                                <a href="/grh/gestionPaies/rapportImpot/index.xhtml" class="#{menuRapportImpotClass}">Rapport Impot</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="#{menuPlanChargesClass}">
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Plan de Charges</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/planCharges/creation/index.xhtml" class="#{menuCreactionClass}">Création de Chantier</a>
+                            </li>
+                            <li>
+                                <a href="/grh/planCharges/affectation/index.xhtml" class="#{menuAffectationClass}">Affectation ressource</a>
+                            </li>
+                            <li>
+                                <a href="/grh/planCharges/ressourceLibre/index.xhtml" class="#{menuRessourceLibreClass}">Ressources libres</a>
+                            </li>
+                            <li>
+                                <a href="/grh/planCharges/ressourceOccpe/index.xhtml" class="#{menuRessourceOccupeClass}">Ressource occupée</a>
+                            </li>
+                            <li>
+                                <a href="/grh/planCharges/planningFinal/index.xhtml" class="#{menuPlanningFinalClass}">Suivi Chantier</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li class="#{menuRegistreManagerClass}" >
+                        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-table sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Registre</span></a>
+                        <ul>
+                            <li>
+                                <a href="/grh/registre/agent/index.xhtml" class="#{menuRegistreAgentClass}">#{bundle.AgentEnFonction}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/registre/stagiaire/index.xhtml" class="#{menuRegistreStagiaireClass}">#{bundle.StagiaireActif}</a>
+                            </li>
+                            <li>
+                                <a href="/grh/registre/agentRetraite/index.xhtml" class="#{menuRegistreAgentRetraiteClass}">Agent à la retraite</a>
+                            </li>
+                            <li>
+                                <a href="/grh/registre/congeEnCours/index.xhtml" class="#{menuCongeEnAttenteClass}">Congés en Cours</a>
+                            </li>
+                            <li>
+                                <a href="/grh/registre/congeApprouve/index.xhtml" class="#{menuCongeApprouvesClass}">Congés Approuvés</a>
+                            </li>
+                            <li>
+                                <a href="/grh/registre/congeNonApprouve/index.xhtml" class="#{menuCongeNonApprouvesClass}">Congés non Approuvés</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>  
+            </div>
+        </div>
+    </ui:composition>
+</html>

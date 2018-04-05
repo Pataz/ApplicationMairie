@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition>
+
+        <div jsf:id="dialogGenerer" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="dialogFormGenerer" jsf:prependId="false" >
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">#{bundle.AudienceTitreGeneration}</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <fieldset>
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-4 control-label no-padding-right" for="chambre">#{bundle.AudienceChambre}*</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="chambre" value="#{audienceBean.selectedChambre}" p:data-placeholder="#{bundle.AudienceChambre}" required="true" disabled="true" >
+                                                    <f:selectItems value="#{chambreBean.listeChambres}" var="i" itemValue="#{i}" itemLabel="#{i.libelle}" />
+                                                    <f:converter converterId="chambreConverter" />
+                                                </h:selectOneMenu>      
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" id="form-group-datedebut">
+                                            <label class="col-sm-4 control-label no-padding-right" for="datedebut">#{bundle.AudienceDateDebut}*</label>
+                                            <div class="col-sm-8 input-group">
+                                                <input type="text"  jsf:id="datedebut" jsf:value="#{audienceBean.dateDebut}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="#{bundle.AudienceDateDebut}" required="true">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </input>
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" id="form-group-datefin">
+                                            <label class="col-sm-4 control-label no-padding-right" for="datefin">#{bundle.AudienceDateFin}*</label>
+                                            <div class="col-sm-8 input-group">
+                                                <input type="text"  jsf:id="datefin" jsf:value="#{audienceBean.dateFin}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="#{bundle.AudienceDateFin}" required="true">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </input>
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <h:outputText id="list-audiences-generer" value="#{audienceBean.jsonData}" class="hidden"/>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit-generer" jsf:action="#{audienceBean.genererAudiences()}">
+                                <f:ajax execute="@form" render=":msgForm:msg @form :selectedAudienceForm :calendar" onevent="AudienceGenerer" />
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Generate}
+                            </button>
+                            <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                #{bundle.Close}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition>
+</html>
+

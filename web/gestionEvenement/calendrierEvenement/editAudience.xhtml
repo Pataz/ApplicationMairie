@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition >
+        <div jsf:id="editAudienceDialog" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form jsf:id="editAudienceForm" jsf:prependId="false">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger">#{bundle.ModifierAudience}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" >
+                                <div class="col-xs-10" >
+                                    <fieldset>
+                                        <div class="form-group"> 
+                                            <label class="control-label col-sm-4" for="dateAudience">#{bundle.AudienceDate}:</label>
+                                            <h:outputText    class="label-view" value="#{audienceBean.selectedAudience.date}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label col-sm-4" for="jugeChambre">#{bundle.Juge}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="jugeChambre" value="#{audienceBean.selectedAudience.juge}" p:data-placeholder="#{bundle.Juge}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.GetJugesTPI()}" var="j" itemValue="#{j}" itemLabel="#{j.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label  col-sm-4" for="greffierChambre">#{bundle.Greffier}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen form-control" id="greffierChambre" value="#{audienceBean.selectedAudience.greffier}" p:data-placeholder="#{bundle.Greffier}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.GetGreffiersTPI()}" var="g" itemValue="#{g}" itemLabel="#{g.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label  col-sm-4" for="ministerePublic">#{bundle.MinisterePublic}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen form-control" id="ministerePublic1" value="#{audienceBean.selectedAudience.ministerepublic}" p:data-placeholder="#{bundle.MinisterePublic}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.ministereChambre}" var="g" itemValue="#{g}" itemLabel="#{g.nomPrenoms}" />
+                                                    <f:converter converterId="utilisateurConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label  col-sm-4" for="interprete">#{bundle.Interprete}:</label>
+                                            <div class="col-sm-8 input-group" jsf:rendered="#{empty audienceBean.selectedAudience.interprete}">
+                                               <h:selectOneMenu class="select-chosen form-control" id="interprete" value="#{audienceBean.selectedAudience.interprete}" p:data-placeholder="#{bundle.Interprete}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{audienceBean.listInterpretes}" var="g" itemValue="#{g}" itemLabel="#{g.personnePhysique.name}" />
+                                                    <f:converter converterId="interpreteConverter" />
+                                                </h:selectOneMenu>
+                                               </div>
+                                            <div class="col-sm-8 input-group" jsf:rendered="#{!empty audienceBean.selectedAudience.interprete }">
+                                               <h:selectOneMenu class="select-chosen form-control" id="interprete1" value="#{audienceBean.selectedAudience.interprete}" p:data-placeholder="#{bundle.Interprete}" style="width: auto !important;">
+                                                   <f:selectItems value="#{audienceBean.listInterpretes}" var="g" itemValue="#{g}" itemLabel="#{g.personnePhysique.name}" />
+                                                    <f:converter converterId="interpreteConverter" />
+                                                </h:selectOneMenu>
+                                               </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label  col-sm-4" for="audienceSalle">#{bundle.AudienceSalle}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen form-control" id="audienceSalle" value="#{audienceBean.selectedAudience.salle}" p:data-placeholder="#{bundle.Salle}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{salleBean.listeSalles}" var="s" itemValue="#{s}" itemLabel="#{s.libelle}" />
+                                                    <f:converter converterId="salleConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label  col-sm-4" for="publicite">#{bundle.AudiencePublicite}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen form-control" id="publicite" value="#{audienceBean.selectedAudience.publicite}" p:data-placeholder="#{bundle.AudiencePublicite}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{publiciteBean.liste}" var="p" itemValue="#{p}" itemLabel="#{p.label}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label class="control-label col-sm-4" for="typeAudience">#{bundle.TypeAudience}:</label>
+                                            <div class="col-sm-8 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="typeAudience" value="#{audienceBean.selectedAudience.typeAudience}" p:data-placeholder="#{bundle.Juge}" style="width: auto !important;">
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{typeAudienceBean.liste}" var="t" itemValue="#{t}" itemLabel="#{t.label}" />
+                                                    <f:converter converterId="genericEnumConverter" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" data-dismiss="modal" jsf:id="submit_edit_audience" jsf:action="#{audienceBean.modifierAudience()}">
+                                <f:ajax execute="@form" render=":msgForm:msgPage @form :listeAudiencementForm" onevent="globaledit" />
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Modifier}
+                            </button>
+
+                            <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                #{bundle.Close}
+                            </button>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div><!-- PAGE CONTENT ENDS -->
+        <script type="text/javascript">
+
+        </script>
+
+    </ui:composition>
+</html>
+

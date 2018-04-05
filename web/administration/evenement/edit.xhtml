@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <!-- Checkout Modal -->
+
+        <div id="editDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog" style="width:650px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 class="modal-title"><strong>#{bundle.EvenementTitleEditMsg}</strong></h3>
+                    </div>
+                    <form jsf:id="editDialogForm" jsf:prependId="false" jsf:class="form-horizontal">
+                        <div class="modal-body" style="padding-bottom:0px">
+
+                            <div class="form-group row">
+                                <div class="col-sm-3" style="width:24%;padding-right:0px">
+                                    <label class="control-label "  style=" float: left" for="codeE">#{bundle.Code}</label>
+                                </div>
+                                <div class="col-md-7" style="width:60%">
+                                    <label class="editable label-view">
+                                        #{evenementBean.selectedEvenement.code}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3" style="width:24%;padding-right:0px ">
+                                    <label class="control-label" style=" float: left" for="libelleE">#{bundle.Label}</label>    
+                                </div>
+                                <div class="col-sm-7" style="width:60%">
+                                    <input type="text" jsf:id="libelleE" name="libelleE" class="form-control" jsf:value="#{evenementBean.selectedEvenement.libelle}" placeholder="#{bundle.Label}" required="true"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3" style="width:24%;padding-right:0px ">
+                                    <label class="control-label" style=" float: left" for="delaiE">#{bundle.Delai}</label>    
+                                </div>
+                                <div class="col-sm-7" style="width:60%">
+                                    <input type="text" jsf:id="delaiE" name="delaiE" class="form-control" jsf:value="#{evenementBean.selectedEvenement.delai}" placeholder="#{bundle.Delai}" required="true"/>
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+
+                            </div>
+                            <div class="form-group"> 
+
+                            </div>
+                            <div class="form-group"> 
+                                <div class="col-sm-3" style="width:24%;padding-right:0px ">
+                                    <label class="control-label" style=" float: left"  for="typeevenementE">#{bundle.TypeEvenement}</label>    
+                                </div>
+                                <div class="col-sm-7" style="width:60%">
+                                    <h:selectOneMenu class="select-chosen" id="typeevenementE"  value="#{evenementBean.selectedEvenement.typeEvenement}" p:data-placeholder="#{bundle.EvenementType}">
+                                        <f:selectItem itemValue="#{evenementBean.selectedEvenement.typeEvenement}" itemLabel="#{evenementBean.selectedEvenement.typeEvenement.libelle}"/>
+                                        <f:selectItems value="#{typeEvenementBean.listeTypeEvenements}" var="c" itemValue="#{c}" itemLabel="#{c.libelle}" />
+                                        <f:converter converterId="typeEvenementConverter" />
+                                    </h:selectOneMenu>  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3" style="width:24%;padding-right:0px ">
+                                    <label class=" control-label" style=" float: left" for="modeleE">#{bundle.Modele}</label>    
+                                </div>
+                                <div class="col-sm-7" style="width:60%">
+                                    <h:selectOneMenu id="modeleE" class="select-chosen" value="#{evenementBean.selectedEvenement.modele}">
+                                        <f:selectItem itemValue="#{evenementBean.selectedEvenement.modele}" itemLabel="#{evenementBean.selectedEvenement.modele.libelle}"/>
+                                        <f:selectItems value="#{modeleBean.listeModeles}" var="n" itemValue="#{n}" itemLabel="#{n.libelle}"/>
+                                        <f:converter converterId="modeleConverter" />
+                                    </h:selectOneMenu>         
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit_edit" data-dismiss="modal" jsf:action="#{evenementBean.doEdit(event)}">
+                                <f:ajax execute="@form" render=":msgForm:msg @form :listeEvenementForm" onevent="editEvenement"/>
+                                <i class="ace-icon fa fa-check"></i>
+                                #{bundle.Edit}
+                            </button>
+                            <button class="btn btn-default btn-lg active" type="button" style="line-height: 1.5; font-size: 12px; padding: 5px 10px;" data-dismiss="modal">
+                                #{bundle.Close}
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END Checkout Modal -->
+    </ui:composition>
+</html>

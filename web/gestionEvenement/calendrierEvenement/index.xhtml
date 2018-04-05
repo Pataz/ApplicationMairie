@@ -1,0 +1,1010 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="./../../template/base.xhtml">
+        <ui:define name="selectedMenu">
+            <ui:param name="menuEventManagerClass" value="active"/>
+            <ui:param name="menuCalendarEventClass" value="active"/> 
+        </ui:define>
+        <ui:define name="css">
+
+            <link rel="stylesheet" href="../../resources/css/fullcalendar.css" />
+            <!--            <link rel="stylesheet" href="../../resources/css/bootstrap.vertical-tabs.css"/>
+                        <link rel="stylesheet" href="../../resources/css/bootstrap.vertical-tabs.min.css"/>-->
+            <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.vertical-tabs.min.css" />
+            <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.vertical-tabs.css" />
+        </ui:define>
+        <ui:define name="content" id="actualiser-audiences">
+<!--
+            <ui:include src="condamnation.xhtml"/>
+            <ui:include src="jugement.xhtml"/>
+
+             CREATION DES AUDIENCES 
+            <ui:include src="audience_creer.xhtml"/>
+             GENERATION DES AUDIENCES 
+            <ui:include src="audience_generer.xhtml"/>
+             SELECTION D'UNE AUDIENCE 
+            <ui:include src="audience_selectionner.xhtml"/>
+             SUPPRESSION DES AUDIENCES EN LOT 
+            <ui:include src="audience_supprimer_en_lot.xhtml"/>-->
+            <!-- END MODAL DIALOG -->
+            <!-- BEGIN PAGE -->
+            <div id="page" >
+                <!-- PAGE CALENDRIER -->
+                <ui:include src="page_calendrier.xhtml"/>
+                <!-- PAGE DETAIL D'UNE AUDIENCE -->
+                <!--<ui:include src="page_audience.xhtml"/>-->
+            </div>
+            <!-- END PAGE -->
+            <!--             BEGIN MODAL DIALOG -->
+<!--            <ui:include src="renvoi.xhtml"/>
+            <ui:include src="renvoiferme.xhtml"/>
+            <ui:include src="delibere.xhtml"/>
+            <ui:include src="proroger.xhtml"/>
+            <ui:include src="rabattre.xhtml"/>
+            <ui:include src="radier.xhtml"/>
+            <ui:include src="juge.xhtml"/>
+            <ui:include src="cloturer.xhtml"/>
+            <ui:include src="add.xhtml"/>
+            <ui:include src="editAudience.xhtml"/>
+            <ui:include src="supprimerAudience.xhtml"/>
+            <ui:include src="deplacerAudience.xhtml"/>
+            <ui:include src="comparution.xhtml"/>
+                        <ui:include src="detail.xhtml"/>
+                         <ui:include src="../../detail.xhtml"/>
+            <ui:include src="incompetence.xhtml"/>-->
+            <!-- <ui:include src="juge.xhtml"/>-->
+            <!-- BEGIN FORMULAIRE D'ENVOI ET RECEPTION DE DONNEES VIA AJAX -->
+            <form jsf:id="selectedAudienceForm" jsf:prependId="false" class="hidden">
+                <h:inputText id="audience-id" value="#{audienceBean.audienceId}"/>
+                <h:outputText id="list-audiences-initial" value="#{audienceBean.jsonData}"/>
+
+                <h:outputText id="selectedAudienceJson" value="#{audienceBean.selectedAudienceJson}" />
+                <input id="actualiser-audience" /> <!-- Indique s'il faut actualiser l'audience selectionnée dans le calendrier.
+                                                        Valeurs possibles :
+                                                            0 : Ne pas actualiser.
+                                                            1 : Actualiser-->
+
+                <button type="submit" jsf:id="submit-ajax" jsf:action="#{audienceBean.selectionnerAudience()}">
+                    <f:ajax execute="@form" render="@form dialogFormModifier table-audience tableDossiers renvoiDialogForm renvoifermeDialogForm delibDialogForm prorogerDialogForm rabattreDialogForm radierDialogForm radierDialogForm jugeDialogForm cloturerDialogForm addDialogForm incompetenceDialogForm comparutionDialogForm detailsMDialogForm" onevent="ajaxOnEventAfficher" />
+                </button>  
+            </form>
+            <!-- END FORMULAIRE SOUMIS VIA AJAX -->
+        </ui:define>
+        <ui:define name="script">
+            <!-- Load and execute javascript code used only in this page -->
+            <!--<script src="#{request.contextPath}/resources/js/pages/compCalendar.js"></script>-->
+            <script src="#{request.contextPath}/resources/js/pages/moment.js"></script>
+            <script src="#{request.contextPath}/resources/js/pages/fullcalendar.js"></script>
+            <script src="#{request.contextPath}/resources/js/pages/lang-all.js"></script>
+            <!-- Load and execute javascript code used only in this page -->
+            <script src="#{request.contextPath}/resources/js/pages/formsComponents.js"></script> 
+
+            <script src="#{request.contextPath}/resources/js/functionDetail.js"></script> 
+            <script>
+                $(function () {
+                    $('#page-audience').hide();
+                    $('#page-audience').removeClass('hidden');
+                    UiTables.init('#tableDossiers', 6);
+
+                });
+
+
+                $(function () {
+                    UiTables.init('#listeDossierTableJugement', 6);
+                });
+
+                $(function () {
+                    UiTables.init('#tableCondamnation', 9);
+                });
+
+
+                $(function () {
+                    console.log("#list-audiences-initial avant init ==> " + $('#list-audiences-initial').val());
+                    initialiserCalendar();
+                    console.log("#list-audiences-initial apres init ==> " + $('#list-audiences-initial').val());
+                });
+                //cette fonction permet d'initialiser le calendrier
+                function initialiserCalendar() {
+                    /* Initialize FullCalendar */
+                    var date = new Date();
+                    var d = date.getDate();
+                    var m = date.getMonth();
+                    var y = date.getFullYear();
+                    $('#calendar').fullCalendar({
+                        lang: 'fr',
+                        columnFormat: 'dddd',
+                        timeFormat: "H[h](mm)",
+                        buttonHtml: {
+                            prev: '<i class="ace-icon fa fa-chevron-left"></i>',
+                            next: '<i class="ace-icon fa fa-chevron-right"></i>'
+                        },
+                        theme: {
+                            enable: true
+                        },
+                        header: {
+                            left: 'title',
+                            center: '',
+                            right: 'today prev,next',
+                            prev: 'ui-icon-circle-triangle-w',
+                            next: 'ui-icon-circle-triangle-e',
+                            prevYear: 'seek-prev',
+                            nextYear: 'seek-next'
+                        },
+                                // chargerLesAudiences($.parseJSON($('#list-audiences-initial').text()))
+                        events: null,
+                        firstDay: 1,
+                        editable: false,
+                        droppable: false,
+                        selectable: true,
+//                        selectHelper: true,
+                        select: function (start, end, allDay) {
+                            afficherDialogCreer(start);
+                        },
+                        eventClick: function (event, jsEvent, view) {
+                            afficherPageAudience(event.id);
+                        },
+                        eventAfterRender: function (event, element, view) {
+                            element.on('mousedown', function (e) {
+                                if (e.which === 3) { // clic droit de la sourie
+                                    $('#audience-id').val(event.id);
+                                }
+                            });
+                        }
+                    });
+                    $('#calendar').on('contextmenu', function (e) {
+                        e.preventDefault();
+                    });
+//                    
+                    initialiserContextMenu();
+                }
+
+
+//                function afficherDialogCreer(date) {
+//                    $('#dialogCreer').modal();
+//                }
+
+                /**
+                 * Affiche la boîte de dialogue de création d'une audience.
+                 * @param {moment} date Date de l'audience
+                 */
+                function afficherDialogCreer(date) {
+                    if (date) {
+//                        alert("date ==> "+date);
+                        $('#form-group-dateheure-creer').hide();
+                        $('#form-group-heure').show();
+                    } else {
+                        date = moment().startOf('day');
+                        $('#form-group-dateheure-creer').show();
+                        $('#form-group-heure').show();
+                    }
+
+                    initialiserParDefaut();
+//                    $('.datetime-picker').datetimepicker({
+//                        language: 'fr',
+//                        format: 'DD/MM/YYYY HH:mm',
+//                        //maskInput: true,
+//                        pick12HourFormat: false
+//                    }).next().on('click', function () {   //show picker when clicking on the icon
+//                        $(this).prev().focus();
+//                    });
+
+
+//                    $('#dateheure-creer').val(date.format('DD/MM/YYYY HH:mm'));
+                    $('#date-creer').val(date.format('DD/MM/YYYY HH:mm')); // use moment.js
+                    $('#dateheure-creer').val(date.format('DD/MM/YYYY'));
+                    $('#heure-creer').val(date.format('HH:mm'));
+                    $('#heure-creer').change(function () {
+                        $('#date-creer').val($('#dateheure-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    $('#dateheure-creer').change(function () {
+                        $('#date-creer').val($('#dateheure-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    console.log("date-creer => " + $('#date-creer').val());
+                    console.log("1 - afficherDialogCreer");
+                    $('#dialogCreer').modal();
+                }
+
+                function afficherPageAudience(id) {
+                    $('#page-calendrier').fadeOut();
+                    $('#page-audience').fadeIn();
+                    selectionnerAudience(id);
+                }
+
+                function selectionnerAudience(id) {
+//                        $('#actualiser-audience').val(0);
+                    $('#audience-id').val(id);
+//                    $('#audience-id-audiencer').val(id);
+                    $('#submit-ajax').click();
+                }
+
+
+                function ajaxOnEventCreer(data) {
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+                            // récupère l'audience créée
+                            var audience = $.parseJSON($('#audience-creer').text());
+                            // et l'affiche dans le calendrier
+                            $('#calendar').fullCalendar('renderEvent', chargerUneAudience(audience, '(Créée)'), true);
+                            initialiserContextMenu();
+                            //toastr['success']("Audience créée avec succès.", "Création d'une audience");
+                        } catch (err) {
+                        }
+                    }
+                    $('#dialogCreer').modal('hide');
+                    $('#calendar').fullCalendar('unselect');
+                }
+
+
+
+                /**
+                 * Renvoie un tableau des object Audience à afficher dans le calendrier.
+                 * @param {type} listaudiences
+                 * @returns {Array} Tableau des object Audience à afficher dans le calendrier.              
+                 **/
+                function chargerLesAudiences(listaudiences) {
+                    // récupère la liste des audiendes
+                    //var json = $('#json-list-audiences').val();
+                    //var listaudiences = $.parseJSON(json);
+                    var array = [];
+                    $.each(listaudiences, function (i, audience) {
+                        array.push(chargerUneAudience(audience));
+                    });
+                    return array;
+                }
+
+                function chargerUneAudience(audience, info) {
+                    return {
+                        id: audience.id,
+                        title: (info ? info : '')
+                                //+ '\n' + moment(audience.date).format('HH:mm') 
+                                + '\n' + (audience.nbredossier ? audience.nbredossier + ' #{bundle.AudienceDossiers}' : '#{bundle.AudienceZeroDossiers}')
+//                                    + '\n' + (audience.publicite ? audience.publicite.label : '')
+//                                    + ' - ' + (audience.salle ? audience.salle.libelle : '')
+                        ,
+                        start: new Date(audience.date),
+                        className: 'label-audience-' + (audience.publicite ? audience.publicite.name : 'NOME')
+                    };
+                }
+
+
+
+                function initialiserContextMenu() {
+                    $('#calendar .fc-event').contextmenu({
+                        target: '#context-menu-audience',
+                        before: function (e) {
+                            e.preventDefault();
+                            selectionnerAudience($('#audience-id').val());
+                            return true;
+                        },
+                        onItem: function (context, e) {
+                            //alert($(e.target).text());
+                        }
+                    });
+                }
+
+                function ajaxOnErrorCreer(data) {
+                    console.log(JSON.stringify(data));
+                }
+
+//                function startWaitMe(element) {
+//                    $('#actualiser-audiences').waitMe({
+//                        effect: 'win8_linear',
+//                        text: 'Patientez un peu...',
+//                        bg: 'rgba(255,255,255,0.7)',
+//                        color: '#000',
+//                        sizeW: '',
+//                        sizeH: '',
+//                        source: ''
+//                    });
+//                }
+
+//                function stopWaitMe(element) {
+//                    $('#actualiser-audiences').waitMe('hide');
+//                }
+                function ajaxOnEventAfficher(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#actualiser-audiences');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#actualiser-audiences');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            $('#table-dossiers').dataTable({
+                                "language": {
+                                    "url": "/forsetiV2/resources/js/French.json"
+                                }
+                            });
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function startWaitMe(element) {
+
+                    $('.page').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                    //                    alert('----------ds wait fin-------------');
+                }
+
+                function stopWaitMe(element) {
+                    $('.page').waitMe('hide');
+                }
+
+
+
+                function startWaitMeCondamnation(element) {
+
+                    $('#home').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                    //                    alert('----------ds wait fin-------------');
+                }
+
+                function stopWaitMeCondamnation(element) {
+                    $('#home').waitMe('hide');
+                }
+
+
+                function  detail(data)
+                {
+
+                    if (data.status === "begin") {
+                        startWaitMeCondamnatation('#home');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMeCondamnatation('#home');
+                    }
+                    if (data.status === "success") {
+                        initialiserChosenSelect();
+                        UiTables.init('#tableBeneficiaire', 2);
+                        UiTables.init('#tableAuteurNonCondamne', 2);
+                        UiTables.init('#tableCondamnation', 2);
+                    }
+
+                }
+                function  comparution()
+                {
+                    initialiserChosenSelect();
+                    initializeDate();
+
+                }
+                function initializeDate() {
+                    $('.date-picker').datepicker({
+                        todayBtn: "linked",
+                        language: "fr",
+                        autoclose: true,
+                        todayHighlight: true
+
+
+                    });
+                }
+
+                function afficherDialogueCondamnation(date)
+                {
+                    alert('merci');
+                }
+
+                function afficheSucces(data) {
+                    if (data.status === "begin") {
+                        //                        alert("commence");
+                    }
+                    if (data.status === "complete") {
+
+                    }
+                    if (data.status === "success") {
+                        FormsComponents.init();
+                        //                        alert("succes");
+                    }
+                }
+
+                $('#btn-creer').click(function () {
+                    afficherDialogCreer();
+                });
+                $('#btn-generer').click(function () {
+                    afficherDialogGenerer();
+                });
+                $('#btn-supprimerenlot').click(function () {
+                    afficherDialogSupprimerEnLot();
+                });
+                /**
+                 * Affiche la boîte de dialogue de génération des audiences.
+                 */
+                function afficherDialogGenerer() {
+                    var date1 = moment().startOf('year');
+                    var date2 = moment().endOf('year');
+                    $('#datedebut').val(date1.format('DD/MM/YYYY'));
+                    $('#datefin').val(date2.format('DD/MM/YYYY'));
+                    initialiserParDefaut();
+                    $('#dialogGenerer').modal();
+                }
+
+                /**
+                 * Affiche la boîte de dialogue de supprission en lot des audiences.
+                 */
+                function afficherDialogSupprimerEnLot() {
+                    var date1 = moment().startOf('year');
+                    var date2 = moment().endOf('year');
+                    $('#datedebut-supprimerenlot').val(date1.format('DD/MM/YYYY'));
+                    $('#datefin-supprimerenlot').val(date2.format('DD/MM/YYYY'));
+                    initialiserParDefaut();
+                    $('#dialogSupprimerEnLot').modal();
+                }
+
+                function ajaxOnEventGenerer(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#calendar');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#calendar');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            // récupère la liste des audiendes générées
+                            var listaudiences = $.parseJSON($('#list-audiences-generer').text());
+                            // et les affiche dans le calendrier
+                            $.each(listaudiences, function (i, audience) {
+                                $('#calendar').fullCalendar('renderEvent', chargerUneAudience(audience, '(Générée)'), true);
+                            });
+                            initialiserContextMenu();
+                            //toastr['success']("Audiences générées avec succès.", "Génération d'audiences");
+                        } catch (err) {
+                        }
+//                        $('#dialogGenerer').modal('hide');
+//                        $('#calendar').fullCalendar('unselect');
+                    }
+                    $('#dialogGenerer').modal('hide');
+                    $('#calendar').fullCalendar('unselect');
+                }
+            </script>
+
+            <script>
+
+                $(".open-orienter-renvoi").click(function (data) {
+                    console.log("succes");
+                    $('#renvoiDialog').modal('show');
+                    UiTables.init('#dynamicTableRenvoiPenal', 2);
+                    initialiserChosenSelect();
+                    if (data.status === "success") {
+                        try {
+                            UiTables.init('#dynamicTableRenvoiPenal', 2);
+                            initialiserChosenSelect();
+                        } catch (err) {
+                        }
+                    }
+                });
+                $(".open-orienter-renvoiferme").click(function () {
+                    initialiserChosenSelect();
+                    console.log("succes");
+                    $('#renvoifermeDialog').modal('show');
+                    UiTables.init('#dynamic-table-renvoieferme-penal', 1);
+                });
+                $(".open-orienter-delibere").click(function () {
+
+                    $('#delibDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-delib', 2);
+                });
+                $(".open-orienter-proroger").click(function () {
+
+                    $('#prorogerDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-proroger-penal', 2);
+                });
+                $(".open-orienter-rabattre").click(function () {
+
+                    $('#rabattreDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-rabattre', 2);
+                });
+                $(".open-orienter-radier").click(function () {
+
+                    $('#radierDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-radier', 2);
+                });
+                $(".open-orienter-juge").click(function () {
+
+                    $('#jugeDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-juge-penal', 2);
+                });
+                $(".open-orienter-cloturer").click(function () {
+
+                    $('#cloturerDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-cloturer', 2);
+                });
+                $(".open-orienter-add").click(function () {
+
+                    $('#addDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-add', 2);
+                });
+                $(".open-orienter-incompetence").click(function () {
+
+                    $('#incompetenceDialog').modal('show');
+                    initialiserChosenSelect();
+                    UiTables.init('#dynamic-table-incompetence-penal', 2);
+                });
+                $('#btn-back').click(function () {
+                    afficherPageCalendrier();
+                });
+                function afficherPageCalendrier() {
+                    window.location.reload();
+                }
+
+                $('#btn-afficher').click(function () {
+                    afficherDialogSelectionner();
+                });
+                /**
+                 * Affiche la boîte de dialogue de sélection d'une audience.
+                 */
+                function afficherDialogSelectionner() {
+                    initialiserParDefaut();
+                    $('#dialogSelectionner').modal();
+                }
+
+            </script>
+
+            <script>
+//                function startWaitMe(element) {
+//                    $('#checkrenvoi').waitMe({
+//                        effect: 'win8_linear',
+//                        text: 'Patientez un peu...',
+//                        bg: 'rgba(255,255,255,0.7)',
+//                        color: '#000',
+//                        sizeW: '',
+//                        sizeH: '',
+//                        source: ''
+//                    });
+//                }
+
+//                function stopWaitMe(element) {
+//                    $('#checkrenvoi').waitMe('hide');
+//                }
+                function ajaxOnEventSelectionner(data) {
+                    /*
+                     $('#page-calendrier').fadeOut();
+                     $('#page-audience').fadeIn();
+                     */
+                    if (data.status === "begin") {
+                        startWaitMe('#viewS');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#viewS');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            // récupère l'audience sélectionné
+                            var audience = $.parseJSON($('#selectedAudienceJson').text());
+                            $('#calendar').fullCalendar('gotoDate', moment(audience.date));
+                            //$('#calendar').fullCalendar('select');
+
+                            initialiserContextMenu();
+                        } catch (err) {
+                        }
+                    }
+                    $('#dialogSelectionner').modal('hide');
+                }
+                function renvoieaction(data) {
+                    $('#renvoiDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe('#checkrenvoi');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#checkrenvoi');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                        } catch (err) {
+                        }
+                    }
+                }
+                function renvoifermeaction(data) {
+                    $('#renvoifermeDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateJugerSiege(data) {
+                    $('#jugeDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateDelebere(data) {
+                    $('#delibDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateProroger(data) {
+                    $('#prorogerDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateRabattre(data) {
+                    $('#rabattreDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateRadier(data) {
+                    $('#radierDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateCloturer(data) {
+                    $('#cloturerDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateAdd() {
+                    $('#addDialog').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+                function updateJonction() {
+                    $('#jonctionDialog').modal('hide');
+//                    if ($('.succesmessage').text() != '') {
+//
+//                        toastr['success']($('.succesmessage').text());
+//                    }
+//                    if ($('.erreurmessage').text() != '') {
+                    //                        toastr['error']($('.erreurmessage').text());
+                    //                    }
+                }
+                function updateDisJonction() {
+                    $('#disjonctionDialog').modal('hide');
+//                    if ($('.succesmessage').text() != '') {
+//
+//                        toastr['success']($('.succesmessage').text());
+//                    }
+//                    if ($('.erreurmessage').text() != '') {
+                    //                        toastr['error']($('.erreurmessage').text());
+//        }
+                }
+
+                function ajaxOnEventCreerCondamnation(data) {
+                    $('#modalCondamnation').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+
+                        } catch (err) {
+                        }
+                    }
+                }
+//                function startWaitMe(element) {
+//                    $('#rechargeratteindre').waitMe({
+//                        effect: 'win8_linear',
+//                        text: 'Patientez un peu...',
+//                        bg: 'rgba(255,255,255,0.7)',
+//                        color: '#000',
+//                        sizeW: '',
+//                        sizeH: '',
+//                        source: ''
+//                    });
+//                }
+//                function stopWaitMe(element) {
+//                    $('#rechargeratteindre').waitMe('hide');
+//                }
+                function ajaxOnEventInit(data) {
+                    initialiserChosenSelect();
+                    if (data.status === "begin") {
+
+                        startWaitMe('#rechargeratteindre');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#rechargeratteindre');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                            //  UiTables.init('#listeDossierTableJugement', 6);
+                            //  initializeDate();
+                        } catch (err) {
+                        }
+                    }
+                }
+                function AfficheEditAudience() {
+
+                    $('#editAudienceDialog').modal('show');
+                    initialiserParDefaut();
+                }
+
+                /**
+                 * Affiche la boîte de dialogue de suppresion d'une audience.
+                 */
+                function afficherDialogSupprimer() {
+                    initialiserParDefaut();
+                    $('#supprimerAudienceDialog').modal();
+                }
+                function afficherDeplacerAudience(date) {
+                    initialiserParDefaut();
+                    $('#deplacerAudienceDialog').modal();
+                    if (date) {
+//                        alert("date ==> "+date);
+                        $('#form-group-dateheure-creer').hide();
+                        $('#form-group-heure').show();
+                    } else {
+                        date = moment().startOf('day');
+                        $('#form-group-dateheure-creer').show();
+                        $('#form-group-heure').show();
+                    }
+
+                    initialiserParDefaut();
+//                    $('.datetime-picker').datetimepicker({
+//                        language: 'fr',
+//                        format: 'DD/MM/YYYY HH:mm',
+//                        //maskInput: true,
+//                        pick12HourFormat: false
+//                    }).next().on('click', function () {   //show picker when clicking on the icon
+//                        $(this).prev().focus();
+//                    });
+
+
+//                    $('#dateheure-creer').val(date.format('DD/MM/YYYY HH:mm'));
+                    $('#date-creer').val(date.format('DD/MM/YYYY HH:mm')); // use moment.js
+                    $('#dateheure-creer').val(date.format('DD/MM/YYYY'));
+                    $('#heure-creer').val(date.format('HH:mm'));
+                    $('#heure-creer').change(function () {
+                        $('#date-creer').val($('#dateheure-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    $('#dateheure-creer').change(function () {
+                        $('#date-creer').val($('#dateheure-creer').val() + " " + $('#heure-creer').val());
+                    });
+                    console.log("date-creer => " + $('#date-creer').val());
+                    console.log("1 - afficherDialogCreer");
+                    $('#dialogCreer').modal();
+                }
+                function initializeDate() {
+                    $('.date-picker').datepicker({
+                        todayBtn: "linked",
+                        language: "fr",
+                        autoclose: true,
+                        todayHighlight: true
+                    });
+                }
+                function initializeHour() {
+                    $('.input-timepickerD').timepicker({
+                        minuteStep: 1, showSeconds:
+                                true, showMeridian: false});
+                }
+                function globaledit() {
+                    initializeDate();
+                    initializeHour();
+                    initialiserChosenSelect();
+                    initializeDate();
+                }
+                jQuery(function ($) {
+                    $('.deplacer-audience').click(function () {
+                        $('#editAudienceDialog .modal-header h4').text("#{bundle.ModifierAudience}");
+                        $('#submit-modifier span').text("#{bundle.Deplacer}");
+                        $('#form-group-modification').hide();
+                        $('#form-group-deplacement').show();
+                        AfficheEditAudience();
+                    });
+                    function AfficheEditAudience() {
+                        initialiserParDefaut();
+                        $('#editAudienceDialog').modal();
+                    }
+                });
+
+
+                function startWaitMeComparution(element) {
+                    $('#pagecomparution').waitMe({
+                        effect: 'win8_linear',
+                        text: 'Patientez un peu...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                }
+
+                function stopWaitMeComparution(element) {
+                    $('#pagecomparution').waitMe('hide');
+                }
+                function updateComparution(data) {
+                    console.log("sucess");
+
+                    if (data.status === "begin") {
+                        startWaitMeComparution('#pagecomparution');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMeComparution('#pagecomparution');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function updateComparutionbis(data) {
+                    if (data.status === "begin") {
+                        startWaitMe('#test1');
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe('#test1');
+                    }
+                    if (data.status === "success") {
+                        try {
+                            UiTables.init('#tableComparution', 7);
+                        } catch (err) {
+                        }
+                    }
+                }
+                function SuppressionLot(data) {
+                    $('#dialogSupprimerEnLot').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserCalendar();
+                        } catch (err) {
+                        }
+                    }
+                }
+
+
+                function AudienceGenerer(data) {
+                    $('#dialogGenerer').modal('hide');
+                    if (data.status === "begin") {
+                        startWaitMe();
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe();
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserCalendar();
+                        } catch (err) {
+                        }
+                    }
+                }
+
+                function ajoutCondamne() {
+                    initialiserChosenSelect();
+//                    UiTables.init('#tableCondamnation', 2);
+                }
+
+                function actualiseArelaxe() {
+
+
+//                        UiTables.init('#tableAuteurNonCondamne', 2);
+
+
+
+
+                }
+
+                function ajouterBeneficiaire() {
+
+
+//                        UiTables.init('#tableBeneficiaire', 2);
+
+
+
+
+                }
+
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

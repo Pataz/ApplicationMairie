@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="./../template/base.xhtml">
+        <ui:define name="selectedMenu">
+            <ui:param name="menuPhotoClass" value="active"/>
+            <ui:param name="menuPhotoImportPhotoClass" value="active"/> 
+        </ui:define>
+        <ui:define name="css">
+
+        </ui:define>
+        <ui:define name="content">
+            <ui:include src="creatImport.xhtml"/>
+        </ui:define>
+        <ui:define name="script">
+<!--            <script src="#{request.contextPath}/resources/js/ckeditor/ckeditor.js"></script> -->
+            <script src="#{request.contextPath}/resources/js/pages/formsComponents.js"></script> 
+            <script src="#{request.contextPath}/resources/js/pages/moment.js"></script>
+            <script src="#{request.contextPath}/resources/js/pages/lang-all.js"></script>
+
+            <!-- Load and execute javascript code used only in this page -->
+            <script>
+                $("liste-partie").hover(function (e)
+                {
+                    var $target = $(e.target);
+                    if ($target.is('option')) {
+                        alert($target.attr("id"));//Will alert id if it has id attribute
+                        alert($target.text());//Will alert the text of the option
+                        alert($target.val());//Will alert the value of the option
+                    }
+                });
+                ​
+            </script>
+            <script>
+                        // Put event listeners into place
+                        window.addEventListener("DOMContentLoaded", function () {
+                            // Grab elements, create settings, etc.
+                            var canvas = document.getElementById("canvas"),
+                                    context = canvas.getContext("2d"),
+                                    video = document.getElementById("video"),
+                                    videoObj = {"video": true},
+                            errBack = function (error) {
+                                console.log("Video capture error: ", error.code);
+                            };
+
+                            // Put video listeners into place
+                            if (navigator.getUserMedia) { // Standard
+                                navigator.getUserMedia(videoObj, function (stream) {
+                                    video.src = stream;
+                                    video.play();
+                                }, errBack);
+                            } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+                                navigator.webkitGetUserMedia(videoObj, function (stream) {
+//                            video.src = window.webkitURL.createObjectURL(stream);
+                                    video.src = window.URL.createObjectURL(stream);
+                                    video.play();
+                                }, errBack);
+                            }
+                            else if (navigator.mozGetUserMedia) { // Firefox-prefixed
+                                navigator.mozGetUserMedia(videoObj, function (stream) {
+                                    video.src = window.URL.createObjectURL(stream);
+                                    video.play();
+                                }, errBack);
+                            }
+                            // Trigger photo take
+                            document.getElementById("snap").addEventListener("click", function () {
+                                context.drawImage(video, 0, 0, 200, 150);
+                                // store the photo data content  into the hidden input
+//                        var dataURL = canvas.toDataURL("image/jpg");
+                                //var hidden = document.getElementById("myForm:inputPhoto");
+//                        var hidden = document.getElementById("inputPhoto");
+//                        hidden.value = dataURL;
+                            });
+
+                            document.getElementById("snapF").addEventListener("click", function () {
+                                var cF = cloneCanvas("canvas", "canvasF", 200, 150);
+                                var dataURLF = cF.toDataURL("image/jpg");
+//                        alert("dataURLF ==> " + dataURLF);
+                                document.getElementById('inputPhotoF').value = dataURLF;
+//                        $('#inputPhotoF').val(dataURLF);
+//                        $('#inputPhotoF').val("hodisjfdojs");
+//                        var hiddenF = document.getElementById("inputPhotoF");
+//                        hiddenF.value = dataURLF;
+//                        alert("inputPhotoF ==> " + document.getElementById('inputPhotoF').value);
+                                console.log("inputPhotoF ==> " + document.getElementById('inputPhotoF').value);
+
+                            });
+
+                            document.getElementById("snapPG").addEventListener("click", function () {
+                                var cPG = cloneCanvas("canvas", "canvasPG", 200, 150);
+                                var hiddenPG = document.getElementById("inputPhotoPG");
+                                hiddenPG.value = dataURLPG;
+                            });
+                            document.getElementById("snapPD").addEventListener("click", function () {
+                                var cPD = cloneCanvas("canvas", "canvasPD", 200, 150);
+                                var hiddenPD = document.getElementById("inputPhotoPD");
+                                hiddenPD.value = dataURLPD;
+                            });
+
+//                    document.getElementById("snapPG").addEventListener("click", function () {
+//                        var c = document.getElementById("canvas");
+//                        var ctx = c.getContext("2d");
+//                        var imgData = ctx.getImageData(0, 0, c.width, c.height);
+//
+//                        var cPG = document.getElementById("canvasPG");
+//                        var ctxPG = cPG.getContext("2d");
+//                        ctxPG.putImageData(imgData, 0, 0);
+//                    });
+//                    document.getElementById("snapA").addEventListener("click", function () {
+//                        var c = document.getElementById("canvas");
+//                        var ctx = c.getContext("2d");
+//                        var imgData = ctx.getImageData(0, 0, c.width, c.height);
+//
+//                        var cA = document.getElementById("canvasA");
+//                        var ctxA = cA.getContext("2d");
+//                        ctxA.putImageData(imgData, 0, 0);
+//                    });
+//                    document.getElementById("snapPD").addEventListener("click", function () {
+//                        var c = document.getElementById("canvas");
+//                        var ctx = c.getContext("2d");
+//                        var imgData = ctx.getImageData(0, 0, c.width, c.height);
+//
+//                        var cPD = document.getElementById("canvasPD");
+//                        var ctxPD = cPD.getContext("2d");
+//                        ctxPD.putImageData(imgData, 0, 0);
+//                    });
+
+
+                        }, false);
+
+                //cette fonction clone le oldCanvas dans NewCanvas
+                function cloneCanvas(idOldCanvas, idNewCanvas, widthLength, heightLength) {
+
+                    var oldCanvas = document.getElementById(idOldCanvas);
+                    var newCanvas = document.getElementById(idNewCanvas);
+
+                    var ctxNewCanvas = newCanvas.getContext("2d");
+                    ctxNewCanvas.drawImage(oldCanvas, 0, 0, widthLength, heightLength);
+
+                    return newCanvas;
+                }
+
+                function reinitializer(data) {
+                    if (data.status === "begin") {
+
+                    }
+                    if (data.status === "complete") {
+
+                    }
+                    if (data.status === "success") {
+                        try {
+                            initialiserChosenSelect();
+
+
+                        } catch (err) {
+                        }
+                    }
+
+
+
+                }
+
+                function startWaitMe(element) {
+                    $('#creatPhoto').waitMe({
+                        effect: 'facebook',
+                        text: 'Enregistrement de photo en cours...',
+                        bg: 'rgba(255,255,255,0.7)',
+                        color: '#000',
+                        sizeW: '',
+                        sizeH: '',
+                        source: ''
+                    });
+                    //                    alert('----------ds wait fin-------------');
+                }
+
+                function stopWaitMe(element) {
+                    $('#creatPhoto').waitMe('hide');
+                }
+
+                function savePhoto(data) {
+                    if (data.status === "begin") {
+
+                        startWaitMe("#pagePhoto");
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe("#pagePhoto");
+                    }
+                    if (data.status === "success") {
+                        initialiserChosenSelect();
+                        initializeDate();
+
+                    }
+                }
+
+
+
+                function actualiserPartieAndEtat(data) {
+                    if (data.status === "begin") {
+
+                        startWaitMe("#pagePhoto");
+
+                    }
+                    if (data.status === "complete") {
+                        stopWaitMe("#pagePhoto");
+                    }
+                    if (data.status === "success") {
+
+                        initialiserChosenSelect();
+initializeDate();
+
+
+                    }
+                }
+                function initializeDate() {
+                    $('.input-datepicker').datepicker({
+                        todayBtn: "linked",
+                        language: "fr",
+                        autoclose: true,
+                        todayHighlight: true
+
+                    });
+                }
+
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

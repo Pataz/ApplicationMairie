@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition>
+            <!-- Step Info -->
+            <!--<div style="padding-left: 18px;padding-top: 18px;border-left: 4px solid #d0d0d0;border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;font-style:italic;">-->
+            <!-- Step Info -->
+            <div class="row">
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills nav-justified clickable-steps">
+                            <li class="active"><a href="javascript:void(0)" data-gotostep="clickable-first"><i class="gi gi-parents"></i> <strong>Identité stagiaire</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-second"><i class=" gi gi-folder_open"></i> <strong>Autres détails</strong></a></li>
+                            <li><a href="javascript:void(0)" data-gotostep="clickable-third"><i class="fa fa-check"></i> <strong>Confirmation</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END Step Info -->
+                <fieldset jsf:id="depot" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-4 col-lg-10 col-lg-offset-3" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px; margin-left: 110px;margin-bottom: 15px">
+                    <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Identité stagiaire</legend>     
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="specialite">#{bundle.civilite}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="cilivilte_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="personne_civiliteP" value="#{stagiaireBean.newStagiaire.personne.civilite}"  ph:data-placeholder="#{bundle.civilite}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.civiliteItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@this" render="tableauRecapu"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div> 
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="nom">#{bundle.Nom}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="nom_id" >                                          
+                            <input type="text" jsf:value="#{stagiaireBean.newStagiaire.personne.nom}" class="form-control" placeholder="#{bundle.Nom}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="prenom">#{bundle.Prenoms}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="prenom_id" >                                          
+                            <input type="text"  jsf:value="#{stagiaireBean.newStagiaire.personne.prenom}" class="form-control" placeholder="#{bundle.Prenoms}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="sexe">#{bundle.Sexe}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="sexe_id" >                                          
+                            <h:selectOneMenu class="select-chosen" id="sexe" value="#{stagiaireBean.newStagiaire.personne.sexe}"  ph:data-placeholder="#{bundle.Sexe}">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{globalBean.sexeItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                <f:converter converterId="genericEnumConverter" />
+                                <f:ajax  execute="@form" render=" :createAgentForm:tableauRecapu"   onevent="reinitChoosen"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="adresse">#{bundle.address}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="adresse_id" >                                          
+                            <input type="text"  jsf:value="#{stagiaireBean.newStagiaire.personne.adresse}" class="form-control" placeholder="#{bundle.address}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>         
+                        </div>
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="telephone">#{bundle.contact}</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="telephone_id" >                                          
+                            <input type="text"  jsf:value="#{stagiaireBean.newStagiaire.personne.telephone}" class="form-control" placeholder="#{bundle.contact}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class=" control-label" for="val-digits">Email</label>  
+                        </div>       
+                        <div class="col-sm-4" jsf:id="email_id" >                                          
+                            <input type="email" id="email" jsf:value="#{stagiaireBean.newStagiaire.personne.email}" name="email" class="form-control" placeholder="#{bundle.Email}">
+                                <f:ajax  execute="@this" render="tableauRecapu"/>
+                            </input>        
+                        </div>
+                    </div>
+
+                </fieldset> 
+
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-5">
+                        <button type="button"  class="btn btn-primary hidden"  style="width: 35px" id="next2"  jsf:id="next2">
+                            <i class="ace-icon fa fa-plus"></i>
+                            <f:ajax execute="@this" render="tableauRecapu" onevent="reinitChosen"/>
+                        </button>
+                        <button type="submit" class="btn btn-effect-ripple btn-primary" onclick="execute_Ajax()"  id="next1">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </ui:composition>
+    </body>
+</html>

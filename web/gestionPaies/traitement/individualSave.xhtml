@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition>
+        <form jsf:prependId="false"  jsf:id="individualForm" jsf:class="form-horizontal"  enctype="multipart/form-data">
+            <div class="block full">
+                <form jsf:id="agentForm" jsf:prependId="false" jsf:class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="direction">#{bundle.direction}</label>  
+                        </div>
+                        <div class="col-sm-3" style="width:23%">                                          
+                            <h:selectOneMenu class="select-chosen" id="direction" value="#{suiviPaieBean.selectedDirection}" ph:data-placeholder="#{bundle.direction}">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{suiviPaieBean.listeDirections}" var="d" itemValue="#{d}" itemLabel="#{d.libelleCourt}"/>
+                                <f:converter converterId="directionConverter" />
+                                <f:ajax  listener="#{suiviPaieBean.passDirection()}" render="grp-liste-service grp-liste-agents teteForm" onevent="reinitChoose"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="service">#{bundle.service}</label>  
+                        </div>
+                        <div class="col-sm-3" style="width:23%" jsf:id="grp-liste-service">                                          
+                            <h:selectOneMenu class="select-chosen" id="service" value="#{suiviPaieBean.selectedService}" ph:data-placeholder="#{bundle.service}">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{suiviPaieBean.listeServices}" var="s" itemValue="#{s}" itemLabel="#{s.libelleCourt}"/>
+                                <f:converter converterId="serviceConverter" />
+                                <f:ajax   listener="#{suiviPaieBean.passService()}" render="grp-liste-agents teteForm" onevent="reinitChoose"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-sm-2" style="width:8%;padding-right: 0px">
+                            <label class="control-label" for="grp-liste-agents">Agent</label>  
+                        </div> 
+                        <div class="col-sm-3" style="width:30%" jsf:id="grp-liste-agents">                                          
+                            <h:selectOneMenu class="select-chosen" id="liste-agents" value="#{suiviPaieBean.selectedAgent}" ph:data-placeholder="Agent">
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems value="#{suiviPaieBean.listeAgents}" var="a" itemValue="#{a}" itemLabel="#{a.personne.name}"/>
+                                <f:converter converterId="agentConverter" />
+                                <f:ajax   listener="#{suiviPaieBean.passAgent()}" render=":table_PrimesFixes :table_cnss :table_totaux teteForm :infoTeteForm" onevent="reinitChoose"/> 
+                            </h:selectOneMenu>
+                        </div>  
+                    </div> 
+                </form>
+            </div>
+
+            <div class="block">
+                <div class="block-title"  jsf:id="teteForm">
+                    <form  jsf:id="infoTeteForm" jsf:prependId="false" class="center-table"> 
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <a href="javascript:void(0)" class="btn btn-effect-ripple btn-primary dropdown-toggle enable-tooltip" data-toggle="dropdown" title="Consultation"><i class="fa fa-chevron-down">#{bundle.Action}</i></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <h:commandLink class="open-details" onclick="$('#detailsAgentDialog').modal('show')" >
+                                            <h:outputText value="#{bundle.Consulter}"/>
+                                            <f:ajax render=":test:detailsAgentDialogForm" listener="#{agentBean.passItem(suiviPaieBean.selectedAgent)}"/>
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form> 
+                    <h2 style="font-family:Arial; margin-right: 40px; text-transform: none">#{bundle.matricule}: <span class="text-success">#{suiviPaieBean.selectedAgent.matricule}</span></h2>   
+                    <h2 style="font-family:Arial; margin-right: 40px;text-transform: none">#{bundle.nSSocial}: <span class="text-success">#{suiviPaieBean.selectedAgent.nsSociale}</span></h2>
+                    <h2 style="font-family:Arial;text-transform: none">#{bundle.Poste} :<span class="text-success">#{suiviPaieBean.newProgressionPoste.poste.libelle}</span></h2> 
+                </div>
+                <div class="row">
+                    <form  jsf:id="TraitementForm" jsf:prependId="false" jsf:class="form-horizontal">
+                        <fieldset jsf:id="absence_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Détails traitement</legend>     
+                            <div class="form-group">
+                                <div class="col-sm-3">
+
+                                </div>  
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="mois">Mois Concerné</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="mois_id" >                                          
+                                    <h:selectOneMenu class="select-chosen" id="mois" value="#{suiviPaieBean.newSalaire.mois}"  ph:data-placeholder="Mois Concerné">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{suiviPaieBean.listeMois}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                        <f:converter converterId="moisConverter" />
+                                        <f:ajax  listener="#{suiviPaieBean.charger()}" render="TraitementForm :table_PrimesFixes :table_cnss :table_totaux"   onevent="reinitChoose"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-sm-3">
+
+                                </div>  
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="modePaye">Mode de payement</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="modePaie_id" >                                          
+                                    <h:selectOneMenu class="select-chosen" id="modePaie" value="#{suiviPaieBean.newSalaire.modePayement}"  ph:data-placeholder="Mode Paie">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{globalBean.modePayementItems}" var="item" itemValue="#{item}" itemLabel="#{item.label}" />
+                                        <f:converter converterId="genericEnumConverter" />
+                                        <f:ajax  execute="@this" render="TraitementForm"   onevent="reinitChoose"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="datePaie">Date de Paie</label>  
+                                </div>
+                                <div class="col-sm-4" jsf:id="datePaie_id" >                                          
+                                    <input type="text"  jsf:id="datePaie" value="#{suiviPaieBean.newSalaire.datePaie}" class="form-control input-datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </input>
+                                </div>  
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="NaurePaie">Nature Paie</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="naturePaiee_id" >                                          
+                                    <h:selectOneMenu class="select-chosen" id="naturePaie" value="#{suiviPaieBean.newSalaire.natureSalaire}"  ph:data-placeholder="Nature Paie">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{suiviPaieBean.listeNatureSalaires}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                        <f:converter converterId="natureSalaireConverter" />
+                                        <f:ajax  execute="@this" render="TraitementForm"   onevent="reinitChoose"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class=" control-label" for="observation">Observation</label>  
+                                </div>       
+                                <div class="col-sm-4" jsf:id="observation_id" >                                          
+                                    <h:inputTextarea id="observationAbsence"  value="#{suiviPaieBean.newSalaire.observation}" rows="4" class="form-control" />
+                                </div>       
+                            </div>
+                        </fieldset>  
+
+                        <fieldset jsf:id="primesFixes_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">Primes / Indenminités </legend>     
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <label class=" control-label" for="primes">#{bundle.PrimesVariables}</label>  
+                                        </div>       
+                                        <div class="col-sm-5" jsf:id="primes_id1" >                                          
+                                            <h:selectOneMenu class="select-chosen" id="primes1" value="#{suiviPaieBean.detailSalaire.variableSalaire}"  ph:data-placeholder="#{bundle.PrimesFixes}">
+                                                <f:selectItem itemValue="" itemLabel="" />
+                                                <f:selectItems value="#{suiviPaieBean.listeVariablePrimes}" var="item" itemValue="#{item}" itemLabel="#{item.libelle}" />
+                                                <f:converter converterId="variableSalaireConverter" />
+                                                <f:ajax  execute="@this" render="table_PrimesFixes"   onevent="reinitChoose"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label class=" control-label" for="valeur">#{bundle.Valeur}</label>  
+                                        </div>
+                                        <div class="col-sm-2" jsf:id="valeurId" >                                          
+                                            <input type="text"  jsf:value="#{suiviPaieBean.detailSalaire.montant}" class="form-control" placeholder="#{bundle.Valeur}">
+                                                <f:ajax  execute="@this" render="table_PrimesFixes"/>
+                                            </input>     
+                                        </div>
+                                        <button type="button" title="Ajouter dans liste" class="btn btn-primary"  style="width: 35px"  jsf:id="AddInfraction" jsf:action="#{suiviPaieBean.addVariableToNewVariables()}">
+                                            <i class="ace-icon fa fa-plus"></i>
+                                            <f:ajax execute="@form" listener="#{suiviPaieBean.passDetailVariable()}" render=":TraitementForm:table_PrimesFixes" onevent="reinitChoose"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12" style="margin-left: 3%; width: 95%;">
+                                    <div class="col-sm-12">
+                                        <table jsf:id="table_PrimesFixes"  class="table table-bordered table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="font-size:13px; width: 30%;"><center>#{bundle.Libelle}</center> </th>
+                                                    <th class="text-center" style="font-size:13px; width: 15%;"><center>#{bundle.taux} en %</center></th>
+                                                    <th class="text-center" style="font-size:13px;width: 20%; "><center>#{bundle.montant}</center></th>
+                                                    <th class="text-center" style="font-size:13px;width: 10%; "><center>#{bundle.Action}</center></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{suiviPaieBean.newSalaire.detailSalaire}" var="para" varStatus="status">
+                                                    <tr>
+                                                        <td class="text-center"> <center>#{para.variableSalaire.libelle}</center></td> 
+                                                        <td class="text-center">#{para.variableSalaire.partEmploye}</td>
+                                                        <td class="text-center">#{suiviPaieBean.getByPrimeEmploye(para.variableSalaire, suiviPaieBean.selectedAgent)}</td>
+                                                        <td class="text-center">
+                                                            <h:panelGroup rendered="#{para.variableSalaire.typeVariable != suiviPaieBean.typeVariable}">
+                                                                <center>
+                                                                    
+                                                                </center>
+                                                            </h:panelGroup>
+                                                        </td>
+                                                    </tr>  
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset jsf:id="cnss_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">CNSS </legend>     
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12" style="margin-left: 3%; width: 95%;">
+                                    <div class="col-sm-12">
+                                        <table jsf:id="table_cnss"  class="table table-bordered table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" rowspan="2" style="font-size:13px;width: 30%;"><center>#{bundle.Libelle}</center> </th>
+                                                    <th class="text-center" colspan="2" style="font-size:13px;width: 35%;"><center>#{bundle.partEmploye}</center></th>
+                                                    <th class="text-center" colspan="2" style="font-size:13px;width: 35%;"><center>#{bundle.partEmployeur}</center></th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center" style="font-size:13px;"><center>#{bundle.taux}</center></th>
+                                                    <th class="text-center" style="font-size:13px;"><center>#{bundle.montant}</center></th>
+                                                    <th class="text-center" style="font-size:13px;"><center>#{bundle.taux}</center></th>
+                                                    <th class="text-center" style="font-size:13px;"><center>#{bundle.montant}</center></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{suiviPaieBean.listeVariableCnss}" var="para" varStatus="status">
+                                                    <h:panelGroup rendered="#{para.partEmploye!=null and  (para.partEmployeur=='' || para.partEmployeur==null)}">
+                                                        <tr>
+                                                            <td class="text-left"> <center>#{para.libelle}</center></td> 
+                                                            <td class="text-left"><center>#{para.partEmploye}</center></td>
+                                                            <td class="text-left"><center>#{suiviPaieBean.getByCNSSEmploye(para , suiviPaieBean.selectedAgent)}</center></td>
+                                                            <td class="text-left"><center>-</center></td>
+                                                            <td class="text-left"><center>-</center></td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup rendered="#{para.partEmployeur!=null and (para.partEmploye=='' || para.partEmployeur==null)}">
+                                                        <tr>
+                                                            <td class="text-left"> <center>#{para.libelle}</center></td> 
+                                                            <td class="text-left"><center>-</center></td>
+                                                            <td class="text-left"><center>-</center></td>
+                                                            <td class="text-left"><center>#{para.partEmployeur}</center></td>
+                                                            <td class="text-left"><center>#{suiviPaieBean.getByCNSSEmployeur(para , suiviPaieBean.selectedAgent)}</center></td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset jsf:id="totaux_id" class="col-sm-9 col-sm-offset-4 col-md-9 col-md-offset-2 col-lg-10 col-lg-offset-1" style="border: 1px solid #dae0e8;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;padding-top: 0px;margin-bottom: 15px">
+                            <legend style="border: 0px;padding-top: 3px;padding-bottom:2px;color: #164">TOTAUX </legend>     
+                            <div class="row">
+                                <div class="col-md-12 col-lg-offset-1 col-sm-12" style="margin-left: 3%; width: 95%;">
+                                    <div class="col-sm-12">
+                                        <table jsf:id="table_totaux"  class="table table-bordered table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left" style="font-size:13px;width: 40%;"><center>#{bundle.Libelle}</center> </th>
+                                                    <th class="text-left" style="font-size:13px;width: 30%;"><center>#{bundle.partEmploye}</center></th>
+                                                    <th class="text-left" style="font-size:13px;width: 30%;"><center>#{bundle.partEmployeur}</center></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.SalaireBase}</th>
+                                                    <td class="text-center">#{suiviPaieBean.getProgressionPoste(suiviPaieBean.selectedAgent).categorie.salaireMensuel}</td>
+                                                    <td class="text-center">-</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.Primes}</th>
+                                                    <td class="text-center">#{suiviPaieBean.getPrimesEmploye(suiviPaieBean.selectedAgent)}</td>
+                                                    <td class="text-center">-</td>
+                                                </tr>
+                                                <h:panelGroup rendered="#{suiviPaieBean.getExistHeureSuppl(suiviPaieBean.selectedAgent)==true }">
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.heureSuppl}</th>
+                                                        <td class="text-center">#{suiviPaieBean.getHeureSupplEmploye(suiviPaieBean.selectedAgent , null)}</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                </h:panelGroup>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.salaireBrut}</th>
+                                                    <td class="text-center">#{suiviPaieBean.getSalaireBrut(suiviPaieBean.selectedAgent)}</td>
+                                                    <td class="text-center">-</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.CotisationCNSS}</th>
+                                                    <td class="text-center">(#{suiviPaieBean.getCNSSEmploye(suiviPaieBean.selectedAgent)})</td>
+                                                    <td class="text-center">#{suiviPaieBean.getCNSSEmployeur(suiviPaieBean.selectedAgent)}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.Impot}</th>
+                                                    <td class="text-center">(#{suiviPaieBean.getIPTSByEmploye(suiviPaieBean.selectedAgent)})</td>
+                                                    <td class="text-center">#{suiviPaieBean.getImpotEmployeur(suiviPaieBean.selectedAgent)}</td>
+                                                </tr>
+                                                <h:panelGroup rendered="#{suiviPaieBean.getExistPret(suiviPaieBean.selectedAgent)==true }">
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.acomptePret}</th>
+                                                        <td class="text-center">()</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                </h:panelGroup>
+                                                <tr>
+                                                    <th class="text-center">#{bundle.SalaireNet}</th>
+                                                    <td class="text-center">#{suiviPaieBean.getSalaireNet(suiviPaieBean.selectedAgent)}</td>
+                                                    <td class="text-center">-</td>                                     
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group form-actions">
+                            <div class="col-md-12 col-md-offset-4 col-lg-offset-5">
+                                <button type="submit" class="btn btn-effect-ripple btn-primary" jsf:id="submit_new" jsf:action="#{suiviPaieBean.doCreateSalaire(event)}">
+                                    #{bundle.Save}
+                                    <f:ajax execute="@form" render=":msgForm:msg  :block :individualForm" onevent="reinitChoose"/>  
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </form>
+    </ui:composition>
+</html>
+

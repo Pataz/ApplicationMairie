@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition>
+        <!-- Checkout Modal -->
+        <div id="totauxDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="weight:800px;height:50px">
+                <div class="modal-content">
+                    <form  jsf:id="totauxDialogForm" jsf:class="push">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title"><strong>#{bundle.Totaux}</strong></h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-lg-offset-1">
+                                    <div class="table-responsive">
+                                        <form jsf:id="totauxForm" jsf:prependId="false" class="center-table"> 
+                                            <table jsf:id="TotauxID" class="table table-striped table-bordered table-vcenter">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="font-size:13px;width: 40%;"><center>#{bundle.Libelle}</center> </th>
+                                                        <th class="text-center" style="font-size:13px;width: 30%;"><center>#{bundle.partEmploye}</center></th>
+                                                        <th class="text-center" style="font-size:13px;width: 30%;"><center>#{bundle.partEmployeur}</center></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.SalaireBase}</th>
+                                                        <td class="text-center">#{suiviPaieBean.getProgressionPoste(suiviPaieBean.selectedAgent).categorie.salaireMensuel}</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.Primes}</th>
+                                                        <td class="text-center">#{suiviPaieBean.getPrimesEmploye(suiviPaieBean.selectedAgent)}</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.CotisationCNSS}</th>
+                                                        <td class="text-center">(#{suiviPaieBean.getCNSSEmploye(suiviPaieBean.selectedAgent)})</td>
+                                                        <td class="text-center">#{suiviPaieBean.getCNSSEmployeur(suiviPaieBean.selectedAgent)}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.Impot}</th>
+                                                        <td class="text-center">(#{suiviPaieBean.getIPTSByEmploye(suiviPaieBean.selectedAgent)})</td>
+                                                        <td class="text-center">#{suiviPaieBean.getImpotEmployeur(suiviPaieBean.selectedAgent)}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center">#{bundle.SalaireNet}</th>
+                                                        <td class="text-center">#{suiviPaieBean.getSalaireNet(suiviPaieBean.selectedAgent)}</td>
+                                                        <td class="text-center">-</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-effect-ripple btn-danger" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times"></i>
+                                #{bundle.Close}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

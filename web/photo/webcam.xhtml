@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf">
+<head><title>enregistrement</title></head>
+<body>	
+	<div>		
+		<script>
+			// Put event listeners into place
+			window.addEventListener("DOMContentLoaded", function() {
+				// Grab elements, create settings, etc.
+				var canvas = document.getElementById("canvas"),
+					context = canvas.getContext("2d"),
+					video = document.getElementById("video"),
+					videoObj = { "video": true },
+					errBack = function(error) {
+						console.log("Video capture error: ", error.code); 
+					};
+
+				// Put video listeners into place
+				if(navigator.getUserMedia) { // Standard
+					navigator.getUserMedia(videoObj, function(stream) {
+						video.src = stream;
+						video.play();
+					}, errBack);
+				} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+					navigator.webkitGetUserMedia(videoObj, function(stream){
+						video.src = window.webkitURL.createObjectURL(stream);
+						video.play();
+					}, errBack);
+				}
+				else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+					navigator.mozGetUserMedia(videoObj, function(stream){
+						video.src = window.URL.createObjectURL(stream);
+						video.play();
+					}, errBack);
+				}
+				// Trigger photo take
+				document.getElementById("snap").addEventListener("click", function() {
+					context.drawImage(video, 0, 0, 640, 480);
+					// store the photo data content  into the hidden input
+					var dataURL = canvas.toDataURL("image/jpg");
+					//var hidden = document.getElementById("myForm:inputPhoto");
+					var hidden = document.getElementById("inputPhoto");
+					hidden.value = dataURL;
+				});					
+			}, false);			
+		</script>
+		<br/><br/><br/>
+		<button id="snap">Snap Photo</button><br/>
+		<video id="video" width="640" height="480" autoplay="true"></video><br/>				
+		<canvas id="canvas" width="640" height="480"></canvas>
+		<h:form prependId="false" id="myForm">		
+			<h:inputHidden id="inputPhoto" value="#{photoBean.photoURL}" />
+			<h:inputHidden id="index" value="1" />
+			<!--<input type="hidden" id="inputPhoto" name="inputPhoto" jsf:value="#{photoBean.photoURL}" /> -->
+			<h:commandButton value="Envoyer" action="#{photoBean.save}"/>
+		</h:form>			
+	</div>	
+</body>
+
+</html>

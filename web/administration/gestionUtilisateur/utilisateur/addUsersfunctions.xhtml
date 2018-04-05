@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div jsf:id="addFunctionUserModal" class="modal fade draggable" tabindex="-1">
+            <div style="width: 800px" class="modal-dialog">
+                <div class="modal-content">
+                    <!--<form jsf:id="dialogFormCreer" jsf:prependId="false" >-->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="blue bigger">
+                            <form jsf:id="userIdentityForm">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <h4 class='smaller'>
+                                            <i class='gi gi-hand_right'></i>
+                                            &nbsp;&nbsp;#{exerciceFonctionBean.selectedUser.nomPrenoms}
+                                        </h4>
+                                    </div>
+                                    <div class="col-lg-5" jsf:rendered="#{exerciceFonctionBean.selectedDefaultExerciceFonction!=null}">
+                                        <h4 class='smaller' jsf:id="notifUser">
+                                           #{bundle.DefaultService}: &nbsp;&nbsp;#{exerciceFonctionBean.selectedDefaultExerciceFonction.service.libelle}
+                                        </h4>
+                                    </div>
+                                    <div class="col-lg-4" jsf:rendered="#{exerciceFonctionBean.selectedDefaultExerciceFonction!=null}">
+                                        <h4 class='smaller'>
+                                            #{bundle.BooleanFunction}?: &nbsp;&nbsp;#{exerciceFonctionBean.expireFonction}
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="alert alert-success-forseti-penal bigger-110">
+                                    #{exerciceFonctionBean.selectedUser.dn}
+                                </div>
+                            </form>
+                        </h4>
+                    </div>
+                    <!--<div class="modal-body" style="padding:3px; padding-left:6px; border-left:4px solid #d0d0d0; background-color:#f1f1f1; margin-left:20px; font-style:italic;">-->
+                    <div class="modal-body" style="padding:3px; padding-left:6px; border-left:4px solid #d0d0d0; font-style:italic;">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home">Attribuer fonction</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Liste des fonctions attribuées</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade in active">
+                                <form jsf:id="createUserFunctionForm">
+                                    <div style="margin-left: 175px; margin-top: 50px">
+                                  
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label" for="famille">#{bundle.famille}</label>
+                                            <div class="col-sm-6 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="famille" value="#{exerciceFonctionBean.newExerciceFonction.familleUtilisateur}" t:data-placeholder="#{bundle.famille}" >
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{familleUtilisateurBean.familleUtilisateurItems}" var="fam" itemValue="#{fam}" itemLabel="#{fam.label}" />
+                                                </h:selectOneMenu>  
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label" for="fonction_new">#{bundle.Function}</label>
+                                            <div class="col-sm-6 input-group">
+                                                <h:selectOneMenu class="select-chosen" id="fonction_new" value="#{exerciceFonctionBean.newExerciceFonction.fonction}" t:data-placeholder="#{bundle.Function}" >
+                                                    <f:selectItem itemValue="" itemLabel="" />
+                                                    <f:selectItems value="#{fonctionBean.listeFonctions}" var="f" itemValue="#{f}" itemLabel="#{f.libelle}" />
+                                                    <f:converter converterId="fonctionConverter"/>
+                                                </h:selectOneMenu>  
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label" for="default_new">Défaut?</label>
+                                            <div class="col-sm-8 input-group">
+                                                <label>
+                                                    <input jsf:id="serviceDefault" type="checkbox" jsf:value="#{exerciceFonctionBean.newExerciceFonction.defaultexe}"   class="ace ace-switch ace-switch-4"/>
+                                                    <!--<span class="lbl middle"></span>-->                                                                
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div style="margin-left: 15px">
+                                            <!--<button type="submit" class="btn btn-primary">Login</button>-->
+                                            <button class="btn btn-sm btn-primary" type="submit" jsf:id="submit-new" jsf:action="#{exerciceFonctionBean.doCreate(event)}">
+                                                <f:ajax execute="@form" render=":createUserFunctionForm :listeUserForm:DataTableID :listUserFunctionForm:dataTableUserServices" onevent="ajoutFonction"/>
+                                                <i class="ace-icon fa fa-check"></i>
+                                                #{bundle.Save}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <form jsf:id="listUserFunctionForm">
+                                    <!--<div style="padding:3px; padding-left:6px; border-left:4px solid #d0d0d0; background-color:#f1f1f1; margin-left:20px; font-style:italic;">-->
+                                    <!--<strong>Cadre de citation</strong>: Idéal pour citer les propos de quelqu'un dans un texte. Pour utiliser ce cadre il suffit de copier et coller le code ci-dessous.-->
+                                    <ui:include src="tableauDeFonctionsUser.xhtml"/>
+                                    <!--</div>-->
+                                </form>
+                            </div>
+                        </div>
+                        <!--<form jsf:id="listUserFunctionForm">-->
+
+                        <!--</form>-->
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                    <!--</form>-->
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+
